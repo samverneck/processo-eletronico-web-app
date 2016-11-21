@@ -1,0 +1,227 @@
+﻿@*<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - My ASP.NET Application</title>
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Sample", "Index", "Home", null, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Claims", "Claims", "Home")</li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li>@Html.ActionLink("Signout", "Signout", "Home")</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+    </body>
+    </html>*@
+@{var usuario = System.Security.Claims.ClaimsPrincipal.Current.Claims.ToArray(); }
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Processo Eletrônico</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/css/AdminLTE.css">
+    <link rel="stylesheet" href="~/css/skins/_all-skins.css">
+    <link rel="stylesheet" href="~/css/wizardForm.css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        <!-- Main Header -->
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="/" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>S</b>EP</span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b>Processo</b>Eletrônico</span>
+            </a>
+            <!-- Header Navbar -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- User Account Menu -->
+                        <li class="dropdown user user-menu">
+                            <!-- Menu Toggle Button -->
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <!-- The user image in the navbar-->
+                                    <!-- hidden-xs hides the username on small devices so only the image appears. -->
+
+                                    <span class="hidden-xs">@usuario[19].Value</span>
+
+                                </a>
+                            
+                            <ul class="dropdown-menu">
+                                <!-- The user image in the menu -->
+                                <li class="user-header">
+                                    <img src="img/avatar5.png" class="img-circle" alt="User Image">
+                                    <p>
+                                        @usuario[19].Value
+                                        <small>Administrador</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        @Html.ActionLink("Sair", "Signout", "Home", new { @class = "btn btn-default btn-flat" })
+                                    </div>
+                                </li>
+                            </ul>
+                            }
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                        <li>
+                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <a href="http://www.es.gov.br" target="_blank" title="Ir para o site do Governo do Estado do Espírito Santo" class="logotipo">
+                    <span class="logotipo-mini"><img src="~/img/Brasao.png" class="img-responsive" /></span>
+                    <span class="logotipo-lg"><img src="~/img/Brasao_Governo_horizontal_white_left_small.png" class="img-responsive" /></span>
+                </a>
+                <!-- search form (Optional) -->
+                <form action="#" method="get" class="sidebar-form">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Processo...">
+                        <span class="input-group-btn">
+                            <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+                <!-- /.search form -->
+                <!-- Sidebar Menu -->
+                <ul class="sidebar-menu">
+                    <li class="header">MENU PRINCIPAL</li>
+                    <!-- Optionally, you can add icons to the links -->
+                    <li class="active"><a href="@Url.Action("Index", "Home")"><i class="fa fa-tachometer"></i> <span>Meu Painel</span></a></li>
+                    <li><a href="@Url.Action("Index", "Autuacao")"><i class="fa fa-file-text-o"></i> <span>Autuar Processo</span></a></li>
+                    <li><a href="@Url.Action("Index", "Despacho")"><i class="fa fa-pencil-square-o"></i> <span>Despachar Processo</span></a></li>
+                    <li><a href="@Url.Action("Index", "Arquivamento")"><i class="fa fa-archive"></i> <span>Arquivar Processo</span></a></li>
+                    <li class="header">CONFIGURAÇÕES</li>
+                    <li><a href="#"><i class="fa fa-bell-o"></i> <span>Sinalização</span></a></li>
+                    <li><a href="#"><i class="fa fa-puzzle-piece"></i> <span>Tipo Documental</span></a></li>
+                    <!--<li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-link"></i> <span>Configurações SEP</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="#"><i class="fa fa-caret-right"></i> Sinalização</a></li>
+                            <li><a href="#"><i class="fa fa-caret-right"></i> Tipo Documental</a></li>
+                        </ul>
+                    </li>-->
+                </ul>
+                <!-- /.sidebar-menu -->
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- To the right -->
+            <div class="pull-right hidden-xs">
+
+            </div>
+            <!-- Default to the left -->
+            <strong>Copyright &copy; 2016 <a href="#">Prodest</a></strong>
+        </footer>
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Create the tabs -->
+            <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+                <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <!-- Home tab content -->
+                <div class="tab-pane active" id="control-sidebar-home-tab">
+                    <h3 class="control-sidebar-heading"><i class="fa fa-tasks"></i> Atividades Recentes</h3>
+                </div>
+                <!-- /.tab-pane -->
+                <!-- Settings tab content -->
+                <div class="tab-pane" id="control-sidebar-settings-tab">
+                    <h3 class="control-sidebar-heading">Configurações Gerais</h3>
+                </div>
+                <!-- /.tab-pane -->
+            </div>
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Add the sidebar's background. This div must be placed
+             immediately after the control sidebar -->
+        <div class="control-sidebar-bg"></div>
+    </div>
+    <!-- ./wrapper -->
+    <!-- REQUIRED JS SCRIPTS -->
+    <!-- jQuery 2.2.3 -->
+    <script src="~/lib/jQuery/jquery-2.2.3.min.js"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/js/app.min.js"></script>
+    <script src="~/js/site.js"></script>
+</body>
+</html>

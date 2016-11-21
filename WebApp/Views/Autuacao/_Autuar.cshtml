@@ -1,0 +1,206 @@
+﻿<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab_1" title="Classificação do Processo" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-file-text-o"></i> Resumo e Sinalização</h4></a></li>
+        <li class=""><a href="#tab_2" title="Responsáveis e Interessados" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-users"></i> Responsáveis e Interessados</h4></a></li>
+        <li class=""><a href="#tab_3" title="Informações Complementares" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-list"></i> Informações Complementares</h4></a></li>
+        <li class=""><a href="#tab_4" title="Anexos e Pendências" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-link"></i> Anexos e Pendências</h4></a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_1">
+            <div class="box-body">                
+                <div class="form-group">
+                    <label for="Resumo">Resumo</label>
+                    <textarea class="form-control" id="Resumo" placeholder="Resumo"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Sinalização</label>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="sinalizacao_an">
+                            Atendimento Normal
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="sinalizacao_ap">
+                            Atendimento Prioritário
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <ul class="list-inline pull-right">
+                    <li><a href="#tab_2" class="btn btn-primary pull-right next-step" data-toggle="tab">Próximo <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_2">
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="orgao">Órgão Responsável</label>
+                    <input type="text" class="form-control" id="orgao" />
+                </div>
+                <div class="form-group">
+                    <label for="setor">Setor Responsável</label>
+                    <input type="text" class="form-control" id="setor" />                    
+                </div>
+            </div>
+
+            <div class="box-body">
+                <label>Interessados</label>
+                <div class="form-group">
+                    <button type="button" onclick="$('#modalInteressados').modal('show')" class="btn btn-info"><i class="fa fa-user-plus"></i> Adicionar</button>
+                </div>
+                <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting_asc col-md-8">Nome / Razão Social</th>
+                                        <th class="sorting">CPF/CNPJ</th>
+                                </thead>
+                                <tbody>
+                                    <tr role="row" class="odd">
+                                        <td class="sorting_1" colspan="2">Não há Interessados cadastrados.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <ul class="list-inline pull-right">
+                    <li><a href="#tab_1" class="btn btn-default pull-right prev-step" data-toggle="tab"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Anterior</a></li>
+                    <li><a href="#tab_3" class="btn btn-primary pull-right next-step" data-toggle="tab">Próximo <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_3">
+            <div class="box-body">                
+                <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <select class="form-control" id="estado"></select>
+                </div>
+                <div class="form-group">
+                    <label for="município">Município</label>
+                    <select class="form-control" id="município"></select>
+                </div>                
+            </div>
+            <div class="box-footer">
+                <ul class="list-inline pull-right">
+                    <li><a href="#tab_2" class="btn btn-default pull-right prev-step" data-toggle="tab"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Anterior</a></li>
+                    <li><a href="#tab_4" class="btn btn-primary pull-right next-step" data-toggle="tab">Próximo <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_4">
+            <div class="box-body">
+                <label>Anexos</label>
+                <div class="form-group">                    
+                    <input type="file" class="form-control input-file" id="btnFileAnexos" style="display:none" name="btnFileAnexos" multiple />
+                    <button type="button" class="btn btn-info btn-input-file"><i class="fa fa-link" aria-hidden="true"></i> Adicionar</button>
+                </div>
+                <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="tabelaAnexos" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+                                <thead>
+                                    <tr role="row">                                        
+                                        <th class="sorting_asc col-md-6">Documento</th>
+                                        <th class="sorting">Tamanho</th>
+                                        <th class="sorting_asc col-md-1">Excluir</th>
+                                </thead>
+                                <tbody>                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+            <div class="box-footer">
+                <ul class="list-inline pull-right">
+                    <li><a href="#tab_3" class="btn btn-default pull-right prev-step" data-toggle="tab"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Anterior</a></li>
+                    <li><button type="submit" class="btn btn-danger pull-right"><i class="fa fa-save" aria-hidden="true"></i> Autuar</button></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal Interessados-->
+<div class="modal fade" id="modalInteressados" tabindex="-1" role="dialog" aria-labelledby="modalInteressadosLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="modalInteressadosLabel">Selecione Interessados</h4>
+            </div>
+            <div class="modal-body">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tabPessoa_" title="Pessoa Física" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-user"></i> Pessoa Física</h4></a></li>
+                        <li class=""><a href="#tabPessoa_2" title="Pessoa Jurídica" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-building"></i> Pessoa Jurídica</h4></a></li>
+                        <li class=""><a href="#tabPessoa_3" title="Órgãos do Executivo Estadual" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-building-o"></i> Órgãos do Executivo Estadual</h4></a></li>
+                        <li class=""><a href="#tabPessoa_4" title="Outros Órgãos Públicos" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-university"></i> Outros Órgãos Públicos</h4></a></li>
+                        <li class=""><a href="#tabPessoa_5" title="Pessoa sem Identificação" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-address-book"></i> Pessoa sem Identificação</h4></a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabPessoa_1">
+                            <div class="box-body">
+                            </div>
+                        </div>
+                        <div class="tab-pane active" id="tabPessoa_2">
+                            <div class="box-body">
+                            </div>
+                        </div>
+                        <div class="tab-pane active" id="tabPessoa_3">
+                            <div class="box-body">
+                            </div>
+                        </div>
+                        <div class="tab-pane active" id="tabPessoa_4">
+                            <div class="box-body">
+                            </div>
+                        </div>
+                        <div class="tab-pane active" id="tabPessoa_5">
+                            <div class="box-body">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary">Incluir</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<!--Modal Anexos-->
+<div class="modal fade" id="modalAnexos" tabindex="-1" role="dialog" aria-labelledby="modalAnexosLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="modalAnexosLabel">Anexar Documentos</h4>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary">Incluir</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

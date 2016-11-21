@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "CallApi";
+}
+
+<h2>Api Result</h2>
+
+<h4>Endereço Pesquisado</h4>
+@*<ul>
+    <li>@ViewBag.Json.cep</li>
+    <li>@ViewBag.Json.logradouro</li>
+    <li>@ViewBag.Json.complemento</li>
+    <li>@ViewBag.Json.bairro</li>
+    <li>@ViewBag.Json.localidade</li>
+    <li>@ViewBag.Json.uf</li>
+    <li>@ViewBag.Json.unidade</li>
+    <li>@ViewBag.Json.ibge</li>
+    <li>@ViewBag.Json.gia</li>
+</ul>*@
+
+<ul>
+    @foreach (var m in @ViewBag.Json)
+    {
+        <li>@m.inicioVigencia</li>
+        <li>@m.id</li>
+        <li>@m.codigoIbge</li>
+        <li>@m.nome</li>
+        <li>@m.uf</li>
+    }
+</ul>    
