@@ -2,27 +2,31 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using WebApp.Models;
+using WebApp.Models.Autuacao;
 using WebApp.Models.Organograma;
 
 namespace WebApp.Controllers.Autuacao
 {
-    public class AutuacaoWorkService: WorkServiceBase
+    public class AutuacaoWorkService : WorkServiceBase
     {
         public List<MunicipioModel> GetMunicipios(string uf)
         {
             List<MunicipioModel> listaMunicipios = new List<MunicipioModel>();
 
             try
-            {                
-                var urlMunicipios = ConfigurationManager.AppSettings["OrganogramaAPIBase"];
-                listaMunicipios = download_serialized_json_data<List<MunicipioModel>>(urlMunicipios + "municipios?uf=" + uf);
+            {
+                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "municipios?uf=" + uf;
+                listaMunicipios = download_serialized_json_data<List<MunicipioModel>>(url);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
@@ -36,8 +40,28 @@ namespace WebApp.Controllers.Autuacao
 
             try
             {
-                var urlOrganizacoes = ConfigurationManager.AppSettings["OrganogramaAPIBase"];
-                listaOrganizacoes = download_serialized_json_data<List<OrganizacaoModel>>(urlOrganizacoes + "organizacoes?poder=" + poder+ "&esfera=" + esfera + "&uf=" + uf);
+                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes?poder=" + poder + "&esfera=" + esfera + "&uf=" + uf;
+                listaOrganizacoes = download_serialized_json_data<List<OrganizacaoModel>>(url);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return listaOrganizacoes;
+        }
+
+        public List<OrganizacaoModel> GetOrganizacoesOutrosOrgaos()
+        {
+            List<OrganizacaoModel> listaOrganizacoes = new List<OrganizacaoModel>();
+
+            try
+            {
+                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes";
+                listaOrganizacoes = download_serialized_json_data<List<OrganizacaoModel>>(url);
+
+                //listaOrganizacoes = listaOrganizacoes.Where(a => a.poder.descricao.ToUpper() != "Executivo" && a.esfera.descricao.ToUpper() != "ESTADUAL").OrderBy(a => a.sigla).ToList();
+                listaOrganizacoes = listaOrganizacoes.Where(a => a.poder.descricao.ToUpper() != "Executivo" && a.esfera.descricao.ToUpper() != "ESTADUAL" && a.endereco.municipio.uf.ToUpper() != "ES").ToList();
             }
             catch (Exception e)
             {
@@ -53,9 +77,7 @@ namespace WebApp.Controllers.Autuacao
 
             try
             {
-                var urlOrganizacoes = ConfigurationManager.AppSettings["OrganogramaAPIBase"];
-
-                string url = urlOrganizacoes + "organizacoes/" + id;
+                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/" + id;
 
                 organizacao = download_serialized_json_data<OrganizacaoModel>(url);
             }
@@ -67,28 +89,137 @@ namespace WebApp.Controllers.Autuacao
             return organizacao;
         }
 
-        //public async Task<List<OrganogramaModel.Municipio>> GetMunicipios()
-        //{
-        //    List<OrganogramaModel.Municipio> listaMunicipios = new List<OrganogramaModel.Municipio>();
+        public List<UnidadeModel> GetUnidadesPorOrganizacao(int id)
+        {
+            List<UnidadeModel> unidades = new List<UnidadeModel>();
 
-        //    try
-        //    {
-        //        string municipio = null;
-        //        var urlMunicipios = ConfigurationManager.AppSettings["OrganogramaAPIBase"];
-        //        HttpResponseMessage response = await client.GetAsync(urlMunicipios + "municipios");
+            try
+            {
+                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "unidades?idorganizacao=" + id;
 
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            municipio = await response.Content.ReadAsStringAsync();
-        //            listaMunicipios = JsonConvert.DeserializeObject<List<OrganogramaModel.Municipio>>(municipio);
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e.Message);
-        //    }
+                unidades = download_serialized_json_data<List<UnidadeModel>>(url);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
-        //    return listaMunicipios;
-        //}
+            return unidades;
+        }
+
+
+        public List<TipoContato> GetTiposContatos()
+        {
+            List<TipoContato> tiposContatos = new List<TipoContato>();
+
+            try
+            {
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "tipos-contato";
+
+                tiposContatos = download_serialized_json_data<List<TipoContato>>(url);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return tiposContatos;
+        }
+
+        public List<PlanoClassificacaoModel> GetPlanosClassificacao(int id)
+        {
+            List<PlanoClassificacaoModel> planosClassificacao = new List<PlanoClassificacaoModel>();
+
+            try
+            {
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/planos-classificacao";
+
+                planosClassificacao = download_serialized_json_data<List<PlanoClassificacaoModel>>(url);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return planosClassificacao;
+        }
+
+        public List<FuncaoModel> GetFuncoes(int id)
+        {
+            List<FuncaoModel> funcoes = new List<FuncaoModel>();
+
+            try
+            {
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/funcoes";
+
+                funcoes = download_serialized_json_data<List<FuncaoModel>>(url);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return funcoes;
+        }
+
+        public List<AtividadeModel> GetAtividades(int id)
+        {
+            List<AtividadeModel> atividades = new List<AtividadeModel>();
+
+            try
+            {
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/atividades";
+
+                atividades = download_serialized_json_data<List<AtividadeModel>>(url);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return atividades;
+        }
+
+        public string PostAtuacao(AutuacaoModel autuacao, int id)
+        {
+            //HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/processos");
+            //request.Method = "POST";
+            //request.ContentType = "application/json";
+
+            //System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
+            //byte[] bytes = encoding.GetBytes(JsonConvert.SerializeObject(autuacao));
+
+            //request.ContentLength = bytes.Length;
+
+            //using (Stream requestStream = request.GetRequestStream())
+            //{
+            //    // Send the data.
+            //    requestStream.Write(bytes, 0, bytes.Length);
+            //}
+
+            //var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            //using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            //{
+            //    var result = streamReader.ReadToEnd();
+            //    return result;
+            //}
+
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/processos");
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                streamWriter.Write(JsonConvert.SerializeObject(autuacao));
+                streamWriter.Flush();
+            }
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                return result;
+            }
+        }
     }
 }

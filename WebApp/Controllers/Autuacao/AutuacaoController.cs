@@ -39,10 +39,59 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
+        public ActionResult OrganizacoesOutrosOrgaos()
+        {
+            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
+            return Json(autuacao_ws.GetOrganizacoesOutrosOrgaos(), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         public ActionResult OrganizacaoPorId(int id)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
             return Json(autuacao_ws.GetOrganizacao(id), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult UnidadesPorOrganizacao(int id)
+        {
+            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
+            return Json(autuacao_ws.GetUnidadesPorOrganizacao(id), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult TiposContato()
+        {
+            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
+            return Json(autuacao_ws.GetTiposContatos(), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult PlanosClassificacao(int id)
+        {
+            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
+            return Json(autuacao_ws.GetPlanosClassificacao(id), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult Funcoes(int id)
+        {
+            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
+            return Json(autuacao_ws.GetFuncoes(id), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult Atividades(int id)
+        {
+            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
+            return Json(autuacao_ws.GetAtividades(id), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult Autuar(AutuacaoModel autuacao)
+        {
+            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
+            return Json(autuacao_ws.PostAtuacao(autuacao, 1));
         }
 
         //public async Task<ActionResult> ExibeMunicipiosPartial()

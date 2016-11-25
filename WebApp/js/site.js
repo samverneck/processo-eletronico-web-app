@@ -1,12 +1,4 @@
 ﻿/****************************************************************************************************************************************************************************/
-/*VARIÁVEIS GLOBAIS*/
-
-var arrayPJ = [];
-var arrayPF = [];
-var arrayAnexos = [];
-var arrayAbrangencia = [];
-
-/****************************************************************************************************************************************************************************/
 /*WIZARD FORM*/
 $(document).ready(function () {
     //Initialize tooltips
@@ -39,188 +31,36 @@ function prevTab(elem) {
     $(elem).prev().find('a[data-toggle="tab"]').click();
 }
 
+
 /****************************************************************************************************************************************************************************/
-/*CARREGA ORGÃOS DO EXECUTIVO ESTADUAL*/
-$('#tipoPJ').on('change', carregaOrgaosExecutivoEstadual);
+/*CARREGA TIPOS CONTATO*/
 
-function carregaOrgaosExecutivoEstadual(event) {
-    var elemento = event.currentTarget;
+$(document).ready(function () {
+    ajaxCarregaTiposContato();
+});
 
-    if (elemento.value == '1' && $('#orgaosExecutivoEstadual').children().length == 0) {        
-        ajaxCarregaOrgaosExecutivoEstadual();
-    }
-    else {
-        habilitaCamposPJ();
-    }
-}
-
-function ajaxCarregaOrgaosExecutivoEstadual() {
-    $.ajax('/Autuacao/OrganizacoesPorEsferaPoderUf?esfera=estadual&poder=&uf=es')
+function ajaxCarregaTiposContato() {
+    $.ajax({ url: '/Autuacao/TiposContato', async: false })
       .done(function (dados) {
-
           $.each(dados, function (i) {
-              var optionhtml = '<option value="' + this.id + '">' + this.sigla + ' - ' + this.razaoSocial + '</option>';
-              $('#orgaosExecutivoEstadual').append(optionhtml);
+              var optionhtml = '<label class="radio-inline">';
+              optionhtml += '<input type="radio" name="tipoTelefone" data-id="' + this.id + '" data-digitos="' + this.quantidadeDigitos + '" value="' + this.descricao + '"/>' + this.descricao;
+              optionhtml += '</label>';
+
+              $('.tiposContato').append(optionhtml);
           });
 
-          console.log(dados.length);
-
+          $('#formPessoaFisica input[type="radio"]:first').prop('checked', true);
+          $('#formPessoaJuridica input[type="radio"]:last').prop('checked', true);
       })
       .fail(function () {
           alert("error");
       });
-}
-
-/****************************************************************************************************************************************************************************/
-/*CARREGA DADOS DE ORGÃO DO EXECUTIVO ESTADUAL*/
-//$('#orgaosExecutivoEstadual').on('change', carregaDadosOrgaoExecutivoEstadual);
-$('#btnIncluirOrgaoExecutivoEstadual').on('click', carregaDadosOrgaoExecutivoEstadual);
-
-
-function carregaDadosOrgaoExecutivoEstadual(event) {
-    var elemento = $('#orgaosExecutivoEstadual');
-    ajaxCarregaDadosOrgaoExecutivoEstadual(elemento[0]);
-    $('#panelPJ').show();
-}
-
-function ajaxCarregaDadosOrgaoExecutivoEstadual(elemento) {
-    $.ajax('/Autuacao/OrganizacaoPorId/' + elemento.value)
-      .done(function (dados) {
-
-          console.log(dados);
-
-          $("input#cnpj").val(dados.cnpj);
-          $("input#razaosocial").val(dados.razaoSocial);
-          $("input#nomefantasia").val(dados.nomeFantasia);
-          $("input#sigla").val(dados.sigla);
-          $("select#esfera").val(dados.esfera.descricao);
-          $("select#poder").val(dados.poder.descricao);
-          $("#formPessoalJuridica .campo-uf").val(dados.endereco.municipio.uf.toLowerCase());
-
-          /*Insere municipio*/
-          $("#formPessoalJuridica .campo-uf").trigger("change");//Dispara evento change do campo uf
-          $("#formPessoalJuridica .campo-municipio").val(dados.endereco.municipio.nome);
-
-          /*Insere emails*/
-          $.each(dados.emails, function (i, v) {
-              $('#emailPJ').val(v.endereco);
-              $('#btnIncluirEmailPJ').trigger("click");
-          });
-
-          /*Insere contatos*/
-          $.each(dados.contatos, function (i, v) {
-              $('#contatoPJ').val(v.telefone);
-              $('#btnIncluirContatoPJ').trigger("click");
-          });
-
-          /*Insere sites*/
-          $.each(dados.sites, function (i, v) {
-              $('#sitePJ').val(v.url);
-              $('#btnIncluirSitePJ').trigger("click");
-          });          
-
-          desabilitaCamposPJ();
-      })
-      .fail(function () {
-          alert("error");
-      });
-}
-
-/****************************************************************************************************************************************************************************/
-/*INCLUIR CONTATOS PESSOA JURIDICA*/
-
-var contatosPJ = [];
-
-// Executa funcao prepareUpload ao selecionar arquivos
-$('#btnIncluirContatoPJ').on('click', incluirContatoPJ);
-
-// Adiciona os arquivos selecionados ao array files[] e exibe-os na tabela de arquivos selecionados
-function incluirContatoPJ(event) {
-    if ($('#contatoPJ').val() != '') {
-        $('#tabelaListaContatosPJ tbody').append('<tr><td>' + $('#contatoPJ').val() + '</td><td class="text-center colunaExcluir"><button class="btn btn-xs btn-danger btn-excluir"><i class="fa fa-remove"></i></button></td></tr>');
-        $('#contatoPJ').val('');
-    }
-}
-
-/****************************************************************************************************************************************************************************/
-/*INCLUIR EMAILS PESSOA JURIDICA*/
-
-var emailsPJ = [];
-
-// Executa funcao prepareUpload ao selecionar arquivos
-$('#btnIncluirEmailPJ').on('click', incluirEmailPJ);
-
-// Adiciona os arquivos selecionados ao array files[] e exibe-os na tabela de arquivos selecionados
-function incluirEmailPJ(event) {
-    if ($('#emailPJ').val() != '') {
-        $('#tabelaListaEmailsPJ tbody').append('<tr><td>' + $('#emailPJ').val() + '</td><td class="text-center colunaExcluir"><button class="btn btn-xs btn-danger btn-excluir"><i class="fa fa-remove"></i></button></td></tr>');
-        $('#emailPJ').val('');
-    }
-}
-
-/****************************************************************************************************************************************************************************/
-/*INCLUIR SITES PESSOA JURIDICA*/
-
-var sitesPJ = [];
-
-// Executa funcao prepareUpload ao selecionar arquivos
-$('#btnIncluirSitePJ').on('click', incluirSitePJ);
-
-// Adiciona os arquivos selecionados ao array files[] e exibe-os na tabela de arquivos selecionados
-function incluirSitePJ(event) {
-    if ($('#sitePJ').val() != '') {
-        $('#tabelaListaSitesPJ tbody').append('<tr><td>' + $('#sitePJ').val() + '</td><td class="text-center colunaExcluir"><button class="btn btn-xs btn-danger btn-excluir"><i class="fa fa-remove"></i></button></td></tr>');
-        $('#sitePJ').val('');
-    }
-}
-
-/****************************************************************************************************************************************************************************/
-/*BLOQUEIA E DESBLOQUEIA EDICAO PESSOA JURIDICA*/
-
-function desabilitaCamposPJ() {
-    $("input#cnpj").prop("disabled", true);
-    $("input#razaosocial").prop("disabled", true);
-    $("input#nomefantasia").prop("disabled", true);
-    $("input#sigla").prop("disabled", true);
-    $("select#esfera").prop("disabled", true);
-    $("select#poder").prop("disabled", true);
-    $("#formPessoalJuridica .campo-uf").prop("disabled", true);
-    $("#formPessoalJuridica .campo-municipio").prop("disabled", true);
-    $("input#contatoPJ").prop("disabled", true);
-    $("input#emailPJ").prop("disabled", true);
-    $("input#sitePJ").prop("disabled", true);
-    $("button#btnIncluirContatoPJ").prop("disabled", true);
-    $("button#btnIncluirEmailPJ").prop("disabled", true);
-    $("button#btnIncluirSitePJ").prop("disabled", true);
-
-    $.each($("#formPessoalJuridica .colunaExcluir"), function (i) {
-        $(this).hide();
-    });
-}
-
-function habilitaCamposPJ() {
-    $("input#cnpj").prop("disabled", false);
-    $("input#razaosocial").prop("disabled", false);
-    $("input#nomefantasia").prop("disabled", false);
-    $("input#sigla").prop("disabled", false);
-    $("select#esfera").prop("disabled", false);
-    $("select#poder").prop("disabled", false);
-    $("#formPessoalJuridica .campo-uf").prop("disabled", false);
-    $("#formPessoalJuridica .campo-municipio").prop("disabled", false);
-    $("input#contatoPJ").prop("disabled", false);
-    $("input#emailPJ").prop("disabled", false);
-    $("input#sitePJ").prop("disabled", false);
-    $("button#btnIncluirContatoPJ").prop("disabled", false);
-    $("button#btnIncluirEmailPJ").prop("disabled", false);
-    $("button#btnIncluirSitePJ").prop("disabled", false);
-
-    $.each($("#formPessoalJuridica .colunaExcluir"), function (i) {
-        $(this).show();
-    });
 }
 
 /****************************************************************************************************************************************************************************/
 /*CARREGA MUNICIPIOS*/
+
 $('.campo-uf').on('change', carregaMunicipios);
 
 function carregaMunicipios(event) {
@@ -253,58 +93,273 @@ function ajaxCarregaMunicipios(elemento) {
 /****************************************************************************************************************************************************************************/
 /*INCLUSAO INTERESSADOS*/
 
+var formSerializado;
+
 $('#btnIncluirInteressado').on('click', function () {
-    $('#modalInteressados div.tab-content .active form')[0].reset();
 
     var form = $('#modalInteressados div.tab-content .active form')[0];
 
-    if ($(form).prop('id') == 'formPessoalJuridica') {
-        limparFormPessoaJuridica();
+    //Inclusao de Pessoa Juridica
+    if ($(form).prop('id') == 'formPessoaJuridica') {
+
+        var pjExiste = false;
+
+        $.each(arrayPJ, function (i, pj) {
+            if (interessadoPJProvisorio != null) {
+                if (pj.cnpj == interessadoPJProvisorio.cnpj) {
+                    alert('Interessado já existe no processo.')
+                    pjExiste = true;
+                }
+            }
+            else {
+                if (pj.cnpj == form['cnpj'].value.replace(/\/|\.|\-/g, "")) {
+                    alert('Interessado já existe no processo.')
+                    pjExiste = true;
+                }
+            }
+        });
+
+        if (!pjExiste) {
+            //Listas dados do interessado
+            contatosPJ = serializeTable('tabelaListaContatosPJ');
+            emailsPJ = serializeTable('tabelaListaEmailsPJ');
+
+            if (interessadoPJProvisorio != null) {
+                if ($('#unidadeOrganizacaoPJ').val() != '0') {
+                    interessadoPJProvisorio.nomeUnidade = $('#unidadeOrganizacaoPJ option:selected').text();
+                    interessadoPJProvisorio.siglaUnidade = $('#unidadeOrganizacaoPJ').val();
+                }
+                arrayPJ.push(interessadoPJProvisorio);
+            }
+            else {
+                arrayPJ.push(new objetoInteressadoPJ(form['razaosocial'].value, form['cnpj'].value.replace(/\/|\.|\-/g, ""), form['sigla'].value, '', '', contatosPJ, emailsPJ, form['uf'].value, form['municipio'].value));
+            }
+
+            //Reseta formulario
+            resetaForm();
+            resetaFormSelecaoPJ();
+            limparFormPessoaJuridica();
+        }
+
+        //Limpa Objeto Provisorio
+        interessadoPJProvisorio = null;
     }
-    if ($(form).prop('id') == 'formPessoalFisica') {
-        limparFormPessoaFisica();
+
+    //Inclusao de Pessoa Fisica
+    if ($(form).prop('id') == 'formPessoaFisica') {
+
+        var pfExiste = false;
+
+        $.each(arrayPF, function (i, pf) {
+            if (pf.cpf == form['cpf'].value) {
+                alert('Interessado já existe no processo.')
+                pfExiste = true;
+            }
+        });
+
+        if (!pfExiste) {
+            //Listas dados do interessado PF
+            contatosPF = serializeTable('tabelaListaContatosPF');
+            emailsPF = serializeTable('tabelaListaEmailsPF');
+
+            //Adiciona interessado a lista de interessados PF
+            arrayPF.push(new objetoInteressadoPF(form['nome'].value, form['cpf'].value, contatosPF, emailsPF, form['uf'].value, form['municipio'].value));
+
+            //Limpa Objeto Provisorio
+            interessadoPJProvisorio = null;
+
+            //Reseta formulario
+            limparFormPessoaFisica();
+        }
     }
+
+    carregaTabelaInteressados();
+
+});
+
+function carregaTabelaInteressados() {
+    $('#tabelaInteressados tbody tr').remove();
+
+    $.each(arrayPF, function (i, interessado) {
+        $('#tabelaInteressados tbody').append('<tr><td>' + interessado.nome + '</td><td>' + interessado.cpf + '</td><td class="text-center colunaExcluir"><button data-id="' + i + '" class="btn btn-xs btn-danger btn-excluir btn-excluir-interessado-pf"><i class="fa fa-remove"></i></button></td></tr>');
+    });
+
+    $.each(arrayPJ, function (i, interessado) {
+        console.log(interessado);
+        $('#tabelaInteressados tbody').append('<tr><td>' + interessado.razaoSocial + '</td><td>' + interessado.cnpj + '</td><td class="text-center colunaExcluir"><button data-id="' + i + '" class="btn btn-xs btn-danger btn-excluir btn-excluir-interessado-pj"><i class="fa fa-remove"></i></button></td></tr>');
+    });
+}
+
+//Exclui elemento da tabela e do arrayPJ e arrayPF
+$('tbody').on('click', '.btn-excluir-interessado-pf', function () {
+    arrayPF.splice($(this).attr('data-id'), 1);
+    carregaTabelaInteressados()
+});
+
+$('tbody').on('click', '.btn-excluir-interessado-pj', function () {
+    arrayPJ.splice($(this).attr('data-id'), 1);
+    carregaTabelaInteressados()
+});
+
+
+/****************************************************************************************************************************************************************************/
+/*CARREGA ORGÃOS DO EXECUTIVO ESTADUAL*/
+
+$('#tipoPJ').on('change', carregaOrgaosExecutivoEstadual);
+
+function carregaOrgaosExecutivoEstadual(event) {
+    var elemento = event.currentTarget;
+
+    if (elemento.value == '1') {
+        //$('#organizacaoPublica').children().remove();
+        $('select#organizacaoPublica option:not([value="0"])').remove()
+        ajaxCarregaOrgaosExecutivoEstadual();
+    }
+    else if (elemento.value == '2') {
+        //$('#organizacaoPublica').children().remove();
+        $('select#organizacaoPublica option:not([value="0"])').remove()
+        ajaxCarregaOutrosOrgaosPublicos();
+    }
+    else {
+        habilitaCamposPJ();
+    }
+}
+
+//Carrega orgaos publicos do executivo estadual ES para o combo
+function ajaxCarregaOrgaosExecutivoEstadual() {
+    $.ajax('/Autuacao/OrganizacoesPorEsferaPoderUf?esfera=estadual&poder=executivo&uf=es')
+      .done(function (dados) {
+
+          $.each(dados, function (i) {
+              var optionhtml = '<option value="' + this.id + '">' + this.sigla + ' - ' + this.razaoSocial + '</option>';
+              $('#organizacaoPublica').append(optionhtml);
+          });
+
+          console.log(dados.length);
+
+      })
+      .fail(function () {
+          alert("error");
+      });
+}
+
+//Carrega outros orgaos publicos para o combo
+function ajaxCarregaOutrosOrgaosPublicos() {
+    $.ajax('/Autuacao/OrganizacoesOutrosOrgaos')
+      .done(function (dados) {
+
+          $.each(dados, function (i) {
+              var optionhtml = '<option value="' + this.id + '">' + this.sigla + ' - ' + this.razaoSocial + '</option>';
+              $('#organizacaoPublica').append(optionhtml);
+          });
+
+          console.log(dados.length);
+
+      })
+      .fail(function () {
+          alert("error");
+      });
+}
+
+/****************************************************************************************************************************************************************************/
+/*INCLUIR MUNICIPIOS*/
+
+var municipiosArray = [];
+
+// Executa funcao prepareUpload ao selecionar arquivos
+$('#btnIncluirMunicipio').on('click', prepareMunicipios);
+
+// Adiciona os arquivos selecionados ao array files[] e exibe-os na tabela de arquivos selecionados
+function prepareMunicipios(event) {
+    if ($('#municipio').val() != '0' && $('#uf').val() != '0') {
+        arrayMunicipios.push(new objetoMunicipio($('#municipio').val(), $('#uf').val()));
+        $('#municipio').prop("selectedIndex", 0);
+
+        carregaTabelaMunicipios();
+    }
+}
+
+function carregaTabelaMunicipios() {
+    $('#tabelaMunicipios tbody tr').remove();
+    $.each(arrayMunicipios, function (i, municipio) {
+        $('#tabelaMunicipios tbody').append('<tr><td>' + municipio.uf.toUpperCase() + '</td><td>' + municipio.nome + '</td><td class="text-center colunaExcluir"><button id="' + municipio.nome + '" class="btn btn-xs btn-danger btn-excluir btn-excluir-municipio"><i class="fa fa-remove"></i></button></td></tr>');
+    });
+}
+
+// Exclui municipio selecionado
+$('#tabelaMunicipios tbody').on('click', '.btn-excluir-municipio', function () {
+    arrayMunicipios.splice($(this).attr('data-id'), 1);
+    carregaTabelaMunicipios()
 });
 
 /****************************************************************************************************************************************************************************/
-/*INCLUSAO PESSOA JURIDICA*/
+/*EXCLUIR ITEM DA TABELA*/
 
-$('#tipoPJ').on('change', selecaoTipoPJ);
-
-var selecaoTipo;
-
-function selecaoTipoPJ(event) {
-    selecaoTipo = event;
-
-    if (event.currentTarget.value == 0) {
-        $('#selecaoOrgaosExecutivoEstadual').hide();
-        $('#panelPJ').hide();
-    }
-    else if (event.currentTarget.value == 1) {
-        $('#selecaoOrgaosExecutivoEstadual').show();
-        $('#panelPJ').hide();
-    }
-    else {
-        $('#selecaoOrgaosExecutivoEstadual').hide();
-        $('#panelPJ').show();
-    }
-}
-
-function carregaOrgaoExecutivoEstadual(event) {
-
-}
-
-function limparFormPessoaJuridica() {
-    $('#selecaoOrgaosExecutivoEstadual').show();
-    $('#panelPJ').hide();
-    $('#formPessoalJuridica .campo-municipio option:not([value="0"])').remove();
-}
+$('tbody').on('click', '.btn-excluir', function () {
+    $(this).closest('tr').remove();
+});
 
 /****************************************************************************************************************************************************************************/
-/*INCLUSAO PESSOA FISICA*/
+/*UPLOAD DE ARQUIVOS*/
 
-function limparFormPessoaFisica() {
-    $('#formPessoalFisica .campo-municipio option:not([value="0"])').remove();
+// Executa funcao prepareUpload ao selecionar arquivos
+$('input[type=file]').on('change', prepareUpload);
+
+// Adiciona os arquivos selecionados ao array files[] e exibe-os na tabela de arquivos selecionados
+function prepareUpload(event) {
+    $.each(event.target.files, function (i, obj) {
+        arrayAnexos.push(new objetoAnexos(obj.name, obj, obj.name.split('.').pop()));
+    });
+
+    carregaTabelaAnexos()
+}
+
+function carregaTabelaAnexos() {
+    $('#tabelaAnexos tbody tr').remove();
+
+    $.each(arrayAnexos, function (i, file) {
+        $('#tabelaAnexos tbody').append('<tr><td>' + file.nome + '</td><td>' + bytesToSize(file.conteudo.size) + '</td><td class="text-center colunaExcluir"><button data-id="' + i + '" class="btn btn-xs btn-danger btn-excluir btn-excluir-anexo"><i class="fa fa-remove"></i></button></td></tr>');
+    });
+}
+
+//Exclui elemento da tabela e do arrayAnexos
+$('tbody').on('click', '.btn-excluir-anexo', function () {
+    arrayAnexos.splice($(this).attr('data-id'), 1);
+    carregaTabelaAnexos()
+});
+
+/****************************************************************************************************************************************************************************/
+/*SERIALIZAR DADOS TABELA*/
+function serializeTable(nomeTabela) {
+    var $table = $('#' + nomeTabela),
+    rows = [],
+    header = [];
+
+    $table.find("thead th:not(:last)").each(function () {
+        header.push($(this).attr('data-header'));
+    });
+
+    $table.find("tbody tr").each(function () {
+        var row = {};
+
+        $(this).find("td:not(:last)").each(function (i) {
+            var key = header[i];
+            var value;
+
+            if ($(this).is('[data-value]')) {
+                value = $(this).attr('data-value');
+            }
+            else {
+                value = $(this).html();
+            }
+
+            row[key] = value;
+        });
+
+        rows.push(row);
+    });
+
+    return rows;
 }
 
 /****************************************************************************************************************************************************************************/
@@ -326,70 +381,43 @@ $(document).ready(function () {
     });
 });
 
-/****************************************************************************************************************************************************************************/
-/*INCLUIR MUNICIPIOS*/
-
-var municipiosArray = [];
-
-// Executa funcao prepareUpload ao selecionar arquivos
-$('#btnIncluirMunicipio').on('click', prepareMunicipios);
-
-// Adiciona os arquivos selecionados ao array files[] e exibe-os na tabela de arquivos selecionados
-function prepareMunicipios(event) {
-    if ($('#municipio').val() != '0' && $('#uf').val() != '0') {
-        $('#tabelaMunicipios tbody').append('<tr><td>' + $('#uf').val().toUpperCase() + '</td><td>' + $('#municipio').val() + '</td><td class="text-center colunaExcluir"><button id="' + $('#municipio').val() + '" class="btn btn-xs btn-danger btn-excluir"><i class="fa fa-remove"></i></button></td></tr>');
-
-        $('#municipio').prop("selectedIndex", 0);
-    }
-}
-
-// Exclui municipio selecionado
-$('#tabelaMunicipios tbody').on('click', '.btn-excluir-municipio', function () {
-    $(this).closest('tr').remove();
-});
 
 /****************************************************************************************************************************************************************************/
-/*EXCLUIR ITEM DA TABELA*/
+/*ENVIAR AUTUACAO*/
 
-$('tbody').on('click', '.btn-excluir', function () {
-    $(this).closest('tr').remove();
-});
+$(document).submit(function (e) {
 
-/****************************************************************************************************************************************************************************/
-/*UPLOAD DE ARQUIVOS*/
+    var form = $('#formAutuacao')[0];
 
-var files = [];
-
-// Executa funcao prepareUpload ao selecionar arquivos
-$('input[type=file]').on('change', prepareUpload);
-
-// Adiciona os arquivos selecionados ao array files[] e exibe-os na tabela de arquivos selecionados
-function prepareUpload(event) {
-    $('#tabelaAnexos tbody tr').remove();
-
-    $.each(event.target.files, function (i, obj) {
-        //console.log(obj);
-        files.push(obj);
+    $("input:checkbox[name=sinalizacao]:checked").each(function () {
+        arraySinalizacao.push($(this).val());
     });
 
-    $.each(files, function (i, file) {
-        $('#tabelaAnexos tbody').append('<tr><td>' + file.name + '</td><td>' + bytesToSize(file.size) + '</td><td class="text-center colunaExcluir"><button id="' + file.name + '" class="btn btn-xs btn-danger btn-excluir-anexo"><i class="fa fa-remove"></i></button></td></tr>');
-    });
-}
+    var autuacao = new objetoAutuacao(1, form.resumo.value, arrayPF, arrayPJ, arrayMunicipios, arrayAnexos, arraySinalizacao, 1, 'Prodest', 'Prodest', 1, 'SGPRJ', 'SGPRJ', 1, 'Fernando Silva');
 
-// Exclui or arquivo selecionado do array files[] e da tabela de arquivos
-$('#tabelaAnexos tbody').on('click', '.btn-excluir-anexo', function () {
-    files.splice($.inArray($(this).attr('id'), files), 1);
-    $(this).closest('tr').remove();
-    //$.each(files, function (i, file) {
-    //    console.log(file.name);
-    //});
+    console.log(JSON.stringify(autuacao));    
+
+    $.ajax({
+        url: '/Autuacao/Autuar?autuacao',
+        type: 'POST',
+        data: JSON.stringify(autuacao),
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8"
+    }).done(function (dados) {
+        console.log(dados);
+        alert(dados);
+    }).fail(function () {
+        alert("error");
+    });
+
+    return false;
 });
+
 
 /****************************************************************************************************************************************************************************/
 /*ENVIAR ARQUIVOS*/
 
-$('form').on('submit', uploadFiles);
+//$('form').on('submit', uploadFiles);
 
 // Catch the form submit and upload the files
 function uploadFiles(event) {
@@ -410,8 +438,8 @@ function uploadFiles(event) {
         data: data,
         cache: false,
         dataType: 'json',
-        processData: false, // Don't process the files
-        contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+        contentType: "application/json; charset=utf-8",
+        traditional: true,
         success: function (data, textStatus, jqXHR) {
             if (typeof data.error === 'undefined') {
                 // Success so call function to process the form

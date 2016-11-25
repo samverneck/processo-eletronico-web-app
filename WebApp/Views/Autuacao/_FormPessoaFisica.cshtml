@@ -1,19 +1,19 @@
-﻿<form id="formPessoalFisica">
+﻿<form id="formPessoaFisica">
     <div class="row">
         <div class="col-md-6 form-group">
             <label>CPF</label>
-            <input type="text" id="cpf_PF" class="form-control" />
+            <input type="text" id="cpf_PF" name="cpf" class="form-control" />
         </div>
         <div class="col-md-6 form-group">
             <label>Nome</label>
-            <input type="text" id="nome_PF" class="form-control" />
+            <input type="text" id="nome_PF" name="nome" class="form-control" />
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-6 form-group">
             <label>Estado</label>
-            <select class="form-control campo-uf">
+            <select name="uf" class="form-control campo-uf">
                 <option value="0">Selecione o Estado</option>
                 <option value="ac">Acre</option>
                 <option value="al">Alagoas</option>
@@ -46,7 +46,7 @@
         </div>
         <div class="col-md-6 form-group">
             <label>Muicípio</label>
-            <select class="form-control campo-municipio">
+            <select name="municipio" class="form-control campo-municipio">
                 <option value="0">Selecione o Município</option>
             </select>
         </div>
@@ -57,30 +57,22 @@
         <div class="col-md-12 form-group">
             <label>Telefone</label>
             <div class="input-group">
-                <span class="input-group-addon" id="basic-addon1">
-                    <label class="radio-inline">
-                        <input type="radio" name="tpoTelefone" id="tipoCelular" value="Celular"> Celular
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="tpoTelefone" id="tipoComercial" value="Comercial"> Comercial
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="tpoTelefone" id="tipoResidencial" value="Residencial"> Residencial
-                    </label>
+                <span class="input-group-addon tiposContato">                    
                 </span>
-                <input type="text" class="form-control" />
+                <input id="contatoPF" type="text" class="form-control" />
                 <span class="input-group-btn">
-                    <button id="btnIncluirContatoPF" class="btn btn-info"><i class="fa fa-check" aria-hidden="true"></i> Incluir</button>
+                    <button type="button" id="btnIncluirContatoPF" class="btn btn-info"><i class="fa fa-check" aria-hidden="true"></i> Adicionar</button>
                 </span>
             </div><!-- /input-group -->
         </div>
         <div class="col-md-12 form-group">
-            <div id="listaTelefonerPF" class="dataTables_wrapper form-inline dt-bootstrap">
-                <table id="tabelaListaTelefonesPF" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="listaTelefonerPF">
+            <div id="listaContatosPF" class="dataTables_wrapper form-inline dt-bootstrap">
+                <table id="tabelaListaContatosPF" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="listaContatosPF">
                     <thead>
                         <tr role="row">
-                            <th class="col-md-2">Tipo</th>
-                            <th>Telefone</th>
+                            <th class="col-md-8" data-header="telefone">Telefone</th>
+                            <th class="col-md-2" data-header="idTipoContato">Tipo</th>
+                            <th class="colunaExcluir">Excluir</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -94,18 +86,19 @@
             <label for="nomefantasia">E-mail's</label>
             <div class="input-group">
                 <span class="input-group-addon" id="basic-addon1"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
-                <input type="text" class="form-control" id="site" />
+                <input type="text" class="form-control" id="emailPF" />
                 <span class="input-group-btn">
-                    <button id="btnIncluirSite" class="btn btn-info"><i class="fa fa-check" aria-hidden="true"></i> Incluir</button>
+                    <button type="button" id="btnIncluirEmailPF" class="btn btn-info"><i class="fa fa-check" aria-hidden="true"></i> Adicionar</button>
                 </span>
             </div><!-- /input-group -->
         </div>
         <div class="col-md-12 form-group">
-            <div id="listaSites" class="dataTables_wrapper form-inline dt-bootstrap">
-                <table id="tabelaListaSites" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="listaSites">
+            <div id="listaEmailsPF" class="dataTables_wrapper form-inline dt-bootstrap">
+                <table id="tabelaListaEmailsPF" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="listaEmailsPF">
                     <thead>
                         <tr role="row">
-                            <th>E-mail</th>
+                            <th class="col-md-10" data-header="endereco">Endereço</th>
+                            <th class="colunaExcluir">Excluir</th>
                         </tr>
                     </thead>
                     <tbody></tbody>

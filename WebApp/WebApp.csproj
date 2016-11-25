@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="lib\validate\localization\" />
     <Folder Include="Models\AcessoCidadao\" />
     <Folder Include="Models\Arquivamento\" />
     <Folder Include="Models\Despacho\" />
@@ -167,7 +168,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Autuacao\AtividadeModel.cs" />
+    <Compile Include="Models\Autuacao\AutuacaoModel.cs" />
     <Compile Include="Models\Autuacao\FormAutuacaoModel.cs" />
+    <Compile Include="Models\Autuacao\FuncaoModel.cs" />
+    <Compile Include="Models\Autuacao\PlanoClassificacaoModel.cs" />
+    <Compile Include="Models\Autuacao\TipoContato.cs" />
     <Compile Include="Models\CEP.cs" />
     <Compile Include="Models\Organograma\EsferaOrganizacaoModel.cs" />
     <Compile Include="Models\Organograma\Municipio.cs" />
@@ -225,6 +231,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="js\models.js" />
+    <Content Include="js\pessoafisica.js" />
+    <Content Include="js\pessoajuridica.js" />
     <Content Include="js\site.js" />
     <Content Include="lib\bootstrap\css\bootstrap.css.map" />
     <Content Include="lib\bootstrap\css\bootstrap.min.css.map" />
@@ -1028,6 +1037,8 @@
     <Content Include="lib\ionslider\ion.rangeSlider.min.js" />
     <Content Include="lib\ionslider\ion.rangeSlider.skinFlat.css" />
     <Content Include="lib\ionslider\ion.rangeSlider.skinNice.css" />
+    <Content Include="lib\jQueryMask\jquery.mask.js" />
+    <Content Include="lib\jQueryMask\jquery.mask.min.js" />
     <Content Include="lib\jQueryUI\jquery-ui.js" />
     <Content Include="lib\jQueryUI\jquery-ui.min.js" />
     <Content Include="lib\jQuery\jquery-2.2.3.min.js" />
@@ -1104,6 +1115,10 @@
     <Content Include="lib\timepicker\bootstrap-timepicker.js" />
     <Content Include="lib\timepicker\bootstrap-timepicker.min.css" />
     <Content Include="lib\timepicker\bootstrap-timepicker.min.js" />
+    <Content Include="lib\validate\additional-methods.js" />
+    <Content Include="lib\validate\additional-methods.min.js" />
+    <Content Include="lib\validate\jquery.validate.js" />
+    <Content Include="lib\validate\jquery.validate.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
