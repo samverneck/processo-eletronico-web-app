@@ -182,44 +182,30 @@ namespace WebApp.Controllers.Autuacao
 
         public string PostAtuacao(AutuacaoModel autuacao, int id)
         {
-            //HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/processos");
-            //request.Method = "POST";
-            //request.ContentType = "application/json";
-
-            //System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
-            //byte[] bytes = encoding.GetBytes(JsonConvert.SerializeObject(autuacao));
-
-            //request.ContentLength = bytes.Length;
-
-            //using (Stream requestStream = request.GetRequestStream())
-            //{
-            //    // Send the data.
-            //    requestStream.Write(bytes, 0, bytes.Length);
-            //}
-
-            //var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            //using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            //{
-            //    var result = streamReader.ReadToEnd();
-            //    return result;
-            //}
-
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/processos");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
 
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            try
             {
-                streamWriter.Write(JsonConvert.SerializeObject(autuacao));
-                streamWriter.Flush();
-            }
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    streamWriter.Write(JsonConvert.SerializeObject(autuacao));
+                    streamWriter.Flush();
+                }
 
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                var result = streamReader.ReadToEnd();
-                return result;
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    return result;
+                }
             }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+            
         }
     }
 }
