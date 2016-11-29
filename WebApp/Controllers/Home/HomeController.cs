@@ -13,17 +13,22 @@ using System.Web;
 using System.Web.Mvc;
 using WebApp.Models;
 using WebApp.Models.Organograma;
+using System.IdentityModel;
+using System.Security.Permissions;
+using Thinktecture.IdentityModel.Mvc;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class HomeController : BaseController
     {
+        [ResourceAuthorize("Autuar","Processo")]
+        [HandleForbidden]
         public ActionResult Index()
         {
             return View();
         }
 
-        [Authorize]
         public ActionResult Claims()
         {
             ViewBag.Message = "Claims";

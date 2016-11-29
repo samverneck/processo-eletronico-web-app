@@ -1,8 +1,11 @@
 ﻿using IdentityModel.Client;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.Owin;
+using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Owin;
 using System;
 using System.Collections.Generic;
@@ -10,6 +13,7 @@ using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using WebApp.Autorizacao;
 
 [assembly: OwinStartup(typeof(WebApp.Startup))]
 
@@ -24,66 +28,109 @@ namespace WebApp
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = "Cookies"
-            });            
+            });
 
             app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions
             {
-                AuthenticationType = "oidc",
+                ClientId = "processoeletronicowebapp-des",
+                Authority = "https://acessocidadao.es.gov.br/is",
+                RedirectUri = "http://localhost:5969/Home/Index/",
+                PostLogoutRedirectUri = "http://localhost:5969/",
+                ResponseType = "code id_token",
+                Scope = "openid profile offline_access",
+
+                TokenValidationParameters = new TokenValidationParameters
+                {
+                    NameClaimType = "name",
+                    RoleClaimType = "role"
+                },
+
                 SignInAsAuthenticationType = "Cookies",
-                Authority = "https://acessocidadao.es.gov.br/is/",
-                ClientId = "selecaoaluno",
-                RedirectUri = "Http://Localhost:5969/",
-                PostLogoutRedirectUri = "Http://Localhost:5969/",
-                ResponseType = "id_token token",
-                Scope = "openid profile cpf celular dataNascimento email filiacao nome",
-                UseTokenLifetime = false,
+
                 Notifications = new OpenIdConnectAuthenticationNotifications
                 {
-                    SecurityTokenValidated = async n =>
+                    AuthorizationCodeReceived = async n =>
                     {
-                        var claims_to_exclude = new[]
+                        // use the code to get the access and refresh token
+                        var tokenClient = new TokenClient(
+                            "https://acessocidadao.es.gov.br/is/connect/token",
+                            "processoeletronicowebapp-des",
+                            "processoeletronico-secret");
+
+                        var tokenResponse = await tokenClient.RequestAuthorizationCodeAsync(
+                            n.Code, n.RedirectUri);
+
+                        if (tokenResponse.IsError)
                         {
-                            "aud", "iss", "nbf", "exp", "nonce", "iat", "at_hash"
-                        };
-
-                        var claims_to_keep =
-                            n.AuthenticationTicket.Identity.Claims
-                            .Where(x => false == claims_to_exclude.Contains(x.Type)).ToList();
-                        claims_to_keep.Add(new Claim("id_token", n.ProtocolMessage.IdToken));
-
-                        if (n.ProtocolMessage.AccessToken != null)
-                        {
-                            claims_to_keep.Add(new Claim("access_token", n.ProtocolMessage.AccessToken));
-
-                            var userInfoClient = new UserInfoClient(new Uri("https://acessocidadao.es.gov.br/is/connect/userinfo"), n.ProtocolMessage.AccessToken);
-                            var userInfoResponse = await userInfoClient.GetAsync();
-                            var userInfoClaims = userInfoResponse.Claims
-                                .Where(x => x.Item1 != "sub") // filter sub since we're already getting it from id_token
-                                .Select(x => new Claim(x.Item1, x.Item2));
-                            claims_to_keep.AddRange(userInfoClaims);
+                            throw new Exception(tokenResponse.Error);
                         }
 
-                        var ci = new ClaimsIdentity(
-                            n.AuthenticationTicket.Identity.AuthenticationType,
-                            "name", "role");
-                        ci.AddClaims(claims_to_keep);
+                        // use the access token to retrieve claims from userinfo
+                        var userInfoClient = new UserInfoClient(
+                        new Uri("https://acessocidadao.es.gov.br/is/connect/userinfo"),
+                        tokenResponse.AccessToken);
 
-                        n.AuthenticationTicket = new Microsoft.Owin.Security.AuthenticationTicket(
-                            ci, n.AuthenticationTicket.Properties
-                        );
+                        var userInfoResponse = await userInfoClient.GetAsync();
+
+                        // create new identity
+                        var id = new ClaimsIdentity(n.AuthenticationTicket.Identity.AuthenticationType);
+
+                        var userInfoList = userInfoResponse.Claims.ToList();
+                        foreach (var ui in userInfoList)
+                        {
+                            if (ui.Item1 != "permissao")
+                            {
+                                id.AddClaim(new Claim(ui.Item1, ui.Item2));
+                            }
+                        }
+
+                        var permissaoClaims = userInfoResponse.Claims.Where(x => x.Item1 == "permissao").ToList();
+                        foreach (var permissaoClaim in permissaoClaims)
+                        {
+                            dynamic objetoPermissao = JsonConvert.DeserializeObject(permissaoClaim.Item2.ToString());
+                            string recurso = objetoPermissao.Recurso;
+                            id.AddClaim(new Claim("Recurso", recurso));
+                            var listaAcoes = ((JArray)objetoPermissao.Acoes).Select(x => x.ToString()).ToList();
+                            foreach (var acao in listaAcoes)
+                            {
+                                id.AddClaim(new Claim("Acao$" + recurso, acao));
+                            }
+                        }
+
+
+                        id.AddClaims(userInfoResponse.GetClaimsIdentity().Claims);
+
+                        id.AddClaim(new Claim("access_token", tokenResponse.AccessToken));
+                        id.AddClaim(new Claim("expires_at", DateTime.Now.AddSeconds(tokenResponse.ExpiresIn).ToLocalTime().ToString()));
+                        id.AddClaim(new Claim("refresh_token", tokenResponse.RefreshToken));
+                        id.AddClaim(new Claim("id_token", n.ProtocolMessage.IdToken));
+                        //id.AddClaim(new Claim("sid", n.AuthenticationTicket.Identity.FindFirst("sid").Value));
+
+                        n.AuthenticationTicket = new AuthenticationTicket(
+                            new ClaimsIdentity(id.Claims, n.AuthenticationTicket.Identity.AuthenticationType, "name", "role"),
+                            n.AuthenticationTicket.Properties);
                     },
+
                     RedirectToIdentityProvider = n =>
                     {
+                        // if signing out, add the id_token_hint
                         if (n.ProtocolMessage.RequestType == OpenIdConnectRequestType.LogoutRequest)
                         {
-                            var id_token = n.OwinContext.Authentication.User.FindFirst("id_token")?.Value;
-                            n.ProtocolMessage.IdTokenHint = id_token;
+                            var idTokenHint = n.OwinContext.Authentication.User.FindFirst("id_token");
+
+                            if (idTokenHint != null)
+                            {
+                                n.ProtocolMessage.IdTokenHint = idTokenHint.Value;
+                            }
+
                         }
 
                         return Task.FromResult(0);
                     }
                 }
             });
+
+            app.UseResourceAuthorization(new AuthorizationManager());
         }
     }
 }
