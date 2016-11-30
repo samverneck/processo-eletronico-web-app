@@ -1,5 +1,5 @@
-*/.vs/
-
+.vs/
+*.zip
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
