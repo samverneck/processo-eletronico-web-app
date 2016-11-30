@@ -3,21 +3,22 @@
 
 //$('#btnCarregarOrganizacao').on('click', carregaDadosOrgaoExecutivoEstadual);
 
-$('#organizacaoPublica').on('change', carregaDadosOrgaoExecutivoEstadual);
+$('#organizacaoPublica').on('blur', carregaDadosOrgaoExecutivoEstadual);
 
 function carregaDadosOrgaoExecutivoEstadual(event) {
     var elemento = $('#organizacaoPublica');
     limpaTabelasListasEmailContatoSite();
     ajaxCarregaDadosOrgaoExecutivoEstadual(elemento[0]);
     ajaxCarregaUnidadesOrganizacao(elemento[0]);
-    //$('#panelPJ').show();
+    //$('.panelPJ').show();
 }
 
 function ajaxCarregaDadosOrgaoExecutivoEstadual(elemento) {
     $.ajax('/Autuacao/OrganizacaoPorId/' + elemento.value)
       .done(function (dados) {
 
-          interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', dados.contatos, dados.emails, dados.endereco.municipio.uf, dados.endereco.municipio.nome);
+          //interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', dados.contatos, dados.emails, dados.endereco.municipio.uf, dados.endereco.municipio.nome);
+          interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', [], [], dados.endereco.municipio.uf, dados.endereco.municipio.nome);
 
           //$("input#cnpj").val(dados.cnpj);
           //$("input#razaosocial").val(dados.razaoSocial);
@@ -94,6 +95,9 @@ $('#btnIncluirContatoPJ').on('click', incluirContatoPJ);
 
 // Adiciona os arquivos selecionados ao array files[] e exibe-os na tabela de arquivos selecionados
 function incluirContatoPJ(event) {
+    if (!formPessoaJuridicaContatosValidate.form())
+        return false;
+
     if ($('#contatoPJ').val() != '') {        
         $('#tabelaListaContatosPJ tbody').append('<tr><td>' + $('#contatoPJ').val() + '</td><td data-value="' + $('#formPessoaJuridica input:checked').attr('data-id') + '">' + $('#formPessoaJuridica input:checked').val() + '</td><td class="text-center colunaExcluir"><button class="btn btn-xs btn-danger btn-excluir"><i class="fa fa-remove"></i></button></td></tr>');
         //Limpa campo contato
@@ -109,6 +113,9 @@ $('#btnIncluirEmailPJ').on('click', incluirEmailPJ);
 
 // Adiciona os arquivos selecionados ao array files[] e exibe-os na tabela de arquivos selecionados
 function incluirEmailPJ(event) {
+    if (!formPessoaJuridicaEmailsValidate.form())
+        return false;
+
     if ($('#emailPJ').val() != '') {
         $('#tabelaListaEmailsPJ tbody').append('<tr><td>' + $('#emailPJ').val() + '</td><td class="text-center colunaExcluir"><button class="btn btn-xs btn-danger btn-excluir"><i class="fa fa-remove"></i></button></td></tr>');
         //Limpa campo email
@@ -199,17 +206,17 @@ function selecaoTipoPJ(event) {
     if (event.currentTarget.value == 0) {
         $('#selecaoOrgaosExecutivoEstadual').hide();
         $('#selecaoSetorDestino').hide();
-        $('#panelPJ').hide();
+        $('.panelPJ').hide();
     }
     else if (event.currentTarget.value == 1 || event.currentTarget.value == 2) {
         $('#selecaoOrgaosExecutivoEstadual').show();
         $('#selecaoSetorDestino').show();
-        $('#panelPJ').hide();
+        $('.panelPJ').hide();
     }
     else {
         $('#selecaoOrgaosExecutivoEstadual').hide();
         $('#selecaoSetorDestino').hide();
-        $('#panelPJ').show();
+        $('.panelPJ').show();
         resetaForm();
     }
 }
@@ -219,16 +226,19 @@ function selecaoTipoPJ(event) {
 
 function limparFormPessoaJuridica() {
     $('#selecaoOrgaosExecutivoEstadual').hide();
-    $('#panelPJ').hide();
+    $('.panelPJ').hide();
     $('#formPessoaJuridica .campo-municipio option:not([value="0"])').remove();
     $('#selecaoSetorDestino option:not([value="0"])').remove();
     $('#selecaoSetorDestino').hide();
+
+    formPessoaJuridicaEmailsValidate.resetForm();
+    formPessoaJuridicaContatosValidate.resetaForm();
 }
 
 function resetaForm() {
     $('#modalInteressados div.tab-content .active form')[0].reset();
     limpaTabelasListasEmailContatoSite();    
-    $('select#organizacaoPublica option:not([value="0"])').remove()
+    $('select#organizacaoPublica option:not([value="0"])').remove()    
 }
 
 function resetaFormSelecaoPJ() {

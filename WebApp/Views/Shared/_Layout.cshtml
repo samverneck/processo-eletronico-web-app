@@ -17,6 +17,10 @@
     <link rel="stylesheet" href="~/css/AdminLTE.css">
     <link rel="stylesheet" href="~/css/skins/_all-skins.css">
     <link rel="stylesheet" href="~/css/wizardForm.css">
+
+    <style>
+        .error{color:indianred;}
+    </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
@@ -170,6 +174,20 @@
         <div class="control-sidebar-bg"></div>
     </div>
     <!-- ./wrapper -->
+
+    <!-- Modal Waiting -->
+    <div class="modal fade" id="modalWaiting" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">                
+                <div class="modal-body">
+                    <p class="text-center">
+                        <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+                    </p>                    
+                </div>                
+            </div>
+        </div>
+    </div>
+
     <!-- REQUIRED JS SCRIPTS -->
     <!-- jQuery 2.2.3 -->
     <script src="~/lib/jQuery/jquery-2.2.3.min.js"></script>
@@ -185,5 +203,6 @@
     <script src="~/js/site.js"></script>
     <script src="~/js/pessoajuridica.js"></script>
     <script src="~/js/pessoafisica.js"></script>
+    <script src="~/js/validacoes.js"></script>
 </body>
 </html>

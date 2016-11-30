@@ -14,7 +14,26 @@ namespace WebApp.Controllers
         // GET: Autuacao
         public ActionResult Index()
         {
-            return View("Index");
+            FormAutuacaoModel formAutuacao = new FormAutuacaoModel();
+            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
+
+            formAutuacao.planosClassificacao = autuacao_ws.GetPlanosClassificacao(1, 6);
+            formAutuacao.sinalizacoes = autuacao_ws.GetSinalizacoes(1);
+
+            formAutuacao.idOrgaoAutuador = 6;
+            formAutuacao.nomeOrgaoAutuador = "Instituto de Telecnologia de Informação e Comunicação do Espírito Santo";
+            formAutuacao.siglaOrgaoAutuador = "PRODEST";
+
+            formAutuacao.idUsuarioAutuador = 20;
+            formAutuacao.nomeUsuarioAutuador = "Fernando Silva";
+            formAutuacao.idOrganizacaoPai = 1;
+            
+            formAutuacao.idUnidadeAutuadora = 1;
+            formAutuacao.nomeUnidadeAutuadora = "Gerência de Sistemas de Informação";
+            formAutuacao.siglaUnidadeAutuadora = "GESIN";
+
+
+            return View("Index", formAutuacao);
         }
 
         public FormAutuacaoModel ExibeMunicipios()
@@ -67,24 +86,31 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult PlanosClassificacao(int id)
+        public ActionResult PlanosClassificacao(int id, int idOrganizacao)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetPlanosClassificacao(id), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetPlanosClassificacao(id, idOrganizacao), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        public ActionResult Funcoes(int id)
+        public ActionResult Funcoes(int id, int idPlanoClassificacao)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetFuncoes(id), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetFuncoes(id, idPlanoClassificacao), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        public ActionResult Atividades(int id)
+        public ActionResult Atividades(int id, int idFuncao)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetAtividades(id), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetAtividades(id, idFuncao), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult Sinalizacoes(int id)
+        {
+            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
+            return Json(autuacao_ws.GetSinalizacoes(id), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

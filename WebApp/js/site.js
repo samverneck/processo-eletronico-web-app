@@ -31,6 +31,69 @@ function prevTab(elem) {
     $(elem).prev().find('a[data-toggle="tab"]').click();
 }
 
+/****************************************************************************************************************************************************************************/
+/*CARREGA FUNCAO*/
+
+$('#planoClassificacao').on('change', carregaFuncoes);
+
+function carregaFuncoes(event) {
+    var elemento = event.currentTarget;
+
+    if (elemento.value > 0) {        
+        $('select#funcao option:not([value=""])').remove()
+        ajaxCarregaFuncoes(formAutuacao.idOrganizacaoPai, elemento.value);
+    }
+    else {        
+        $('select#funcao option:not([value=""])').remove()
+        
+    }
+}
+
+//Carrega orgaos publicos do executivo estadual ES para o combo
+function ajaxCarregaFuncoes(id, idPlanoClassificacao) {
+    $.ajax('/Autuacao/Funcoes?id=' + id + '&idPlanoClassificacao=' + idPlanoClassificacao)
+      .done(function (dados) {
+          $.each(dados, function (i) {
+              var optionhtml = '<option value="' + this.id + '">' + this.descricao + '</option>';
+              $('#funcao').append(optionhtml);
+          });
+      })
+      .fail(function () {
+          alert("error");
+      });
+}
+
+/****************************************************************************************************************************************************************************/
+/*CARREGA ATIVIDADES*/
+
+$('#funcao').on('change', carregaAtividades);
+
+function carregaAtividades(event) {
+    var elemento = event.currentTarget;
+
+    if (elemento.value > 0) {
+        $('select#atividade option:not([value=""])').remove()
+        ajaxCarregaAtividades(formAutuacao.idOrganizacaoPai, elemento.value);
+    }
+    else {
+        $('select#atividade option:not([value=""])').remove()
+
+    }
+}
+
+//Carrega orgaos publicos do executivo estadual ES para o combo
+function ajaxCarregaAtividades(id, idPlanoClassificacao) {
+    $.ajax('/Autuacao/Atividades?id=' + id + '&idFuncao=' + idPlanoClassificacao)
+      .done(function (dados) {          
+          $.each(dados, function (i) {
+              var optionhtml = '<option value="' + this.id + '">' + this.descricao + '</option>';
+              $('#atividade').append(optionhtml);
+          });
+      })
+      .fail(function () {
+          alert("error");
+      });
+}
 
 /****************************************************************************************************************************************************************************/
 /*CARREGA TIPOS CONTATO*/
@@ -50,8 +113,8 @@ function ajaxCarregaTiposContato() {
               $('.tiposContato').append(optionhtml);
           });
 
-          $('#formPessoaFisica input[type="radio"]:first').prop('checked', true);
-          $('#formPessoaJuridica input[type="radio"]:last').prop('checked', true);
+          $('#formPessoaFisicaContatos input[type="radio"]:first').prop('checked', true);
+          $('#formPessoaJuridicaContatos input[type="radio"]:last').prop('checked', true);
       })
       .fail(function () {
           alert("error");
@@ -59,16 +122,20 @@ function ajaxCarregaTiposContato() {
 }
 
 /****************************************************************************************************************************************************************************/
+/*SELECIONA TIPO CONTATO*/
+
+
+/****************************************************************************************************************************************************************************/
 /*CARREGA MUNICIPIOS*/
 
-$('.campo-uf').on('change', carregaMunicipios);
+$('.campo-uf').on('blur', carregaMunicipios);
 
 function carregaMunicipios(event) {
     var elemento = event.currentTarget;
 
-    $(elemento).closest('.row').find('.campo-municipio option:not([value="0"])').remove();
+    $(elemento).closest('.row').find('.campo-municipio option:not([value=""])').remove();
 
-    if (elemento.value !== '0') {
+    if (elemento.value !== '') {
         ajaxCarregaMunicipios(elemento);
     }
 }
@@ -100,7 +167,7 @@ $('#btnIncluirInteressado').on('click', function () {
     var form = $('#modalInteressados div.tab-content .active form')[0];
 
     //Inclusao de Pessoa Juridica
-    if ($(form).prop('id') == 'formPessoaJuridica') {
+    if ($(form).prop('id') == 'formPessoaJuridica') {        
 
         var pjExiste = false;
 
@@ -132,6 +199,11 @@ $('#btnIncluirInteressado').on('click', function () {
                 arrayPJ.push(interessadoPJProvisorio);
             }
             else {
+
+                if (!formPessoaJuridicaValidate.form()) {
+                    return false;
+                }
+
                 arrayPJ.push(new objetoInteressadoPJ(form['razaosocial'].value, form['cnpj'].value.replace(/\/|\.|\-/g, ""), form['sigla'].value, '', '', contatosPJ, emailsPJ, form['uf'].value, form['municipio'].value));
             }
 
@@ -147,6 +219,10 @@ $('#btnIncluirInteressado').on('click', function () {
 
     //Inclusao de Pessoa Fisica
     if ($(form).prop('id') == 'formPessoaFisica') {
+
+        if (!formPessoaFisicaValidate.form()) {
+            return false;
+        }
 
         var pfExiste = false;
 
@@ -271,7 +347,11 @@ $('#btnIncluirMunicipio').on('click', prepareMunicipios);
 
 // Adiciona os arquivos selecionados ao array files[] e exibe-os na tabela de arquivos selecionados
 function prepareMunicipios(event) {
-    if ($('#municipio').val() != '0' && $('#uf').val() != '0') {
+    if (!formAutuacaoMunicipioValidate.form()) {
+        return false;
+    }
+
+    if ($('#municipio').val() != '' && $('#uf').val() != '') {
         arrayMunicipios.push(new objetoMunicipio($('#municipio').val(), $('#uf').val()));
         $('#municipio').prop("selectedIndex", 0);
 
@@ -385,17 +465,45 @@ $(document).ready(function () {
 /****************************************************************************************************************************************************************************/
 /*ENVIAR AUTUACAO*/
 
-$(document).submit(function (e) {
+$('#btnAutuar').on('click', function (e) {
 
-    var form = $('#formAutuacao')[0];
+    var validaFormResumo = formResumoSinalizacaoValidate.checkForm();
+    var validaResponsavel = formAutuacaoResponsavelValidate.checkForm();
+
+    //Valida preenchimento dos campos das abas de Resumo e Sinalização e Responsavel e Interessados
+    if (!validaFormResumo || !validaResponsavel)
+    {
+        return false;
+    }
+
+    //Verifica se algum municipio foi selecionado na aba Abrangencia
+    if (arrayMunicipios.length == 0) {
+        return false;
+    }
+
+    //Verifica se algum interessado foi informado na aba Responsavel e Interessados
+    if (arrayPJ.length == 0 && arrayPF.length == 0) {
+        return false;
+    }
+    
+
+    var formResumo = $('#formResumoSinalizacao')[0];
+    var formResponsavel = $('#formAutuacaoResponsavel')[0];
+    var formMunicipio = $('#formAutuacaoMunicipio')[0];
+    var formAnexos = $('#formAutuacaoAnexos')[0];
+
+
+    arraySinalizacao = null;
 
     $("input:checkbox[name=sinalizacao]:checked").each(function () {
         arraySinalizacao.push($(this).val());
     });
 
-    var autuacao = new objetoAutuacao(1, form.resumo.value, arrayPF, arrayPJ, arrayMunicipios, arrayAnexos, arraySinalizacao, 1, 'Prodest', 'Prodest', 1, 'SGPRJ', 'SGPRJ', 1, 'Fernando Silva');
+    //Cria objeto autuacao com os dados dos formularios
+    var autuacao = new objetoAutuacao(formResumo.atividade.value, formResumo.resumo.value, arrayPF, arrayPJ, arrayMunicipios, [], arraySinalizacao, formAutuacao.idOrgaoAutuador, formAutuacao.nomeOrgaoAutuador, formAutuacao.siglaOrgaoAutuador,
+        formAutuacao.idUnidadeAutuadora, formAutuacao.nomeUnidadeAutuadora, formAutuacao.siglaUnidadeAutuadora, formAutuacao.idUsuarioAutuador, formAutuacao.nomeUsuarioAutuador);
 
-    console.log(JSON.stringify(autuacao));    
+    console.log(JSON.stringify(autuacao));
 
     $.ajax({
         url: '/Autuacao/Autuar?autuacao',
@@ -411,8 +519,8 @@ $(document).submit(function (e) {
     });
 
     return false;
-});
 
+});
 
 /****************************************************************************************************************************************************************************/
 /*ENVIAR ARQUIVOS*/
@@ -457,3 +565,13 @@ function uploadFiles(event) {
         }
     });
 }
+
+/****************************************************************************************************************************************************************************/
+/*MODAL WAITING*/
+$(document).ajaxStart(function () {
+    $('#modalWaiting').modal('show');
+});
+
+$(document).ajaxStop(function () {
+    $('#modalWaiting').modal('hide');
+});

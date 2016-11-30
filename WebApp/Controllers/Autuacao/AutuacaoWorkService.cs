@@ -25,13 +25,13 @@ namespace WebApp.Controllers.Autuacao
             {
                 var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "municipios?uf=" + uf;
                 listaMunicipios = download_serialized_json_data<List<MunicipioModel>>(url);
+                return listaMunicipios;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-            }
-
-            return listaMunicipios;
+                return listaMunicipios;
+            }            
         }
 
         public List<OrganizacaoModel> GetOrganizacoes(string poder, string esfera, string uf)
@@ -42,13 +42,13 @@ namespace WebApp.Controllers.Autuacao
             {
                 var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes?poder=" + poder + "&esfera=" + esfera + "&uf=" + uf;
                 listaOrganizacoes = download_serialized_json_data<List<OrganizacaoModel>>(url);
+                return listaOrganizacoes;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-            }
-
-            return listaOrganizacoes;
+                return listaOrganizacoes;
+            }            
         }
 
         public List<OrganizacaoModel> GetOrganizacoesOutrosOrgaos()
@@ -62,13 +62,13 @@ namespace WebApp.Controllers.Autuacao
 
                 //listaOrganizacoes = listaOrganizacoes.Where(a => a.poder.descricao.ToUpper() != "Executivo" && a.esfera.descricao.ToUpper() != "ESTADUAL").OrderBy(a => a.sigla).ToList();
                 listaOrganizacoes = listaOrganizacoes.Where(a => a.poder.descricao.ToUpper() != "Executivo" && a.esfera.descricao.ToUpper() != "ESTADUAL" && a.endereco.municipio.uf.ToUpper() != "ES").ToList();
+                return listaOrganizacoes;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-            }
-
-            return listaOrganizacoes;
+                return listaOrganizacoes;
+            }            
         }
 
         public OrganizacaoModel GetOrganizacao(int id)
@@ -78,15 +78,14 @@ namespace WebApp.Controllers.Autuacao
             try
             {
                 var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/" + id;
-
                 organizacao = download_serialized_json_data<OrganizacaoModel>(url);
+                return organizacao;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-            }
-
-            return organizacao;
+                return organizacao;
+            }            
         }
 
         public List<UnidadeModel> GetUnidadesPorOrganizacao(int id)
@@ -96,15 +95,14 @@ namespace WebApp.Controllers.Autuacao
             try
             {
                 var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "unidades?idorganizacao=" + id;
-
                 unidades = download_serialized_json_data<List<UnidadeModel>>(url);
+                return unidades;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-            }
-
-            return unidades;
+                return unidades;
+            }            
         }
 
 
@@ -115,69 +113,82 @@ namespace WebApp.Controllers.Autuacao
             try
             {
                 var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "tipos-contato";
-
                 tiposContatos = download_serialized_json_data<List<TipoContato>>(url);
+                return tiposContatos;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-            }
-
-            return tiposContatos;
+                return tiposContatos;
+            }            
         }
 
-        public List<PlanoClassificacaoModel> GetPlanosClassificacao(int id)
+        public List<PlanoClassificacaoModel> GetPlanosClassificacao(int id, int idOrganizacao)
         {
             List<PlanoClassificacaoModel> planosClassificacao = new List<PlanoClassificacaoModel>();
 
             try
             {
-                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/planos-classificacao";
-
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/planos-classificacao/" + idOrganizacao;
                 planosClassificacao = download_serialized_json_data<List<PlanoClassificacaoModel>>(url);
+                return planosClassificacao;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                return planosClassificacao;
             }
-
-            return planosClassificacao;
         }
 
-        public List<FuncaoModel> GetFuncoes(int id)
+        public List<FuncaoModel> GetFuncoes(int id, int idPlanoClassificacao)
         {
             List<FuncaoModel> funcoes = new List<FuncaoModel>();
 
             try
             {
-                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/funcoes";
-
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/funcoes/" + idPlanoClassificacao;
                 funcoes = download_serialized_json_data<List<FuncaoModel>>(url);
+                return funcoes;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-            }
-
-            return funcoes;
+                return funcoes;
+            }            
         }
 
-        public List<AtividadeModel> GetAtividades(int id)
+        public List<AtividadeModel> GetAtividades(int id, int idFuncao)
         {
             List<AtividadeModel> atividades = new List<AtividadeModel>();
 
             try
             {
-                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/atividades";
-
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/atividades/" + idFuncao;
                 atividades = download_serialized_json_data<List<AtividadeModel>>(url);
+                return atividades;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-            }
+                return atividades;
+            }            
+        }
 
-            return atividades;
+        public List<SinalizacaoModel> GetSinalizacoes(int id)
+        {
+            List<SinalizacaoModel> sinalizacoes = new List<SinalizacaoModel>();
+
+            try
+            {
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/sinalizacoes";
+                sinalizacoes = download_serialized_json_data<List<SinalizacaoModel>>(url);
+                return sinalizacoes;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return sinalizacoes;
+            }            
         }
 
         public string PostAtuacao(AutuacaoModel autuacao, int id)

@@ -173,8 +173,12 @@
     <Compile Include="Models\Autuacao\FormAutuacaoModel.cs" />
     <Compile Include="Models\Autuacao\FuncaoModel.cs" />
     <Compile Include="Models\Autuacao\PlanoClassificacaoModel.cs" />
+    <Compile Include="Models\Autuacao\SinalizacaoModel.cs" />
     <Compile Include="Models\Autuacao\TipoContato.cs" />
     <Compile Include="Models\CEP.cs" />
+    <Compile Include="Models\ProcessoEletronico\InteressadoPessoaFisica.cs" />
+    <Compile Include="Models\ProcessoEletronico\InteressadoPessoaJuridica.cs" />
+    <Compile Include="Models\ProcessoEletronico\ProcessoEletronicoModel.cs" />
     <Compile Include="Models\Organograma\EsferaOrganizacaoModel.cs" />
     <Compile Include="Models\Organograma\Municipio.cs" />
     <Compile Include="Models\Organograma\OrganizacaoModel.cs" />
@@ -235,6 +239,7 @@
     <Content Include="js\pessoafisica.js" />
     <Content Include="js\pessoajuridica.js" />
     <Content Include="js\site.js" />
+    <Content Include="js\validacoes.js" />
     <Content Include="lib\bootstrap\css\bootstrap.css.map" />
     <Content Include="lib\bootstrap\css\bootstrap.min.css.map" />
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />

@@ -17,46 +17,65 @@
 <!-- Main content -->
 <section id="content" class="content">
     <div class="row">
-        <form id="formAutuacao">
-            <div class="col-lg-10 col-md-12 col-xs-12">
 
-                <!--Início do conteúdo da página-->
-                <div class="nav-tabs-custom">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tab_1" title="Classificação do Processo" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-file-text-o"></i> Resumo e Sinalização</h4></a></li>
-                        <li class=""><a href="#tab_2" title="Responsáveis e Interessados" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-users"></i> Responsáveis e Interessados</h4></a></li>
-                        <li class=""><a href="#tab_3" title="Abrangência" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-list"></i> Abrangência</h4></a></li>
-                        <li class=""><a href="#tab_4" title="Anexos" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-link"></i> Anexos</h4></a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tab_1">
+        <div class="col-lg-12 col-md-12 col-xs-12">
+
+            <!--Início do conteúdo da página-->
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab_1" title="Classificação do Processo" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-file-text-o"></i> Resumo e Sinalização</h4></a></li>
+                    <li class=""><a href="#tab_2" title="Responsáveis e Interessados" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-users"></i> Responsáveis e Interessados</h4></a></li>
+                    <li class=""><a href="#tab_3" title="Abrangência" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-list"></i> Abrangência</h4></a></li>
+                    <li class=""><a href="#tab_4" title="Anexos" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-link"></i> Anexos</h4></a></li>
+                    <li class=""><a href="#tab_5" title="Confirmar Autuação" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-paper-plane-o"></i> Confirmar Autuação</h4></a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_1">
+                        <form id="formResumoSinalizacao">
                             <div class="box-body">
-                                <div class="form-group">
-                                    <label for="orgao">Função</label>
-                                    <select class="form-control" name="funcao" id="funcao"></select>
+                                <div class="row">
+                                    <div class="col-lg-6 form-group">
+                                        <label for="orgao">Plano de Classificação</label>
+                                        <select class="form-control" name="planoClassificacao" id="planoClassificacao" title="Informe o Plano de Classificação." required aria-required="true" aria-invalid="true">
+                                            <option value="">Selecione um Plano de Classificação</option>
+                                            @foreach (var plc in Model.planosClassificacao)
+                                            {
+                                                <option value="@plc.id">@plc.descricao</option>
+                                            }
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="orgao">Atividade</label>
-                                    <select class="form-control" name="atividade" id="atividade"></select>
+                                <div class="row">
+                                    <div class="col-lg-6 form-group">
+                                        <label for="orgao">Função</label>
+                                        <select class="form-control" name="funcao" id="funcao" title="Informe a Função." required aria-required="true" aria-invalid="true">
+                                            <option value="">Selecione a Função</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 form-group">
+                                        <label for="orgao">Atividade</label>
+                                        <select class="form-control" name="atividade" id="atividade" title="Informe a Atividade." required aria-required="true" aria-invalid="true">
+                                            <option value="">Selecione uma Atividade</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="Resumo">Resumo</label>
-                                    <textarea class="form-control" id="Resumo" name="resumo" placeholder="Resumo"></textarea>
+                                    <textarea class="form-control" id="resumo" name="resumo" placeholder="Resumo" title="Informe o Resumo do processo." required aria-required="true" aria-invalid="true"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Sinalização</label>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" value="1" name="sinalizacao">
-                                            Atendimento Normal
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" value="2" name="sinalizacao">
-                                            Atendimento Prioritário
-                                        </label>
-                                    </div>
+                                    @foreach (var ckb in Model.sinalizacoes)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="@ckb.id" name="sinalizacao">
+                                                @ckb.descricao
+                                            </label>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                             <div class="box-footer">
@@ -64,22 +83,32 @@
                                     <li><a href="#tab_2" class="btn btn-primary pull-right next-step" data-toggle="tab">Próximo <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="tab-pane" id="tab_2">
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="tab_2">
+                        <form id="formAutuacaoResponsavel">
                             <div class="box-body">
                                 <div class="row">
-                                    <div class="col-md-6 form-group">
-                                        <label for="orgao">Órgão Responsável</label>
-                                        <input type="text" class="form-control" name="nomeOrgaoAutuador" id="nomeOrgaoAutuador" disabled="disabled" />
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <label for="setor">Setor Responsável</label>
-                                        <input type="text" class="form-control" name="nomeUnidadeAutuadora" id="nomeUnidadeAutuadora" disabled="disabled" />
+                                    <div class="col-lg-6 form-group">
+                                        <label for="orgao">Usuário Autuador</label>
+                                        <input type="text" value="@Model.nomeUsuarioAutuador" data-id="@Model.idOrgaoAutuador" class="form-control" name="nomeUsuarioAutuador" id="nomeUsuarioAutuador" disabled="disabled" />
                                     </div>
                                 </div>
-                            </div>
+                                <div class="row">
+                                    <div class="col-lg-6 form-group">
+                                        <label for="orgao">Órgão Responsável</label>
+                                        <input type="text" value="@Model.siglaOrgaoAutuador - @Model.nomeOrgaoAutuador" data-id="@Model.idOrgaoAutuador" data-sigla="@Model.siglaOrgaoAutuador" class="form-control" name="nomeOrgaoAutuador" id="nomeOrgaoAutuador" disabled="disabled" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 form-group">
+                                        <div class="form-group">
+                                            <label for="setor">Unidade Responsável</label>
+                                            <input type="text" value="@Model.siglaUnidadeAutuadora - @Model.nomeUnidadeAutuadora" data-id="@Model.idUnidadeAutuadora" data-sigla="@Model.siglaUnidadeAutuadora" class="form-control" name="nomeUnidadeAutuadora" id="nomeUnidadeAutuadora" disabled="disabled" />
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <div class="box-body">
                                 <label>Interessados</label>
                                 <div class="form-group">
                                     <button type="button" onclick="$('#modalInteressados').modal('show')" class="btn btn-info"><i class="fa fa-user-plus"></i> Adicionar</button>
@@ -106,14 +135,18 @@
                                     <li><a href="#tab_3" class="btn btn-primary pull-right next-step" data-toggle="tab">Próximo <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="tab-pane" id="tab_3">
+                        </form>
+                    </div>
+
+
+                    <div class="tab-pane" id="tab_3">
+                        <form id="formAutuacaoMunicipio">
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-4 form-group">
                                         <label>Estado</label>
-                                        <select class="form-control campo-uf" id="uf">
-                                            <option value="0">Selecione o Estado</option>
+                                        <select class="form-control campo-uf" id="uf" name="uf">
+                                            <option value="">Selecione o Estado</option>
                                             <option value="ac">Acre</option>
                                             <option value="al">Alagoas</option>
                                             <option value="ap">Amapá</option>
@@ -142,18 +175,19 @@
                                             <option value="se">Sergipe</option>
                                             <option value="to">Tocantins</option>
                                         </select>
+                                        <span id=".msgErrorMunicipio"></span>
                                     </div>
                                     <div class="col-md-8 form-group">
                                         <label for="municipio">Município</label>
-
                                         <div class="input-group">
-                                            <select class="form-control campo-municipio" id="municipio">
-                                                <option value="0">Selecione um Município</option>
+                                            <select class="form-control campo-municipio" id="municipio" name="municipio">
+                                                <option value="">Selecione um Município</option>
                                             </select>
                                             <span class="input-group-btn">
                                                 <button type="button" id="btnIncluirMunicipio" class="btn btn-info"><i class="fa fa-check" aria-hidden="true"></i> Selecionar</button>
                                             </span>
-                                        </div><!-- /input-group -->
+                                        </div>
+                                        <span id=".msgErrorMunicipio"></span>
                                     </div>
                                 </div>
                                 <div id="Municipios" class="dataTables_wrapper form-inline dt-bootstrap">
@@ -180,8 +214,11 @@
                                     <li><a href="#tab_4" class="btn btn-primary pull-right next-step" data-toggle="tab">Próximo <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="tab-pane" id="tab_4">
+                        </form>
+                    </div>
+
+                    <div class="tab-pane" id="tab_4">
+                        <form id="formAutuacaoAnexos">
                             <div class="box-body">
                                 <label>Anexos</label>
                                 <div class="form-group">
@@ -205,18 +242,32 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="box-footer">
-                                <ul class="list-inline pull-right">
-                                    <li><a href="#tab_3" class="btn btn-default pull-right prev-step" data-toggle="tab"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Anterior</a></li>
-                                    <li><button type="submit" class="btn btn-danger pull-right"><i class="fa fa-save" aria-hidden="true"></i> Autuar</button></li>
-                                </ul>
-                            </div>
+                        </form>
+                        <div class="box-footer">
+                            <ul class="list-inline pull-right">
+                                <li><a href="#tab_3" class="btn btn-default pull-right prev-step" data-toggle="tab"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Anterior</a></li>
+                                <li><a href="#tab_5" class="btn btn-primary pull-right next-step" data-toggle="tab">Próximo <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></li>
+                            </ul>
                         </div>
                     </div>
+
+                    <div class="tab-pane" id="tab_5">
+                        <div class="box-body">
+                            <h3>Confirmar Autuação do Processo</h3>
+                        </div>
+
+                        <div class="box-footer">
+                            <ul class="list-inline pull-right">
+                                <li><a href="#tab_4" class="btn btn-default pull-right prev-step" data-toggle="tab"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Anterior</a></li>
+                                <li><button type="button" id="btnAutuar" class="btn btn-danger pull-right"><i class="fa fa-save" aria-hidden="true"></i> Enviar Processo</button></li>
+                            </ul>
+                        </div>
+
+                    </div>
                 </div>
-                <!--Fim do conteúdo da página-->
             </div>
-        </form>
+            <!--Fim do conteúdo da página-->
+        </div>
     </div>
 </section>
 
@@ -254,7 +305,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Fechar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Fechar</button>
                 <button type="button" id="btnIncluirInteressado" class="btn btn-primary"><i class="fa fa-save"></i> Salvar</button>
             </div>
         </div>
@@ -262,3 +313,7 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+
+<script>
+    formAutuacao = @Html.Raw(Json.Encode(Model));
+</script>

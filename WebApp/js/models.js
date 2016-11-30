@@ -20,6 +20,9 @@ var emailsPF = [];
 var interessadoPJProvisorio = null;
 var interessadoPFProvisorio = null;
 
+//Objeto Dados Iniciais Autuacao
+var formAutuacao;
+
 
 /****************************************************************************************************************************************************************************/
 /*MODELOS OBJETOS*/
@@ -54,8 +57,8 @@ function objetoInteressadoPJ(razaoSocial, cnpj, sigla, nomeUnidade, siglaUnidade
     this.siglaUnidade = siglaUnidade;
     this.contatos = contatos;
     this.emails = emails;
-    this.uf = uf;
-    this.municipio = municipio;
+    this.ufMunicipio = uf;
+    this.nomeMunicipio = municipio;
     this.tipo = tipo;
 }
 
@@ -65,8 +68,8 @@ function objetoInteressadoPF(nome, cpf, contatos, emails, uf, municipio) {
     this.cpf = cpf;
     this.contatos = contatos;
     this.emails = emails;
-    this.uf = uf;
-    this.municipio = municipio;
+    this.ufMunicipio = uf;
+    this.nomeMunicipio = municipio;
 }
 
 
