@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using WebApp.Models.Autuacao;
+using WebApp.Models.Despacho;
 
 namespace WebApp.Models.ProcessoEletronico
 {
-
     public class ProcessoEletronicoModel
     {
         public int id { get; set; }
@@ -22,7 +22,7 @@ namespace WebApp.Models.ProcessoEletronico
         public string dataAutuacao { get; set; }
         public string numero { get; set; }
         public int idOrganizacaoProcesso { get; set; }
-        public string[] despachos { get; set; }
+        public List<DespachoModel> despachos { get; set; }
         public List<InteressadoPessoaFisica> interessadosPessoaFisica { get; set; }
         public List<InteressadoPessoaJuridica> interessadosPessoaJuridica { get; set; }
         public List<Municipio> municipiosProcesso { get; set; }

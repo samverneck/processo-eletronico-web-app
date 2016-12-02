@@ -1,4 +1,6 @@
-﻿@{
+﻿@model WebApp.Models.Home.HomeModel
+
+@{
     ViewBag.Title = "MEU PAINEL";
 }
 
@@ -15,10 +17,10 @@
 <!-- Main content -->
 <section id="content" class="content">
     <div class="row">        
-        <div class="col-md-6 col-xs-12">
-            @Html.Partial("_CaixaEntrada")
+        <div class="col-lg-6">
+            @Html.Partial("_CaixaEntrada", Model)
         </div>
-        <div class="col-md-6 col-xs-12">
+        @*<div class="col-md-6 col-xs-12">
             @Html.Partial("_CaixaEntradaSetor")
         </div>
         <div class="col-md-6 col-xs-12">
@@ -26,7 +28,81 @@
         </div>
         <div class="col-md-6 col-xs-12">
             @Html.Partial("_CaixaSaida")
-        </div>
+        </div>*@
     </div>
 </section>
 <!-- /.content -->
+
+<!--Modal Visualizacao Processo-->
+<div class="modal fade" id="modalProcesso" tabindex="-1" role="dialog" aria-labelledby="modalProcessoLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="modalProcessoLabel">Visualização de Processo</h4>
+            </div>
+            <div class="modal-body">
+                <div id="visualizarProcesso">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Fechar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts{
+    <script src="~/Scripts/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/datatables/dataTables.bootstrap.min.js"></script>
+    <script>
+        $('#tabelaCaixaSetor').DataTable({
+            "dom": '<"pull-left"l><"pull-right"f>rt<"pull-left"i><"pull-right"p>',
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],            
+            "sPaginationType": "full_numbers",
+            "language": {
+                "lengthMenu": " _MENU_ Processos por página",
+                "zeroRecords": "Nenhuma processo encontado - sorry",
+                "info": "Página _PAGE_ de _PAGES_",
+                "infoEmpty": "No records available",
+                "infoFiltered": "(Registros filtrados do total de _MAX_ processos.)",
+                "sSearch": "Filtrar: ",
+                "paginate": {
+                    "previous": "‹",
+                    "next": "›",
+                    "first": "«",
+                    "last": "»"
+                }
+            }
+        });
+    </script>
+
+    <script>
+        /****************************************************************************************************************************************************************************/
+        /*CARREGA PROCESSO*/        
+
+        $('table').on('click', '.btn-processo-visualizar', function (event) {
+            //$('#visualizarProcesso').html('');
+            ajaxCarregaVisualizarProcesso(this.getAttribute('data-organizacao'), this.getAttribute('data-id'));                        
+        });        
+
+        //Carrega orgaos publicos do executivo estadual ES para o combo
+        function ajaxCarregaVisualizarProcesso(idOrganizacao, idProcesso) {
+            $.ajax('/home/VisualizarProcesso?idOrganizacao=' + idOrganizacao + '&idProcesso=' + idProcesso)
+              .done(function (dados) {
+
+                  console.log(dados);
+
+                  $('#visualizarProcesso').html(dados);
+                  $('#modalProcesso').modal('show');
+              })
+              .fail(function () {
+                  alert("error");
+              });
+        }
+    </script>
+}

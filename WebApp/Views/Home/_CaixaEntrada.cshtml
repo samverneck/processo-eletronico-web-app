@@ -1,4 +1,5 @@
-﻿<!-- /.box -->
+﻿@model WebApp.Models.Home.HomeModel
+<!-- /.box -->
 <div class="box box-primary">
     <!-- /.box-header -->
     <div class="box-header with-border">
@@ -7,98 +8,40 @@
             <button type="button" class="btn btn-box-tool" data-widget="collapse">
                 <i class="fa fa-minus"></i>
             </button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+            @*<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>*@
         </div>
     </div>
     <!-- /.box-header -->
     <div class="box-body">
-        <ul class="products-list product-list-in-box">
-            <!-- /.item -->
-            <li class="item">
-                <div class="product-img">
-                    <img src="/img/default-50x50.gif" alt="Product Image">
-                </div>
-                <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">
-                        AVISO DE LICITAÇÃO
-                        <span class="label label-warning pull-right">Novo</span>
-                    </a>
-                    <span class="product-description">
-                        O PRODEST torna público que realizará licitação, na modalidade PREGÃO, na forma eletrônica, tipo menor preço global, cujo objeto é contratação de...
-                    </span>
-                </div>
-            </li>
-            <!-- /.item -->
-            <!-- /.item -->
-            <li class="item">
-                <div class="product-img">
-                    <img src="/img/default-50x50.gif" alt="Product Image">
-                </div>
-                <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">
-                        AVISO DE LICITAÇÃO
-                        <span class="label label-warning pull-right">Novo</span>
-                    </a>
-                    <span class="product-description">
-                        O PRODEST torna público que realizará licitação, na modalidade PREGÃO, na forma eletrônica, tipo menor preço global, cujo objeto é contratação de...
-                    </span>
-                </div>
-            </li>
-            <!-- /.item -->
-            <!-- /.item -->
-            <li class="item">
-                <div class="product-img">
-                    <img src="/img/default-50x50.gif" alt="Product Image">
-                </div>
-                <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">
-                        AVISO DE LICITAÇÃO
-                        <span class="label label-warning pull-right">Novo</span>
-                    </a>
-                    <span class="product-description">
-                        O PRODEST torna público que realizará licitação, na modalidade PREGÃO, na forma eletrônica, tipo menor preço global, cujo objeto é contratação de...
-                    </span>
-                </div>
-            </li>
-            <!-- /.item -->
-            <!-- /.item -->
-            <li class="item">
-                <div class="product-img">
-                    <img src="/img/default-50x50.gif" alt="Product Image">
-                </div>
-                <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">
-                        AVISO DE LICITAÇÃO
-                        <span class="label label-warning pull-right">Novo</span>
-                    </a>
-                    <span class="product-description">
-                        O PRODEST torna público que realizará licitação, na modalidade PREGÃO, na forma eletrônica, tipo menor preço global, cujo objeto é contratação de...
-                    </span>
-                </div>
-            </li>
-            <!-- /.item -->
-            <!-- /.item -->
-            <li class="item">
-                <div class="product-img">
-                    <img src="/img/default-50x50.gif" alt="Product Image">
-                </div>
-                <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">
-                        AVISO DE LICITAÇÃO
-                        <span class="label label-warning pull-right">Novo</span>
-                    </a>
-                    <span class="product-description">
-                        O PRODEST torna público que realizará licitação, na modalidade PREGÃO, na forma eletrônica, tipo menor preço global, cujo objeto é contratação de...
-                    </span>
-                </div>
-            </li>
-            <!-- /.item -->
-        </ul>
+        <table id="tabelaCaixaSetor" class="table table-condensed table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th class="col-md-3">Processo</th>
+                    <th class="col-md-5">Origem</th>
+                    <th class="col-md-2">Data</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>           
+            <tbody>
+                @foreach (var item in Model.processosPorUnidade)
+                {
+                    <tr>
+                        <th>@item.numero</th>
+                        <td>@item.siglaOrgaoAutuador</td>
+                        <td class="text-center">@item.dataAutuacao.AsDateTime().ToShortDateString()</td>
+                        <td class="text-center">
+                            <button class="btn btn-xs btn-info btn-processo-visualizar" data-id="@item.id" data-organizacao="@item.idOrganizacaoProcesso" title="Visualizar processo @item.numero"><i class="fa fa-folder-open-o" aria-hidden="true"></i></button>
+                            <button class="btn btn-xs btn-success btn-processo-despachar" data-id="@item.id" data-organizacao="@item.idOrganizacaoProcesso" title="Despachar Processo @item.numero"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                        </td>
+                    </tr>                    
+                }
+            </tbody>
+        </table>
     </div>
     <!-- /.box-body -->
-    <div class="box-footer text-center">
+    @*<div class="box-footer text-center">
         <a href="javascript:void(0)" class="uppercase"><i class="fa fa-expand" aria-hidden="true"></i> Ver Todos</a>
-    </div>
+    </div>*@
     <!-- /.box-footer -->
 </div>
 <!-- /.box -->

@@ -15,8 +15,8 @@ namespace WebApp.Models.ProcessoEletronico
         public string siglaUnidade { get; set; }
         public string nomeMunicipio { get; set; }
         public string ufMunicipio { get; set; }
-        public string[] contatos { get; set; }
-        public string[] emails { get; set; }
+        public List<Contato> contatos { get; set; }
+        public List<Email> emails { get; set; }
     }
 
 }

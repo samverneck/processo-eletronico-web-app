@@ -16,17 +16,35 @@ using WebApp.Models.Organograma;
 using System.IdentityModel;
 using System.Security.Permissions;
 using Thinktecture.IdentityModel.Mvc;
+using WebApp.Models.ProcessoEletronico;
+using WebApp.Controllers.Home;
+using WebApp.Models.Home;
 
 namespace WebApp.Controllers
 {
     [Authorize]
     public class HomeController : BaseController
     {
-        [ResourceAuthorize("Autuar","Processo")]
-        [HandleForbidden]
+        //[ResourceAuthorize("Autuar","Processo")]
+        //[HandleForbidden]
         public ActionResult Index()
         {
-            return View();
+            HomeModel home = new HomeModel();
+            HomeWorkService home_ws = new HomeWorkService();
+            home.processosPorUnidade = home_ws.GetProcessosPorOrganizacaoPorUnidade(1,1);
+            
+            return View("Index", home);
+        }
+
+        //[ResourceAuthorize("Autuar","Processo")]
+        //[HandleForbidden]
+        public ActionResult VisualizarProcesso(int idOrganizacao, int idProcesso)
+        {
+            ProcessoEletronicoModel processo = new ProcessoEletronicoModel();
+            HomeWorkService home_ws = new HomeWorkService();
+            processo = home_ws.GetProcessosPorOrganizacaoPorProcesso(idOrganizacao, idProcesso);
+
+            return PartialView("_VisualizarProcesso", processo);
         }
 
         public ActionResult Claims()

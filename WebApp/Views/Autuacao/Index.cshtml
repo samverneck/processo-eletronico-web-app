@@ -40,7 +40,7 @@
                                             <option value="">Selecione um Plano de Classificação</option>
                                             @foreach (var plc in Model.planosClassificacao)
                                             {
-                                                <option value="@plc.id">@plc.descricao</option>
+                                            <option value="@plc.id">@plc.descricao</option>
                                             }
                                         </select>
                                     </div>
@@ -61,21 +61,25 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="Resumo">Resumo</label>
-                                    <textarea class="form-control" id="resumo" name="resumo" placeholder="Resumo" title="Informe o Resumo do processo." required aria-required="true" aria-invalid="true"></textarea>
+                                <div class="row">
+                                    <div class="col-lg-6 form-group">
+                                        <label for="Resumo">Resumo</label>
+                                        <textarea class="form-control" id="resumo" name="resumo" placeholder="Resumo" title="Informe o Resumo do processo." required aria-required="true" aria-invalid="true"></textarea>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Sinalização</label>
-                                    @foreach (var ckb in Model.sinalizacoes)
-                                    {
+                                <div class="row">
+                                    <div class="col-lg-6 form-group">
+                                        <label>Sinalização</label>
+                                        @foreach (var ckb in Model.sinalizacoes)
+                                        {
                                         <div class="checkbox">
                                             <label>
                                                 <input type="checkbox" value="@ckb.id" name="sinalizacao">
                                                 @ckb.descricao
                                             </label>
                                         </div>
-                                    }
+                                        }
+                                    </div>
                                 </div>
                             </div>
                             <div class="box-footer">
@@ -138,12 +142,11 @@
                         </form>
                     </div>
 
-
                     <div class="tab-pane" id="tab_3">
                         <form id="formAutuacaoMunicipio">
                             <div class="box-body">
                                 <div class="row">
-                                    <div class="col-md-4 form-group">
+                                    <div class="col-md-6 form-group">
                                         <label>Estado</label>
                                         <select class="form-control campo-uf" id="uf" name="uf">
                                             <option value="">Selecione o Estado</option>
@@ -177,7 +180,9 @@
                                         </select>
                                         <span id=".msgErrorMunicipio"></span>
                                     </div>
-                                    <div class="col-md-8 form-group">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
                                         <label for="municipio">Município</label>
                                         <div class="input-group">
                                             <select class="form-control campo-municipio" id="municipio" name="municipio">
@@ -314,6 +319,14 @@
     <!-- /.modal-dialog -->
 </div>
 
+@section scripts{
 <script>
     formAutuacao = @Html.Raw(Json.Encode(Model));
 </script>
+<script src="~/js/models.js"></script>
+<script src="~/js/site.js"></script>
+<script src="~/js/pessoajuridica.js"></script>
+<script src="~/js/pessoafisica.js"></script>
+<script src="~/js/validacoes.js"></script>
+}
+

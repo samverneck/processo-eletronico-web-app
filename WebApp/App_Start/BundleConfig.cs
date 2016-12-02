@@ -7,8 +7,20 @@ namespace WebApp
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            //bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+            //            "~/Scripts/jquery-{version}.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/~/Scripts/jQuery/jquery-2.2.3.min.js"                        
+                        ));
+
+            bundles.Add(new ScriptBundle("~/bundles/js").Include(
+                        "~/Scripts/bootstrap/js/bootstrap.min.js",
+                        "~/Scripts/jQueryMask/jquery.mask.min.js",
+                        "~/Scripts/validate/jquery.validate.min.js",
+                        "~/js/app.min.js"
+                        ));
+            
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.

@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using Owin;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Claims;
@@ -23,21 +24,26 @@ namespace WebApp
     {
         public void Configuration(IAppBuilder app)
         {
+            string localApp = ConfigurationManager.AppSettings["LocalApp"];
+
             JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                AuthenticationType = "Cookies"
+                AuthenticationType = "Cookies",
+                ExpireTimeSpan = TimeSpan.FromMinutes(10),
+                SlidingExpiration = true
             });
 
             app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions
             {
                 ClientId = "processoeletronicowebapp-des",
                 Authority = "https://acessocidadao.es.gov.br/is",
-                RedirectUri = "http://localhost:5969/Home/Index/",
-                PostLogoutRedirectUri = "http://localhost:5969/",
+                RedirectUri = localApp + "Home/Index/",
+                PostLogoutRedirectUri = localApp,
                 ResponseType = "code id_token",
-                Scope = "openid profile offline_access",
+                Scope = "openid profile offline_access cpf email nome",
+                
 
                 TokenValidationParameters = new TokenValidationParameters
                 {

@@ -61,7 +61,7 @@ namespace WebApp.Controllers.Autuacao
                 listaOrganizacoes = download_serialized_json_data<List<OrganizacaoModel>>(url);
 
                 //listaOrganizacoes = listaOrganizacoes.Where(a => a.poder.descricao.ToUpper() != "Executivo" && a.esfera.descricao.ToUpper() != "ESTADUAL").OrderBy(a => a.sigla).ToList();
-                listaOrganizacoes = listaOrganizacoes.Where(a => a.poder.descricao.ToUpper() != "Executivo" && a.esfera.descricao.ToUpper() != "ESTADUAL" && a.endereco.municipio.uf.ToUpper() != "ES").ToList();
+                listaOrganizacoes = listaOrganizacoes.Where(a => a.poder.descricao.ToUpper() != "EXECUTIVO" && a.esfera.descricao.ToUpper() != "ESTADUAL" && a.endereco.municipio.uf.ToUpper() != "ES").ToList();
                 return listaOrganizacoes;
             }
             catch (Exception e)

@@ -10,7 +10,5 @@ namespace WebApp.Models.Autuacao
         public int id { get; set; }
         public string descricao { get; set; }
         public string cor { get; set; }
-        public int idOrganizacaoProcesso { get; set; }
-
     }
 }

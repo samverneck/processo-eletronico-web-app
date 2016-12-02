@@ -133,7 +133,7 @@ $('.campo-uf').on('blur', carregaMunicipios);
 function carregaMunicipios(event) {
     var elemento = event.currentTarget;
 
-    $(elemento).closest('.row').find('.campo-municipio option:not([value=""])').remove();
+    $(elemento).parents().find('form .campo-municipio option:not([value=""])').remove();
 
     if (elemento.value !== '') {
         ajaxCarregaMunicipios(elemento);
@@ -146,7 +146,7 @@ function ajaxCarregaMunicipios(elemento) {
 
           $.each(dados, function (i) {
               var optionhtml = '<option value="' + this.nome + '">' + this.nome + '</option>';
-              $(elemento).closest('.row').find('.campo-municipio').append(optionhtml);
+              $(elemento).parents().find('form .campo-municipio').append(optionhtml);
           });
 
           console.log(dados.length);

@@ -1,0 +1,115 @@
+﻿@model WebApp.Models.ProcessoEletronico.ProcessoEletronicoModel
+
+<h3>Dados do Processo</h3>
+<table class="table table-bordered table-condensed table-striped">    
+    <tr>
+        <th class="col-md-3">Número do Processo</th>
+        <td>@Model.numero</td>
+    </tr>
+    <tr>
+        <th>Plano de Classificação</th>
+        <td>@Model.atividade.descricao</td>
+    </tr>
+    <tr>
+        <th>Resumo</th>
+        <td>@Model.resumo</td>
+    </tr>
+    <tr>
+        <th>Nome do Autuador</th>
+        <td>@Model.nomeUsuarioAutuador</td>
+    </tr>
+    <tr>
+        <th>Órgão</th>
+        <td>@Model.nomeOrgaoAutuador</td>
+    </tr>
+    <tr>
+        <th>Unidade</th>
+        <td>@Model.nomeUnidadeAutuadora</td>
+    </tr>    
+    <tr>
+        @if (Model.sinalizacoes.Count > 0)
+            {
+            <th>Sinalização</th>
+            <td>
+                @foreach (var sn in Model.sinalizacoes)
+                {
+                    sn.cor.ToString();
+                }
+            </td>
+        }
+    </tr>    
+</table>
+
+<h3>Abrangência</h3>
+<table class="table table-bordered table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>UF</th>
+            <th>Município</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mc in Model.municipiosProcesso)
+            {
+            <tr>
+                <td>@mc.uf</td>
+                <td>@mc.nome</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Interessados</h3>
+<table class="table table-bordered table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>Nome/Razão Social</th>
+            <th>CPF/CNPJ</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.interessadosPessoaFisica.Count > 0)
+            {
+                foreach (var pf in Model.interessadosPessoaFisica)
+                {
+                <tr>
+                    <td>@pf.nome</td>
+                    <td>@pf.cpf</td>
+                </tr>
+            }
+        }
+        @if (Model.interessadosPessoaJuridica.Count > 0)
+            {
+                foreach (var pj in Model.interessadosPessoaJuridica)
+                {
+                <tr>
+                    <td>@pj.razaoSocial</td>
+                    <td>@pj.cnpj</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<h3>Despachos</h3>
+<table class="table table-bordered table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>Destino</th>
+            <th>Despacho</th>
+            <th>Despachante</th>
+            <th>Data</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var des in Model.despachos)
+            {
+            <tr>
+                <td>@des.siglaOrgaoDestino - @des.siglaUnidadeDestino</td>
+                <td>@des.texto</td>
+                <td>@des.nomeUsuarioDespachante</td>
+                <td>@des.dataHoraDespacho.AsDateTime().ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
