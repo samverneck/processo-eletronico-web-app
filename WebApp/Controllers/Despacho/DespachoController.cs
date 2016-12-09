@@ -3,11 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Thinktecture.IdentityModel.Mvc;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class DespachoController : Controller
     {
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
+        public ActionResult DespacharProcesso(int idProcesso)
+        {
+            return PartialView("_formularioDespacho");
+        }
+
         // GET: Despacho
         public ActionResult Index()
         {

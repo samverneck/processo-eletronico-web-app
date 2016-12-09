@@ -2,19 +2,16 @@
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 using WebApp.Autorizacao;
 
 namespace WebApp.Controllers
 {
     public class WorkServiceBase
     {
-        public static UsuarioLogado GetusuarioLogado()
-        {
-            UsuarioLogado usuario = new UsuarioLogado();
-            return usuario;
-        }
 
-        public static T download_serialized_json_data<T>(string url) where T : new()
+        public static T download_serialized_json_data<T>(string url, string token) where T : new()
         {
             using (var client = new HttpClient())
             {
@@ -22,7 +19,9 @@ namespace WebApp.Controllers
                 ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;                
 
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                //client.SetBearerToken(token);                
+
 
                 var result = client.GetAsync(url).Result;
 
@@ -59,5 +58,23 @@ namespace WebApp.Controllers
             //}
         }
 
-    }
+        public static async Task<string> PostJson(string urlPost, string jsonString)
+        {
+            var Json = await Task.Run(() => JsonConvert.SerializeObject(jsonString));
+            var httpContent = new StringContent(Json, Encoding.UTF8, "application/json");
+
+            using (var httpClient = new HttpClient())
+            {
+
+                // Do the actual request and await the response
+                var httpResponse = await httpClient.PostAsync(urlPost, httpContent);
+
+
+                return httpResponse.ToString();
+
+            }
+        }
+
+    }   
+
 }

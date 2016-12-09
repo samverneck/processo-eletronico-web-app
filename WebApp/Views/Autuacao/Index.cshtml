@@ -35,14 +35,13 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
-                                        <label for="orgao">Plano de Classificação</label>
-                                        <select class="form-control" name="planoClassificacao" id="planoClassificacao" title="Informe o Plano de Classificação." required aria-required="true" aria-invalid="true">
-                                            <option value="">Selecione um Plano de Classificação</option>
-                                            @foreach (var plc in Model.planosClassificacao)
-                                            {
-                                            <option value="@plc.id">@plc.descricao</option>
-                                            }
-                                        </select>
+                                        <label for="orgao">Plano de Classificação</label>                                        
+
+                                        @Html.DropDownListFor(m => m.planosClassificacao,
+                                          new SelectList(Model.planosClassificacao, "id", "descricao"),
+                                          "Selecione um Plano de Classificação",
+                                          new { @class = "form-control", @onchange = "carregaFuncoes", @id = "planoClassificacao" })
+
                                     </div>
                                 </div>
                                 <div class="row">
@@ -104,14 +103,14 @@
                                         <input type="text" value="@Model.siglaOrgaoAutuador - @Model.nomeOrgaoAutuador" data-id="@Model.idOrgaoAutuador" data-sigla="@Model.siglaOrgaoAutuador" class="form-control" name="nomeOrgaoAutuador" id="nomeOrgaoAutuador" disabled="disabled" />
                                     </div>
                                 </div>
-                                <div class="row">
+                                @*<div class="row">
                                     <div class="col-lg-6 form-group">
                                         <div class="form-group">
                                             <label for="setor">Unidade Responsável</label>
                                             <input type="text" value="@Model.siglaUnidadeAutuadora - @Model.nomeUnidadeAutuadora" data-id="@Model.idUnidadeAutuadora" data-sigla="@Model.siglaUnidadeAutuadora" class="form-control" name="nomeUnidadeAutuadora" id="nomeUnidadeAutuadora" disabled="disabled" />
                                         </div>
                                     </div>
-                                </div>
+                                </div>*@
 
                                 <label>Interessados</label>
                                 <div class="form-group">

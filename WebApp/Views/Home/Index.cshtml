@@ -56,6 +56,29 @@
     <!-- /.modal-dialog -->
 </div>
 
+<!--Modal Despacho Processo-->
+<div class="modal fade" id="modalDespacho" tabindex="-1" role="dialog" aria-labelledby="modalDespachoLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="modalProcessoLabel">Despacho de Processo</h4>
+            </div>
+            <div class="modal-body">
+                <div id="despachoProcesso">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Fechar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 @section scripts{
     <script src="~/Scripts/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/datatables/dataTables.bootstrap.min.js"></script>
@@ -66,9 +89,9 @@
             "sPaginationType": "full_numbers",
             "language": {
                 "lengthMenu": " _MENU_ Processos por página",
-                "zeroRecords": "Nenhuma processo encontado - sorry",
+                "zeroRecords": "Nenhuma processo encontado",
                 "info": "Página _PAGE_ de _PAGES_",
-                "infoEmpty": "No records available",
+                "infoEmpty": "",
                 "infoFiltered": "(Registros filtrados do total de _MAX_ processos.)",
                 "sSearch": "Filtrar: ",
                 "paginate": {
@@ -87,11 +110,11 @@
 
         $('table').on('click', '.btn-processo-visualizar', function (event) {
             //$('#visualizarProcesso').html('');
-            ajaxCarregaVisualizarProcesso(this.getAttribute('data-organizacao'), this.getAttribute('data-id'));                        
+            ajaxCarregaProcessoVisualizar(this.getAttribute('data-organizacao'), this.getAttribute('data-id'));
         });        
 
         //Carrega orgaos publicos do executivo estadual ES para o combo
-        function ajaxCarregaVisualizarProcesso(idOrganizacao, idProcesso) {
+        function ajaxCarregaProcessoVisualizar(idOrganizacao, idProcesso) {
             $.ajax('/home/VisualizarProcesso?idOrganizacao=' + idOrganizacao + '&idProcesso=' + idProcesso)
               .done(function (dados) {
 
@@ -99,6 +122,29 @@
 
                   $('#visualizarProcesso').html(dados);
                   $('#modalProcesso').modal('show');
+              })
+              .fail(function () {
+                  alert("error");
+              });
+        }
+
+        /****************************************************************************************************************************************************************************/
+        /*DESPACHAR PROCESSO*/
+
+        $('table').on('click', '.btn-processo-despachar', function (event) {
+            //$('#visualizarProcesso').html('');
+            ajaxCarregaProcessoDespachar(this.getAttribute('data-id'));
+        });
+
+        //Carrega orgaos publicos do executivo estadual ES para o combo
+        function ajaxCarregaProcessoDespachar(idProcesso) {
+            $.ajax('/Despacho/DespacharProcesso?idProcesso=' + idProcesso)
+              .done(function (dados) {
+
+                  console.log(dados);
+
+                  $('#despachoProcesso').html(dados);
+                  $('#modalDespacho').modal('show');
               })
               .fail(function () {
                   alert("error");

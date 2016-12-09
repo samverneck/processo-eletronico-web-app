@@ -12,7 +12,7 @@ namespace WebApp.Models.Autuacao
         public List<InteressadosPessoaFisica> interessadosPessoaFisica { get; set; }
         public List<InteressadosPessoaJuridica> interessadosPessoaJuridica { get; set; }
         public List<Municipio> municipios { get; set; }
-        public List<Anexo> anexos { get; set; }
+        public List<AnexoModel> anexos { get; set; }
         public List<int> idSinalizacoes { get; set; }
         public int idOrgaoAutuador { get; set; }
         public string nomeOrgaoAutuador { get; set; }
@@ -56,18 +56,12 @@ namespace WebApp.Models.Autuacao
         public List<Email> emails { get; set; }
         public string uf { get; set; }
         public string municipio { get; set; }
+        public List<AnexoModel> anexos { get; set; }
     }
 
     public class Municipio
     {
         public string uf { get; set; }
         public string nome { get; set; }
-    }
-
-    public class Anexo
-    {
-        public string nome { get; set; }
-        public string conteudo { get; set; }
-        public string tipo { get; set; }
     }    
 }

@@ -19,68 +19,38 @@ using Thinktecture.IdentityModel.Mvc;
 using WebApp.Models.ProcessoEletronico;
 using WebApp.Controllers.Home;
 using WebApp.Models.Home;
+using WebApp.Autorizacao;
 
 namespace WebApp.Controllers
 {
     [Authorize]
     public class HomeController : BaseController
     {
-        //[ResourceAuthorize("Autuar","Processo")]
-        //[HandleForbidden]
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
         public ActionResult Index()
         {
             HomeModel home = new HomeModel();
             HomeWorkService home_ws = new HomeWorkService();
-            home.processosPorUnidade = home_ws.GetProcessosPorOrganizacaoPorUnidade(1,1);
+            home.processosPorUnidade = home_ws.GetProcessosPorOrganizacaoPorUnidade(13811,1, usuario.Token);
             
             return View("Index", home);
         }
 
-        //[ResourceAuthorize("Autuar","Processo")]
-        //[HandleForbidden]
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
         public ActionResult VisualizarProcesso(int idOrganizacao, int idProcesso)
         {
             ProcessoEletronicoModel processo = new ProcessoEletronicoModel();
             HomeWorkService home_ws = new HomeWorkService();
-            processo = home_ws.GetProcessosPorOrganizacaoPorProcesso(idOrganizacao, idProcesso);
-
+            processo = home_ws.GetProcessosPorOrganizacaoPorProcesso(idOrganizacao, idProcesso, usuario.Token);
+                        
             return PartialView("_VisualizarProcesso", processo);
         }
 
-        public ActionResult Claims()
-        {
-            ViewBag.Message = "Claims";
-
-            var user = User as ClaimsPrincipal;
-            var token = user.FindFirst("access_token");
-
-            if (token != null)
-            {
-                ViewData["access_token"] = token.Value;
-            }
-
-            return View();
+        public ActionResult GetUsuarioLogado()
+        {            
+            return PartialView("_usuario", usuario);
         }
-
-        public bool VerificaAutencacao()
-        {
-            var user = User as ClaimsPrincipal;
-            var token = user.FindFirst("access_token");
-
-            if (token != null)            
-                return true;            
-            else            
-                return false;            
-        }        
-
-        //exemplo deserializar json data 
-        public static T serialized_json_data<T>(string fileJson) where T : new()
-        {
-            using (var w = new WebClient())
-            {
-                // if string with JSON data is not empty, deserialize it to class and return its instance 
-                return !string.IsNullOrEmpty(fileJson) ? JsonConvert.DeserializeObject<T>(fileJson) : new T();
-            }
-        }       
     }
 }

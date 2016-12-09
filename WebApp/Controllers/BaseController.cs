@@ -6,29 +6,17 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
+using WebApp.Autorizacao;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class BaseController: Controller
     {
+        public UsuarioLogado usuario = new UsuarioLogado();
         public BaseController()
-        {
-            try
-            {
-                var user = User as ClaimsPrincipal;
-                var token = user.FindFirst("access_token");
-
-                if (token == null)
-                {
-                    Signout();
-                    //Signout(token)
-                }
-            }
-            catch (Exception e)
-            {
-                Console.Out.Write(e.ToString());
-            }
-            
+        {            
+                                       
         }
 
         public ActionResult Signout()

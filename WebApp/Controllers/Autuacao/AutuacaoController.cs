@@ -4,38 +4,59 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Thinktecture.IdentityModel.Mvc;
+using WebApp.Autorizacao;
 using WebApp.Controllers.Autuacao;
+using WebApp.Models;
 using WebApp.Models.Autuacao;
+using WebApp.Models.Organograma;
 
 namespace WebApp.Controllers
 {
-    public class AutuacaoController : Controller
+    [Authorize]
+    public class AutuacaoController : BaseController
     {
-        // GET: Autuacao
+        //Guid provisório
+        int _guidPatriarca = 13811;
+        int _guidOrgao = 5570;
+
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
         public ActionResult Index()
         {
             FormAutuacaoModel formAutuacao = new FormAutuacaoModel();
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
 
-            formAutuacao.planosClassificacao = autuacao_ws.GetPlanosClassificacao(1, 6);
-            formAutuacao.sinalizacoes = autuacao_ws.GetSinalizacoes(1);
+            formAutuacao.planosClassificacao = autuacao_ws.GetPlanosClassificacao(_guidPatriarca, _guidOrgao, usuario.Token);
+            formAutuacao.sinalizacoes = autuacao_ws.GetSinalizacoes(_guidPatriarca, usuario.Token);
 
-            formAutuacao.idOrgaoAutuador = 6;
-            formAutuacao.nomeOrgaoAutuador = "Instituto de Telecnologia de Informação e Comunicação do Espírito Santo";
-            formAutuacao.siglaOrgaoAutuador = "PRODEST";
+            OrgaoModel orgao = usuario.Orgao;
 
-            formAutuacao.idUsuarioAutuador = 20;
-            formAutuacao.nomeUsuarioAutuador = "Fernando Silva";
-            formAutuacao.idOrganizacaoPai = 1;
+            formAutuacao.guidOrgao = orgao.guid;
+            formAutuacao.nomeOrgaoAutuador = orgao.razaoSocial;
+            formAutuacao.siglaOrgaoAutuador = usuario.SiglaOrganizacao;
             
-            formAutuacao.idUnidadeAutuadora = 1;
-            formAutuacao.nomeUnidadeAutuadora = "Gerência de Sistemas de Informação";
-            formAutuacao.siglaUnidadeAutuadora = "GESIN";
+            OrgaoModel patriarca = usuario.Patriarca;
+                        
+            formAutuacao.nomeUsuarioAutuador = usuario.Nome;
+            formAutuacao.guidPatriarca = patriarca.guid ;
+            
+
+            /*
+             Por 
+             
+             */
+
+            //formAutuacao.idUnidadeAutuadora = 1;
+            //formAutuacao.nomeUnidadeAutuadora = "Gerência de Sistemas de Informação";
+            //formAutuacao.siglaUnidadeAutuadora = "GESIN";
 
 
             return View("Index", formAutuacao);
         }
 
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
         public FormAutuacaoModel ExibeMunicipios()
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
@@ -43,93 +64,105 @@ namespace WebApp.Controllers
             return formAutuacao;
         }
 
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
         [HttpGet]
         public ActionResult MunicipiosPorUf(string uf)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetMunicipios(uf), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetMunicipios(uf, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
         [HttpGet]
         public ActionResult OrganizacoesPorEsferaPoderUf(string poder, string esfera, string uf)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetOrganizacoes(poder, esfera, uf), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetOrganizacoes(poder, esfera, uf, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
         [HttpGet]
         public ActionResult OrganizacoesOutrosOrgaos()
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetOrganizacoesOutrosOrgaos(), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetOrganizacoesOutrosOrgaos(usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
         [HttpGet]
         public ActionResult OrganizacaoPorId(int id)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetOrganizacao(id), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetOrganizacao(id, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
         [HttpGet]
         public ActionResult UnidadesPorOrganizacao(int id)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetUnidadesPorOrganizacao(id), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetUnidadesPorOrganizacao(id, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
         [HttpGet]
         public ActionResult TiposContato()
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetTiposContatos(), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetTiposContatos(usuario.Token), JsonRequestBehavior.AllowGet);
         }
-
+        
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
         [HttpGet]
         public ActionResult PlanosClassificacao(int id, int idOrganizacao)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetPlanosClassificacao(id, idOrganizacao), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetPlanosClassificacao(_guidPatriarca, _guidOrgao, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
         [HttpGet]
         public ActionResult Funcoes(int id, int idPlanoClassificacao)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetFuncoes(id, idPlanoClassificacao), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetFuncoes(_guidPatriarca, idPlanoClassificacao, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
         [HttpGet]
         public ActionResult Atividades(int id, int idFuncao)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetAtividades(id, idFuncao), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetAtividades(_guidPatriarca, idFuncao, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
         [HttpGet]
         public ActionResult Sinalizacoes(int id)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetSinalizacoes(id), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetSinalizacoes(_guidPatriarca, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
         [HttpPost]
         public ActionResult Autuar(AutuacaoModel autuacao)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.PostAtuacao(autuacao, 1));
+            return Json(autuacao_ws.PostAtuacao(autuacao, _guidPatriarca, usuario.Token));
         }
-
-        //public async Task<ActionResult> ExibeMunicipiosPartial()
-        //{
-        //    AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-        //    FormAutuacaoModel formAutuacao = new FormAutuacaoModel();            
-        //    formAutuacao.municipios = await autuacao_ws.GetMunicipios();
-
-        //    return View("ExibeMunicipios", ViewBag.Municipios);            
-        //}
-
-        // GET: Autuacao/Details/5
+        
         public ActionResult Details(int id)
         {
             return View();

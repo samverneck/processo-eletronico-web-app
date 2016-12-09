@@ -184,6 +184,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Autuacao\AnexoModel.cs" />
     <Compile Include="Models\Autuacao\AtividadeModel.cs" />
     <Compile Include="Models\Autuacao\AutuacaoModel.cs" />
     <Compile Include="Models\Autuacao\FormAutuacaoModel.cs" />
@@ -193,7 +194,9 @@
     <Compile Include="Models\Autuacao\TipoContato.cs" />
     <Compile Include="Models\CEP.cs" />
     <Compile Include="Models\Despacho\DespachoModel.cs" />
+    <Compile Include="Models\Despacho\DespachoPostModel.cs" />
     <Compile Include="Models\Home\HomeModel.cs" />
+    <Compile Include="Models\Organograma\OrgaoModel.cs" />
     <Compile Include="Models\ProcessoEletronico\InteressadoPessoaFisica.cs" />
     <Compile Include="Models\ProcessoEletronico\InteressadoPessoaJuridica.cs" />
     <Compile Include="Models\ProcessoEletronico\ProcessoEletronicoModel.cs" />
@@ -1301,6 +1304,8 @@
     <Content Include="Views\Autuacao\_FormPessoaJuridica.cshtml" />
     <Content Include="Views\Home\Forbidden.cshtml" />
     <Content Include="Views\Home\_VisualizarProcesso.cshtml" />
+    <Content Include="Views\Home\_usuario.cshtml" />
+    <Content Include="Views\Despacho\_formularioDespacho.cshtml" />
     <None Include="Web.Desenvolvimento.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

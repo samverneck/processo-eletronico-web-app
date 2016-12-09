@@ -22,11 +22,12 @@ namespace WebApp.Models.ProcessoEletronico
         public string dataAutuacao { get; set; }
         public string numero { get; set; }
         public int idOrganizacaoProcesso { get; set; }
-        public List<DespachoModel> despachos { get; set; }
+        public List<DespachoResponseModel> despachos { get; set; }
         public List<InteressadoPessoaFisica> interessadosPessoaFisica { get; set; }
         public List<InteressadoPessoaJuridica> interessadosPessoaJuridica { get; set; }
         public List<Municipio> municipiosProcesso { get; set; }
         public List<SinalizacaoModel> sinalizacoes { get; set; }
         public AtividadeModel atividade { get; set; }
+        public List<AnexoModel> anexos { get; set; }
     }
 }

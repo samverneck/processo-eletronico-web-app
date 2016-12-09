@@ -9,14 +9,14 @@ namespace WebApp.Controllers.Home
 {
     public class HomeWorkService : WorkServiceBase
     {
-        public List<ProcessoEletronicoModel> GetProcessosPorOrganizacaoPorUnidade(int idOrganizacao, int idUnidade)
+        public List<ProcessoEletronicoModel> GetProcessosPorOrganizacaoPorUnidade(int idOrganizacao, int idUnidade, string token)
         {
             List<ProcessoEletronicoModel> listaProcessos = new List<ProcessoEletronicoModel>();
 
             try
             {
                 var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/"+ idOrganizacao + "/processos/unidade/" + idUnidade;
-                listaProcessos = download_serialized_json_data<List<ProcessoEletronicoModel>>(url);
+                listaProcessos = download_serialized_json_data<List<ProcessoEletronicoModel>>(url, token);
 
                 return listaProcessos.OrderByDescending(a => a.dataAutuacao).ToList();
             }
@@ -27,14 +27,14 @@ namespace WebApp.Controllers.Home
             }
         }
 
-        public ProcessoEletronicoModel GetProcessosPorOrganizacaoPorProcesso(int idOrganizacao, int idProcesso)
+        public ProcessoEletronicoModel GetProcessosPorOrganizacaoPorProcesso(int idOrganizacao, int idProcesso, string token)
         {
             ProcessoEletronicoModel processos = new ProcessoEletronicoModel();
 
             try
             {
                 var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + idOrganizacao + "/processos/" + idProcesso;
-                processos = download_serialized_json_data<ProcessoEletronicoModel>(url);
+                processos = download_serialized_json_data<ProcessoEletronicoModel>(url, token);
                 return processos;
             }
             catch (Exception e)
