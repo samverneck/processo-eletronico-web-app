@@ -11,7 +11,6 @@ namespace WebApp.Models.Autuacao
         public string codigo { get; set; }
         public string descricao { get; set; }
         public string observacao { get; set; }
-        public int idPlanoClassificacao { get; set; }
-
+        public PlanoClassificacaoModel planoClassificacao { get; set; }
     }
 }

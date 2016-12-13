@@ -88,13 +88,13 @@ namespace WebApp.Controllers.Autuacao
             }            
         }
 
-        public List<UnidadeModel> GetUnidadesPorOrganizacao(int id, string token)
+        public List<UnidadeModel> GetUnidadesPorOrganizacao(string guid, string token)
         {
             List<UnidadeModel> unidades = new List<UnidadeModel>();
 
             try
             {
-                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "unidades?idorganizacao=" + id;
+                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "unidades?idorganizacao=" + guid;
                 unidades = download_serialized_json_data<List<UnidadeModel>>(url, token);
                 return unidades;
             }

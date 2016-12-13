@@ -9,16 +9,16 @@ namespace WebApp.Controllers.Home
 {
     public class HomeWorkService : WorkServiceBase
     {
-        public List<ProcessoEletronicoModel> GetProcessosPorOrganizacaoPorUnidade(int idOrganizacao, int idUnidade, string token)
+        public List<ProcessoEletronicoModel> GetProcessosPorOrganizacaoPorOrgao(string guidOrganizacao, string token)
         {
             List<ProcessoEletronicoModel> listaProcessos = new List<ProcessoEletronicoModel>();
 
             try
             {
-                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/"+ idOrganizacao + "/processos/unidade/" + idUnidade;
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "processos/organizacao/" + guidOrganizacao;
                 listaProcessos = download_serialized_json_data<List<ProcessoEletronicoModel>>(url, token);
 
-                return listaProcessos.OrderByDescending(a => a.dataAutuacao).ToList();
+                return listaProcessos.OrderByDescending(a=>a.dataUltimoTramite_DateTime).ToList();
             }
             catch (Exception e)
             {
@@ -27,13 +27,13 @@ namespace WebApp.Controllers.Home
             }
         }
 
-        public ProcessoEletronicoModel GetProcessosPorOrganizacaoPorProcesso(int idOrganizacao, int idProcesso, string token)
+        public ProcessoEletronicoModel GetProcessosPorOrganizacaoPorProcesso(string numeroProcesso, string token)
         {
             ProcessoEletronicoModel processos = new ProcessoEletronicoModel();
 
             try
             {
-                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + idOrganizacao + "/processos/" + idProcesso;
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "processos/numero/" + numeroProcesso;
                 processos = download_serialized_json_data<ProcessoEletronicoModel>(url, token);
                 return processos;
             }

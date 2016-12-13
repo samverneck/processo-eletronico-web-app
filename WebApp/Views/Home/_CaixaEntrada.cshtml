@@ -3,7 +3,7 @@
 <div class="box box-primary">
     <!-- /.box-header -->
     <div class="box-header with-border">
-        <h3 class="box-title">Minha Caixa de Entrada</h3>
+        <h3 class="box-title">Caixa de Entrada @Model.usuario.SiglaOrganizacao</h3>
         <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse">
                 <i class="fa fa-minus"></i>
@@ -23,15 +23,15 @@
                 </tr>
             </thead>           
             <tbody>
-                @foreach (var item in Model.processosPorUnidade)
+                @foreach (var item in Model.processosPorOrgao)
                 {
                     <tr>
                         <th>@item.numero</th>
-                        <td>@item.siglaOrgaoAutuador</td>
-                        <td class="text-center">@item.dataAutuacao.AsDateTime().ToShortDateString()</td>
+                        <td>@item.siglaOrganizacaoAutuadora</td>
+                        <td class="text-center">@item.dataUltimoTramite_DateTime.ToString("d")</td>
                         <td class="text-center">
-                            <button class="btn btn-xs btn-info btn-processo-visualizar" data-id="@item.id" data-organizacao="@item.idOrganizacaoProcesso" title="Visualizar processo @item.numero"><i class="fa fa-folder-open-o" aria-hidden="true"></i></button>
-                            <button class="btn btn-xs btn-success btn-processo-despachar" data-id="@item.id" data-organizacao="@item.idOrganizacaoProcesso" title="Despachar Processo @item.numero"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                            <button class="btn btn-xs btn-info btn-processo-visualizar" data-id="@item.numero" data-organizacao="@item.idOrganizacaoProcesso" title="Visualizar processo @item.numero"><i class="fa fa-folder-open-o" aria-hidden="true"></i></button>
+                            <button class="btn btn-xs btn-success btn-processo-despachar" data-id="@item.numero" data-organizacao="@item.idOrganizacaoProcesso" title="Despachar Processo @item.numero"><i class="fa fa-edit" aria-hidden="true"></i></button>
                         </td>
                     </tr>                    
                 }

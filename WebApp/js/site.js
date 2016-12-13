@@ -455,12 +455,17 @@ function bytesToSize(bytes) {
 /****************************************************************************************************************************************************************************/
 /*FALSO INPUT FILE*/
 
-$(document).ready(function () {
-    $('.btn-input-file').click(function () {
-        $(this).closest($(".input-file").click());
-    });
-});
+//$(document).ready(function () {
+//    $('.btn-input-file').click(function () {
+//        $(this).closest($(".input-file").click());
+//    });
+//});
 
+$('button').on('click', '.btn-input-file', function () {
+    alert('teste');
+
+    $(this).closest($(".input-file").click());
+});
 
 /****************************************************************************************************************************************************************************/
 /*ENVIAR AUTUACAO*/

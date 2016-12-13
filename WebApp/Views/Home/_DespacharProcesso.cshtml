@@ -1,0 +1,53 @@
+﻿@model WebApp.Models.ProcessoEletronico.ProcessoEletronicoModel
+
+<form id="formDespacho">
+    <div class="box-body">
+        <h3>Dados do Processo</h3>
+        <table class="table table-bordered table-condensed table-striped">
+            <tr>
+                <th class="col-md-3">Número do Processo</th>
+                <td>@Model.numero</td>
+            </tr>
+            @if (Model.atividade != null)
+            {
+                <tr>
+                    <th>Plano de Classificação</th>
+                    <td>@Model.atividade.descricao</td>
+                </tr>
+            }
+            <tr>
+                <th>Resumo</th>
+                <td>@Model.resumo</td>
+            </tr>            
+        </table>
+        <hr />
+        <div class="form-group">
+            <label for="Resumo">Despacho</label>
+            <textarea class="form-control" id="resumo" name="despacho" placeholder="Informe a descrição do despacho." title="Informe a descrição do despacho." required aria-required="true" aria-invalid="true"></textarea>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label>Incluir Anexos</label>
+            <div class="form-group">
+                <input type="file" class="form-control input-file" id="btnFileAnexos" style="display:none" name="btnFileAnexos" multiple />
+                <button type="button" class="btn btn-info btn-input-file"><i class="fa fa-link" aria-hidden="true"></i> Adicionar</button>
+            </div>
+            <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table id="tabelaAnexos" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+                            <thead>
+                                <tr role="row">
+                                    <th class="sorting_asc col-md-6" data-header="">Documento</th>
+                                    <th class="sorting" data-header="">Tamanho</th>
+                                    <th class="sorting_asc col-md-1">Excluir</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

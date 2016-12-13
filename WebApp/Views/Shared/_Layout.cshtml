@@ -18,7 +18,9 @@
     <link rel="stylesheet" href="~/css/wizardForm.css">
 
     <style>
-        .error{color:indianred;}
+        .error {
+            color: indianred;
+        }
     </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -136,16 +138,28 @@
         <div class="control-sidebar-bg"></div>
     </div>
     <!-- ./wrapper -->
-
     <!-- Modal Waiting -->
     <div class="modal fade" id="modalWaiting" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">                
+            <div class="modal-content">
                 <div class="modal-body">
                     <p class="text-center">
                         <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-                    </p>                    
-                </div>                
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Error -->
+    <div class="modal fade" id="modalError" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="modalErrorLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">                
+                <div class="modal-body">
+                    <h3>Sua sessão expirou!</h3>
+                    <p>Clique no botão abaixo para iniciar uma nova sessão.</p>
+                    <a href="@Url.Action("Index", "Home")" title="Iniciar nova sessão" class="btn btn-success" ><i class="fa fa-refresh" aria-hidden="true"></i> Iniciar nova sessão</a>
+                </div>
             </div>
         </div>
     </div>
@@ -158,10 +172,10 @@
     <!--jQueryMask-->
     <script src="~/Scripts/jQueryMask/jquery.mask.min.js"></script>
     <!--Validate-->
-    <script src="~/Scripts/validate/jquery.validate.min.js"></script>    
+    <script src="~/Scripts/validate/jquery.validate.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/js/app.min.js"></script>
 
-    @RenderSection("scripts", required: false)    
+    @RenderSection("scripts", required: false)
 </body>
 </html>

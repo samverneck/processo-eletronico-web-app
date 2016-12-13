@@ -103,10 +103,10 @@ namespace WebApp.Controllers
         [ResourceAuthorize("Autuar", "Processo")]
         [HandleForbidden]
         [HttpGet]
-        public ActionResult UnidadesPorOrganizacao(int id)
+        public ActionResult UnidadesPorOrganizacao(string guid)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetUnidadesPorOrganizacao(id, usuario.Token), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetUnidadesPorOrganizacao(guid, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
         [ResourceAuthorize("Autuar", "Processo")]

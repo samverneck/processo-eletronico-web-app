@@ -8,7 +8,7 @@ namespace WebApp.Models
 {
     public class OrganizacaoModel
     {        
-        public int id { get; set; }
+        public string guid { get; set; }
         public string cnpj { get; set; }
         public string razaoSocial { get; set; }
         public string nomeFantasia { get; set; }

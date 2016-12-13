@@ -208,6 +208,7 @@
     <Compile Include="Models\Organograma\TipoOrganizacaoModel.cs" />
     <Compile Include="Models\Organograma\TipoUnidadeModel.cs" />
     <Compile Include="Models\Organograma\UnidadeModel.cs" />
+    <Compile Include="Models\ProcessoEletronico\TipoDocumentalModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1306,6 +1307,7 @@
     <Content Include="Views\Home\_VisualizarProcesso.cshtml" />
     <Content Include="Views\Home\_usuario.cshtml" />
     <Content Include="Views\Despacho\_formularioDespacho.cshtml" />
+    <Content Include="Views\Home\_DespacharProcesso.cshtml" />
     <None Include="Web.Desenvolvimento.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

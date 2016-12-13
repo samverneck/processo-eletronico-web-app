@@ -16,23 +16,22 @@
 </section>
 <!-- Main content -->
 <section id="content" class="content">
-    <div class="row">        
+    <div class="row">
         <div class="col-lg-6">
             @Html.Partial("_CaixaEntrada", Model)
         </div>
         @*<div class="col-md-6 col-xs-12">
-            @Html.Partial("_CaixaEntradaSetor")
-        </div>
-        <div class="col-md-6 col-xs-12">
-            @Html.Partial("_Rascunho")
-        </div>
-        <div class="col-md-6 col-xs-12">
-            @Html.Partial("_CaixaSaida")
-        </div>*@
+                @Html.Partial("_CaixaEntradaSetor")
+            </div>
+            <div class="col-md-6 col-xs-12">
+                @Html.Partial("_Rascunho")
+            </div>
+            <div class="col-md-6 col-xs-12">
+                @Html.Partial("_CaixaSaida")
+            </div>*@
     </div>
 </section>
 <!-- /.content -->
-
 <!--Modal Visualizacao Processo-->
 <div class="modal fade" id="modalProcesso" tabindex="-1" role="dialog" aria-labelledby="modalProcessoLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -64,7 +63,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="modalProcessoLabel">Despacho de Processo</h4>
+                <h4 class="modal-title" id="modalProcessoLabel">Despacho</h4>
             </div>
             <div class="modal-body">
                 <div id="despachoProcesso">
@@ -80,12 +79,13 @@
 </div>
 
 @section scripts{
+    <script src="~/js/site.js"></script>
     <script src="~/Scripts/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/datatables/dataTables.bootstrap.min.js"></script>
     <script>
-        $('#tabelaCaixaSetor').DataTable({
+        var caixaEntradaOrgao = $('#tabelaCaixaSetor').DataTable({
             "dom": '<"pull-left"l><"pull-right"f>rt<"pull-left"i><"pull-right"p>',
-            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],            
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
             "sPaginationType": "full_numbers",
             "language": {
                 "lengthMenu": " _MENU_ Processos por página",
@@ -100,25 +100,28 @@
                     "first": "«",
                     "last": "»"
                 }
-            }
+            },
+            "ordering": false,
+            "sort": false,
         });
+
+        caixaEntradaOrgao.draw();;
+
     </script>
 
     <script>
         /****************************************************************************************************************************************************************************/
-        /*CARREGA PROCESSO*/        
+        /*CARREGA PROCESSO*/
 
         $('table').on('click', '.btn-processo-visualizar', function (event) {
             //$('#visualizarProcesso').html('');
-            ajaxCarregaProcessoVisualizar(this.getAttribute('data-organizacao'), this.getAttribute('data-id'));
-        });        
+            ajaxCarregaProcessoVisualizar(this.getAttribute('data-id'));
+        });
 
         //Carrega orgaos publicos do executivo estadual ES para o combo
-        function ajaxCarregaProcessoVisualizar(idOrganizacao, idProcesso) {
-            $.ajax('/home/VisualizarProcesso?idOrganizacao=' + idOrganizacao + '&idProcesso=' + idProcesso)
+        function ajaxCarregaProcessoVisualizar(numeroProcesso) {
+            $.ajax('/home/VisualizarProcesso?numeroProcesso=' + numeroProcesso)
               .done(function (dados) {
-
-                  console.log(dados);
 
                   $('#visualizarProcesso').html(dados);
                   $('#modalProcesso').modal('show');
@@ -137,11 +140,9 @@
         });
 
         //Carrega orgaos publicos do executivo estadual ES para o combo
-        function ajaxCarregaProcessoDespachar(idProcesso) {
-            $.ajax('/Despacho/DespacharProcesso?idProcesso=' + idProcesso)
+        function ajaxCarregaProcessoDespachar(numeroProcesso) {
+            $.ajax('/home/DespacharProcesso?numeroProcesso=' + numeroProcesso)
               .done(function (dados) {
-
-                  console.log(dados);
 
                   $('#despachoProcesso').html(dados);
                   $('#modalDespacho').modal('show');

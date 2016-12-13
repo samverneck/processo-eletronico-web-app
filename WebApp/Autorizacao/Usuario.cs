@@ -26,34 +26,30 @@ namespace WebApp.Autorizacao
             }
 
             //Set Órgao
-
             OrgaoModel _orgao = new OrgaoModel();
-
             try
             {
-                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/" + this.SiglaOrganizacao;
+                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/sigla/" + this.SiglaOrganizacao;
                 _orgao = WorkServiceBase.download_serialized_json_data<OrgaoModel>(url, this.Token);
-                Orgao = _orgao;
+                this.Orgao = _orgao;
             }
             catch (Exception e)
             {
-                Orgao = _orgao;
+                this.Orgao = null;
             }
 
 
             //Set Patriarca
-
             OrgaoModel _patriarca = new OrgaoModel();
-
             try
             {
                 var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/" + this.Orgao.guid + "/patriarca";
                 _patriarca = WorkServiceBase.download_serialized_json_data<OrgaoModel>(url, this.Token);
-                Patriarca = _patriarca;
+                this.Patriarca = _patriarca;
             }
             catch (Exception e)
             {
-                Patriarca = _patriarca;
+                this.Patriarca = null;
             }
 
         }

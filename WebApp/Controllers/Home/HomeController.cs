@@ -32,20 +32,32 @@ namespace WebApp.Controllers
         {
             HomeModel home = new HomeModel();
             HomeWorkService home_ws = new HomeWorkService();
-            home.processosPorUnidade = home_ws.GetProcessosPorOrganizacaoPorUnidade(13811,1, usuario.Token);
-            
+            home.processosPorOrgao = home_ws.GetProcessosPorOrganizacaoPorOrgao(usuario.Orgao.guid, usuario.Token);
+            home.usuario = usuario;
+
             return View("Index", home);
         }
 
         [ResourceAuthorize("Autuar", "Processo")]
         [HandleForbidden]
-        public ActionResult VisualizarProcesso(int idOrganizacao, int idProcesso)
+        public ActionResult VisualizarProcesso(string numeroProcesso)
         {
             ProcessoEletronicoModel processo = new ProcessoEletronicoModel();
             HomeWorkService home_ws = new HomeWorkService();
-            processo = home_ws.GetProcessosPorOrganizacaoPorProcesso(idOrganizacao, idProcesso, usuario.Token);
+            processo = home_ws.GetProcessosPorOrganizacaoPorProcesso(numeroProcesso, usuario.Token);
                         
             return PartialView("_VisualizarProcesso", processo);
+        }
+
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
+        public ActionResult DespacharProcesso(string numeroProcesso)
+        {
+            ProcessoEletronicoModel processo = new ProcessoEletronicoModel();
+            HomeWorkService home_ws = new HomeWorkService();
+            processo = home_ws.GetProcessosPorOrganizacaoPorProcesso(numeroProcesso, usuario.Token);
+
+            return PartialView("_DespacharProcesso", processo);
         }
 
         public ActionResult GetUsuarioLogado()
