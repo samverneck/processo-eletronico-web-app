@@ -61,7 +61,7 @@ namespace WebApp
                         var tokenClient = new TokenClient(
                             "https://acessocidadao.es.gov.br/is/connect/token",
                             "processoeletronicowebapp-des",
-                            "processoeletronico-secret");
+                            Environment.GetEnvironmentVariable("SecretProcessoEletronicoApp"));
 
                         var tokenResponse = await tokenClient.RequestAuthorizationCodeAsync(
                             n.Code, n.RedirectUri);
