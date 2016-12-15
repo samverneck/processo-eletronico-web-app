@@ -145,3 +145,9 @@ span.round-tab:hover {
         left: 35%;
     }
 }
+
+/*MODAL*/
+.modal{
+    overflow-y: auto;
+}
+    

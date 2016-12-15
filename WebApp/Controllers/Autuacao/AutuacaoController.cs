@@ -16,41 +16,26 @@ namespace WebApp.Controllers
     [Authorize]
     public class AutuacaoController : BaseController
     {
-        //Guid provisório
-        int _guidPatriarca = 13811;
-        int _guidOrgao = 5570;
-
         [ResourceAuthorize("Autuar", "Processo")]
         [HandleForbidden]
         public ActionResult Index()
         {
             FormAutuacaoModel formAutuacao = new FormAutuacaoModel();
-            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
+            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();            
 
-            formAutuacao.planosClassificacao = autuacao_ws.GetPlanosClassificacao(_guidPatriarca, _guidOrgao, usuario.Token);
-            formAutuacao.sinalizacoes = autuacao_ws.GetSinalizacoes(_guidPatriarca, usuario.Token);
+            formAutuacao.planosClassificacao = autuacao_ws.GetPlanosClassificacao(usuario.Orgao.guid, usuario.Token);
+            formAutuacao.sinalizacoes = autuacao_ws.GetSinalizacoes(usuario.Patriarca.guid, usuario.Token);
 
-            OrgaoModel orgao = usuario.Orgao;
+            OrganizacaoModel orgao = usuario.Orgao;
 
             formAutuacao.guidOrgao = orgao.guid;
             formAutuacao.nomeOrgaoAutuador = orgao.razaoSocial;
             formAutuacao.siglaOrgaoAutuador = usuario.SiglaOrganizacao;
-            
-            OrgaoModel patriarca = usuario.Patriarca;
+
+            OrganizacaoModel patriarca = usuario.Patriarca;
                         
             formAutuacao.nomeUsuarioAutuador = usuario.Nome;
-            formAutuacao.guidPatriarca = patriarca.guid ;
-            
-
-            /*
-             Por 
-             
-             */
-
-            //formAutuacao.idUnidadeAutuadora = 1;
-            //formAutuacao.nomeUnidadeAutuadora = "Gerência de Sistemas de Informação";
-            //formAutuacao.siglaUnidadeAutuadora = "GESIN";
-
+            formAutuacao.guidPatriarca = patriarca.guid;
 
             return View("Index", formAutuacao);
         }
@@ -94,10 +79,10 @@ namespace WebApp.Controllers
         [ResourceAuthorize("Autuar", "Processo")]
         [HandleForbidden]
         [HttpGet]
-        public ActionResult OrganizacaoPorId(int id)
+        public ActionResult OrganizacaoPorGuid(string guidOrganizacao)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetOrganizacao(id, usuario.Token), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetPatriarca(guidOrganizacao, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
         [ResourceAuthorize("Autuar", "Processo")]
@@ -124,7 +109,7 @@ namespace WebApp.Controllers
         public ActionResult PlanosClassificacao(int id, int idOrganizacao)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetPlanosClassificacao(_guidPatriarca, _guidOrgao, usuario.Token), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetPlanosClassificacao(usuario.Orgao.guid, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
         [ResourceAuthorize("Autuar", "Processo")]
@@ -133,7 +118,7 @@ namespace WebApp.Controllers
         public ActionResult Funcoes(int id, int idPlanoClassificacao)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetFuncoes(_guidPatriarca, idPlanoClassificacao, usuario.Token), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetFuncoes(idPlanoClassificacao, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
         [ResourceAuthorize("Autuar", "Processo")]
@@ -142,7 +127,7 @@ namespace WebApp.Controllers
         public ActionResult Atividades(int id, int idFuncao)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetAtividades(_guidPatriarca, idFuncao, usuario.Token), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetAtividades(idFuncao, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
         [ResourceAuthorize("Autuar", "Processo")]
@@ -151,7 +136,7 @@ namespace WebApp.Controllers
         public ActionResult Sinalizacoes(int id)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetSinalizacoes(_guidPatriarca, usuario.Token), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetSinalizacoes(usuario.Patriarca.guid, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
         [ResourceAuthorize("Autuar", "Processo")]
@@ -160,7 +145,7 @@ namespace WebApp.Controllers
         public ActionResult Autuar(AutuacaoModel autuacao)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.PostAtuacao(autuacao, _guidPatriarca, usuario.Token));
+            return Json(autuacao_ws.PostAtuacao(autuacao, "_guidPatriarca", usuario.Token));
         }
         
         public ActionResult Details(int id)

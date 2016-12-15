@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -16,17 +18,17 @@ namespace WebApp.Controllers
             using (var client = new HttpClient())
             {
                 //TODO: Está pulando a validação de certificado por causa do certificado inválido de DES e HMG
-                ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;                
+                ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                //client.SetBearerToken(token);                
-
 
                 var result = client.GetAsync(url).Result;
 
                 if (result.IsSuccessStatusCode)
                 {
+                    string teste = result.Content.ReadAsStringAsync().Result.ToString();
+
                     return JsonConvert.DeserializeObject<T>(result.Content.ReadAsStringAsync().Result);
                 }
                 else
@@ -34,43 +36,54 @@ namespace WebApp.Controllers
                     return new T();
                 }
             }
-
-            //using (var w = new WebClient())
-            //{
-            //    var json_data = string.Empty;
-            //    // attempt to download JSON data as a string
-            //    try
-            //    {
-            //        json_data = w.DownloadString(url);
-
-            //        throw new Exception(json_data);
-
-            //        byte[] bytes = Encoding.Default.GetBytes(json_data);
-            //        json_data = Encoding.UTF8.GetString(bytes);
-            //    }
-            //    catch (Exception)
-            //    {
-            //        throw;
-            //    }
-
-            //    // if string with JSON data is not empty, deserialize it to class and return its instance 
-            //    return !string.IsNullOrEmpty(json_data) ? JsonConvert.DeserializeObject<T>(json_data) : new T();
-            //}
         }
 
-        public static async Task<string> PostJson(string urlPost, string jsonString)
+        public static string JsonPostProcessoEletronico(string objeto, string url, string token)
         {
-            var Json = await Task.Run(() => JsonConvert.SerializeObject(jsonString));
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+            httpWebRequest.Headers.Add("Authorization", "Bearer " + token);
+
+            try
+            {
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    streamWriter.Write(JsonConvert.SerializeObject(objeto));
+                    streamWriter.Flush();
+                }
+
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    return result;
+                }
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+
+        }
+
+
+        public static string PostJson(object jsonString, string urlPost, string token)
+        {
+            var Json = JsonConvert.SerializeObject(jsonString);
             var httpContent = new StringContent(Json, Encoding.UTF8, "application/json");
 
-            using (var httpClient = new HttpClient())
+            using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 // Do the actual request and await the response
-                var httpResponse = await httpClient.PostAsync(urlPost, httpContent);
+                var httpResponse = client.PostAsync(urlPost, httpContent);
 
+                var teste = httpResponse.Result.Content.ToString();
 
-                return httpResponse.ToString();
+                return httpResponse.Result.Content.ToString();
 
             }
         }

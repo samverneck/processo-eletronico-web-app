@@ -14,43 +14,12 @@ function carregaDadosOrgaoExecutivoEstadual(event) {
 }
 
 function ajaxCarregaDadosOrgaoExecutivoEstadual(elemento) {
-    $.ajax('/Autuacao/OrganizacaoPorId/' + elemento.value)
+    $.ajax('/Autuacao/OrganizacaoPorGuid/' + elemento.value)
       .done(function (dados) {
 
           //interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', dados.contatos, dados.emails, dados.endereco.municipio.uf, dados.endereco.municipio.nome);
-          interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', [], [], dados.endereco.municipio.uf, dados.endereco.municipio.nome);
-
-          //$("input#cnpj").val(dados.cnpj);
-          //$("input#razaosocial").val(dados.razaoSocial);
-          //$("input#nomefantasia").val(dados.nomeFantasia);
-          //$("input#sigla").val(dados.sigla);
-          //$("select#esfera").val(dados.esfera.descricao);
-          //$("select#poder").val(dados.poder.descricao);
-          //$("#formPessoaJuridica .campo-uf").val(dados.endereco.municipio.uf.toLowerCase());
-
-          /*Insere municipio*/
-          //$("#formPessoaJuridica .campo-uf").trigger("change");//Dispara evento change do campo uf
-          //$("#formPessoaJuridica .campo-municipio").val(dados.endereco.municipio.nome);
-
-          /*Insere emails*/
-          //$.each(dados.emails, function (i, v) {
-          //    $('#emailPJ').val(v.endereco);
-          //    $('#btnIncluirEmailPJ').trigger("click");
-          //});
-
-          /*Insere contatos*/
-          //$.each(dados.contatos, function (i, v) {
-          //    $('#contatoPJ').val(v.telefone);
-          //    $('#btnIncluirContatoPJ').trigger("click");
-          //});
-
-          /*Insere sites*/
-          //$.each(dados.sites, function (i, v) {
-          //    $('#sitePJ').val(v.url);
-          //    $('#btnIncluirSitePJ').trigger("click");
-          //});
-
-          //desabilitaCamposPJ();
+          interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', [], [], dados.endereco.municipio.guidMunicipio, dados.tipo);
+          
       })
       .fail(function () {
           alert("error");
@@ -62,7 +31,7 @@ function ajaxCarregaDadosOrgaoExecutivoEstadual(elemento) {
 /*CARREGA UNIDADES DA ORGANIZACAO*/
 
 function ajaxCarregaUnidadesOrganizacao(elemento) {
-    $.ajax({ url: '/Autuacao/UnidadesPorOrganizacao/' + elemento.value, async: false })
+    $.ajax({ url: '/home/unidadesPorOrganizacao/' + elemento.value, async: false })
       .done(function (dados) {
           //Exclui itens do combo
           $('select#unidadeOrganizacaoPJ option:not([value="0"])').remove()

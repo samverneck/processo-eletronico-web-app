@@ -49,7 +49,7 @@ function objetoAutuacao(idAtividade, resumo, interessadosPessoaFisica, interessa
 }
 
 //Objeto Interessado Pessoa Juridica
-function objetoInteressadoPJ(razaoSocial, cnpj, sigla, nomeUnidade, siglaUnidade, contatos, emails, uf, municipio, tipo) {
+function objetoInteressadoPJ(razaoSocial, cnpj, sigla, nomeUnidade, siglaUnidade, contatos, emails, guidMunicipio, tipo) {
     this.razaoSocial = razaoSocial;
     this.cnpj = cnpj;
     this.sigla = sigla;
@@ -57,26 +57,23 @@ function objetoInteressadoPJ(razaoSocial, cnpj, sigla, nomeUnidade, siglaUnidade
     this.siglaUnidade = siglaUnidade;
     this.contatos = contatos;
     this.emails = emails;
-    this.ufMunicipio = uf;
-    this.nomeMunicipio = municipio;
+    this.guidMunicipio = guidMunicipio;
     this.tipo = tipo;
 }
 
 //Objeto Interessado Pessoa Física
-function objetoInteressadoPF(nome, cpf, contatos, emails, uf, municipio) {
+function objetoInteressadoPF(nome, cpf, contatos, emails, guidMunicipio) {
     this.nome = nome;
     this.cpf = cpf;
     this.contatos = contatos;
     this.emails = emails;
-    this.ufMunicipio = uf;
-    this.nomeMunicipio = municipio;
+    this.guidMunicipio = guidMunicipio;
 }
 
 
 //Objeto Municipio
-function objetoMunicipio(nome, uf) {
-    this.nome = nome;
-    this.uf = uf;
+function objetoMunicipio(guidMunicipio) {
+    this.guidMunicipio = guidMunicipio;
 };
 
 //Objeto Anexo

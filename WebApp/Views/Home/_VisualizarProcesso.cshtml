@@ -1,11 +1,5 @@
 ﻿@model WebApp.Models.ProcessoEletronico.ProcessoEletronicoModel
 
-<div>
-    <button class="btn btn-success">Despachar</button>
-</div>
-
-
-<h3>Dados do Processo</h3>
 <table class="table table-bordered table-condensed table-striped">
     <tr>
         <th class="col-md-3">Número do Processo</th>
@@ -121,7 +115,7 @@
         @foreach (var des in Model.despachos)
             {
             <tr>
-                <td>@des.siglaOrgaoDestino - @des.siglaUnidadeDestino</td>
+                <td>@des.siglaOrganizacaoDestino - @des.siglaUnidadeDestino</td>
                 <td>@des.texto</td>
                 <td>@des.nomeUsuarioDespachante</td>
                 <td>@des.dataHoraDespacho.AsDateTime().ToShortDateString()</td>
@@ -136,6 +130,7 @@
         <tr>
             <th>Arquivo</th>
             <th>Tipo</th>
+            <th class="col-md-2 text-center">Baixar</th>
         </tr>
     </thead>
     <tbody>
@@ -144,6 +139,11 @@
             <tr>
                 <td>@anexo.nome</td>
                 <td>@anexo.mimeType</td>
+                <td class="text-center">
+                    <a href="@Url.Action("Download", "Home", new { id = anexo.id })" class="btn btn-warning btn-xs">
+                        <i class="fa fa-download" aria-hidden="true"></i>                        
+                    </a>
+                </td>
             </tr>
         }
     </tbody>

@@ -26,11 +26,11 @@ namespace WebApp.Autorizacao
             }
 
             //Set Órgao
-            OrgaoModel _orgao = new OrgaoModel();
+            OrganizacaoModel _orgao = new OrganizacaoModel();
             try
             {
                 var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/sigla/" + this.SiglaOrganizacao;
-                _orgao = WorkServiceBase.download_serialized_json_data<OrgaoModel>(url, this.Token);
+                _orgao = WorkServiceBase.download_serialized_json_data<OrganizacaoModel>(url, this.Token);
                 this.Orgao = _orgao;
             }
             catch (Exception e)
@@ -40,11 +40,11 @@ namespace WebApp.Autorizacao
 
 
             //Set Patriarca
-            OrgaoModel _patriarca = new OrgaoModel();
+            OrganizacaoModel _patriarca = new OrganizacaoModel();
             try
             {
                 var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/" + this.Orgao.guid + "/patriarca";
-                _patriarca = WorkServiceBase.download_serialized_json_data<OrgaoModel>(url, this.Token);
+                _patriarca = WorkServiceBase.download_serialized_json_data<OrganizacaoModel>(url, this.Token);
                 this.Patriarca = _patriarca;
             }
             catch (Exception e)
@@ -92,9 +92,9 @@ namespace WebApp.Autorizacao
             }
         }
 
-        public OrgaoModel Orgao;        
+        public OrganizacaoModel Orgao;        
 
-        public OrgaoModel Patriarca;        
+        public OrganizacaoModel Patriarca;        
 
     }
 }

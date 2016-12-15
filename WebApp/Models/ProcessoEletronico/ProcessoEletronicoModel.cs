@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using WebApp.Models.Autuacao;
 using WebApp.Models.Despacho;
+using WebApp.Models.Organograma;
 
 namespace WebApp.Models.ProcessoEletronico
 {
@@ -19,9 +20,8 @@ namespace WebApp.Models.ProcessoEletronico
         public string siglaUnidadeAutuadora { get; set; }
         public string idUsuarioAutuador { get; set; }
         public string nomeUsuarioAutuador { get; set; }
-
-        public string dataAutuacao { get;  set; }
-        public string dataUltimoTramite { get;  set; }
+        public string dataAutuacao { get; set; }
+        public string dataUltimoTramite { get; set; }
 
         public DateTime dataAutuacao_DateTime
         {
@@ -29,15 +29,15 @@ namespace WebApp.Models.ProcessoEletronico
         }
         public DateTime dataUltimoTramite_DateTime
         {
-            get { return Convert.ToDateTime(this.dataUltimoTramite); }            
+            get { return Convert.ToDateTime(this.dataUltimoTramite); }
         }
 
         public string numero { get; set; }
         public int idOrganizacaoProcesso { get; set; }
-        public List<DespachoResponseModel> despachos { get; set; }
+        public List<DespachoGetModel> despachos { get; set; }
         public List<InteressadoPessoaFisica> interessadosPessoaFisica { get; set; }
         public List<InteressadoPessoaJuridica> interessadosPessoaJuridica { get; set; }
-        public List<Municipio> municipiosProcesso { get; set; }
+        public List<MunicipioModel> municipiosProcesso { get; set; }
         public List<SinalizacaoModel> sinalizacoes { get; set; }
         public AtividadeModel atividade { get; set; }
         public List<AnexoModel> anexos { get; set; }

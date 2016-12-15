@@ -196,7 +196,7 @@
     <Compile Include="Models\Despacho\DespachoModel.cs" />
     <Compile Include="Models\Despacho\DespachoPostModel.cs" />
     <Compile Include="Models\Home\HomeModel.cs" />
-    <Compile Include="Models\Organograma\OrgaoModel.cs" />
+    <Compile Include="Models\Organograma\UnidadeModel.cs" />
     <Compile Include="Models\ProcessoEletronico\InteressadoPessoaFisica.cs" />
     <Compile Include="Models\ProcessoEletronico\InteressadoPessoaJuridica.cs" />
     <Compile Include="Models\ProcessoEletronico\ProcessoEletronicoModel.cs" />
@@ -206,8 +206,6 @@
     <Compile Include="Models\Organograma\OrganogramaModel.cs" />
     <Compile Include="Models\Organograma\PoderModel.cs" />
     <Compile Include="Models\Organograma\TipoOrganizacaoModel.cs" />
-    <Compile Include="Models\Organograma\TipoUnidadeModel.cs" />
-    <Compile Include="Models\Organograma\UnidadeModel.cs" />
     <Compile Include="Models\ProcessoEletronico\TipoDocumentalModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

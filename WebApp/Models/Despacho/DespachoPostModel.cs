@@ -6,19 +6,14 @@ using WebApp.Models.Autuacao;
 
 namespace WebApp.Models.Despacho
 {
-    public class DespachoPostModel    
+    public class DespachoPostModel
     {
+        public int idProcesso { get; set; }
         public string texto { get; set; }
         public List<AnexoModel> anexos { get; set; }
-        public int idOrganizacaoDestino { get; set; }
-        public string nomeOrganizacaoDestino { get; set; }
-        public string siglaOrganizacaoDestino { get; set; }
-        public int idUnidadeDestino { get; set; }
-        public string nomeUnidadeDestino { get; set; }
-        public string siglaUnidadeDestino { get; set; }
-        public string idUsuarioDespachante { get; set; }
-        public string nomeUsuarioDespachante { get; set; }
-    }
+        public string guidOrganizacaoDestino { get; set; }
+        public string guidUnidadeDestino { get; set; }
+    }    
 }
 
 

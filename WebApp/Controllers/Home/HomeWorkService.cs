@@ -1,15 +1,18 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web;
+using WebApp.Models.Autuacao;
+using WebApp.Models.Despacho;
 using WebApp.Models.ProcessoEletronico;
 
 namespace WebApp.Controllers.Home
 {
     public class HomeWorkService : WorkServiceBase
     {
-        public List<ProcessoEletronicoModel> GetProcessosPorOrganizacaoPorOrgao(string guidOrganizacao, string token)
+        public List<ProcessoEletronicoModel> GetProcessosPorOrgao(string guidOrganizacao, string token)
         {
             List<ProcessoEletronicoModel> listaProcessos = new List<ProcessoEletronicoModel>();
 
@@ -27,7 +30,7 @@ namespace WebApp.Controllers.Home
             }
         }
 
-        public ProcessoEletronicoModel GetProcessosPorOrganizacaoPorProcesso(string numeroProcesso, string token)
+        public ProcessoEletronicoModel GetProcessoPorNumero(string numeroProcesso, string token)
         {
             ProcessoEletronicoModel processos = new ProcessoEletronicoModel();
 
@@ -41,6 +44,40 @@ namespace WebApp.Controllers.Home
             {
                 Console.WriteLine(e.Message);
                 return processos;
+            }
+        }
+        
+        public AnexoModel GetAnexo(int idAnexo, string token)
+        {
+            AnexoModel anexo = new AnexoModel();
+
+            try
+            {
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "anexos/" + idAnexo;
+                anexo = download_serialized_json_data<AnexoModel>(url, token);
+                return anexo;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return anexo;
+            }
+        }
+
+        public string PostDespacho(DespachoPostModel despacho, string token)
+        {
+            
+            try
+            {
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "despachos";
+                //return JsonPostProcessoEletronico(JsonConvert.SerializeObject(despacho).ToString(), url, token);
+
+                return PostJson(despacho, url, token);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return "0";
             }
         }
     }

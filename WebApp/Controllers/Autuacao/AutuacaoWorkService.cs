@@ -71,13 +71,47 @@ namespace WebApp.Controllers.Autuacao
             }            
         }
 
-        public OrganizacaoModel GetOrganizacao(int id, string token)
+        public OrganizacaoModel GetPatriarca(string guidOrganizacao, string token)
+        {
+            OrganizacaoModel patriarca = new OrganizacaoModel();
+
+            try
+            {
+                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/" + guidOrganizacao + "/patriarca";
+                patriarca = download_serialized_json_data<OrganizacaoModel>(url, token);
+                return patriarca;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return patriarca;
+            }            
+        }
+
+        public List<OrganizacaoModel> GetOrgaosPorPatriarca(string guidOrganizacao, string token)
+        {
+            List<OrganizacaoModel> orgaos = new List<OrganizacaoModel>();
+
+            try
+            {
+                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/" + guidOrganizacao + "/filhas";
+                orgaos = download_serialized_json_data<List<OrganizacaoModel>>(url, token);
+                return orgaos;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return orgaos;
+            }
+        }
+
+        public OrganizacaoModel GetOrganizacaoPorGuid(string guidOrganizacao, string token)
         {
             OrganizacaoModel organizacao = new OrganizacaoModel();
 
             try
             {
-                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/" + id;
+                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/" + guidOrganizacao + "/filhas";
                 organizacao = download_serialized_json_data<OrganizacaoModel>(url, token);
                 return organizacao;
             }
@@ -85,16 +119,17 @@ namespace WebApp.Controllers.Autuacao
             {
                 Console.WriteLine(e.Message);
                 return organizacao;
-            }            
+            }
         }
 
-        public List<UnidadeModel> GetUnidadesPorOrganizacao(string guid, string token)
+
+        public List<UnidadeModel> GetUnidadesPorOrganizacao(string guidOrganizacao, string token)
         {
             List<UnidadeModel> unidades = new List<UnidadeModel>();
 
             try
-            {
-                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "unidades?idorganizacao=" + guid;
+            {                
+                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "unidades/organizacao/" + guidOrganizacao;
                 unidades = download_serialized_json_data<List<UnidadeModel>>(url, token);
                 return unidades;
             }
@@ -123,13 +158,13 @@ namespace WebApp.Controllers.Autuacao
             }            
         }
 
-        public List<PlanoClassificacaoModel> GetPlanosClassificacao(int id, int idOrganizacao, string token)
+        public List<PlanoClassificacaoModel> GetPlanosClassificacao(string guidOrganizacao, string token)
         {
             List<PlanoClassificacaoModel> planosClassificacao = new List<PlanoClassificacaoModel>();
 
             try
             {
-                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/planos-classificacao/" + idOrganizacao;
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "planos-classificacao/organizacao/" + guidOrganizacao;
                 planosClassificacao = download_serialized_json_data<List<PlanoClassificacaoModel>>(url, token);
                 return planosClassificacao;
             }
@@ -140,13 +175,13 @@ namespace WebApp.Controllers.Autuacao
             }
         }
 
-        public List<FuncaoModel> GetFuncoes(int id, int idPlanoClassificacao, string token)
+        public List<FuncaoModel> GetFuncoes(int idPlanoClassificacao, string token)
         {
             List<FuncaoModel> funcoes = new List<FuncaoModel>();
 
             try
             {
-                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/funcoes/" + idPlanoClassificacao;
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "funcoes/plano-classificacao/" + idPlanoClassificacao;
                 funcoes = download_serialized_json_data<List<FuncaoModel>>(url, token);
                 return funcoes;
             }
@@ -157,13 +192,13 @@ namespace WebApp.Controllers.Autuacao
             }            
         }
 
-        public List<AtividadeModel> GetAtividades(int id, int idFuncao, string token)
+        public List<AtividadeModel> GetAtividades(int idFuncao, string token)
         {
             List<AtividadeModel> atividades = new List<AtividadeModel>();
 
             try
             {
-                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/atividades/" + idFuncao;
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "atividades/funcao/" + idFuncao;
                 atividades = download_serialized_json_data<List<AtividadeModel>>(url, token);
                 return atividades;
             }
@@ -174,13 +209,13 @@ namespace WebApp.Controllers.Autuacao
             }            
         }
 
-        public List<SinalizacaoModel> GetSinalizacoes(int id, string token)
+        public List<SinalizacaoModel> GetSinalizacoes(string guidPatriarca, string token)
         {
             List<SinalizacaoModel> sinalizacoes = new List<SinalizacaoModel>();
 
             try
             {
-                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/sinalizacoes";
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "sinalizacoes/organizacao-patriarca/" + guidPatriarca;
                 sinalizacoes = download_serialized_json_data<List<SinalizacaoModel>>(url, token);
                 return sinalizacoes;
             }
@@ -191,9 +226,9 @@ namespace WebApp.Controllers.Autuacao
             }            
         }
 
-        public string PostAtuacao(AutuacaoModel autuacao, int id, string token)
+        public string PostAtuacao(Object objeto, string url, string token)
         {
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + id + "/processos");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + "/processos");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
             httpWebRequest.Headers.Add("Authorization", "Bearer " + token);
@@ -202,7 +237,7 @@ namespace WebApp.Controllers.Autuacao
             {
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                 {
-                    streamWriter.Write(JsonConvert.SerializeObject(autuacao));
+                    streamWriter.Write(JsonConvert.SerializeObject(objeto));
                     streamWriter.Flush();
                 }
 

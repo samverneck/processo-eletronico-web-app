@@ -39,13 +39,13 @@ $('#planoClassificacao').on('change', carregaFuncoes);
 function carregaFuncoes(event) {
     var elemento = event.currentTarget;
 
-    if (elemento.value > 0) {        
+    if (elemento.value > 0) {
         $('select#funcao option:not([value=""])').remove()
         ajaxCarregaFuncoes(formAutuacao.idOrganizacaoPai, elemento.value);
     }
-    else {        
+    else {
         $('select#funcao option:not([value=""])').remove()
-        
+
     }
 }
 
@@ -84,7 +84,7 @@ function carregaAtividades(event) {
 //Carrega orgaos publicos do executivo estadual ES para o combo
 function ajaxCarregaAtividades(id, idPlanoClassificacao) {
     $.ajax('/Autuacao/Atividades?id=' + id + '&idFuncao=' + idPlanoClassificacao)
-      .done(function (dados) {          
+      .done(function (dados) {
           $.each(dados, function (i) {
               var optionhtml = '<option value="' + this.id + '">' + this.descricao + '</option>';
               $('#atividade').append(optionhtml);
@@ -167,7 +167,7 @@ $('#btnIncluirInteressado').on('click', function () {
     var form = $('#modalInteressados div.tab-content .active form')[0];
 
     //Inclusao de Pessoa Juridica
-    if ($(form).prop('id') == 'formPessoaJuridica') {        
+    if ($(form).prop('id') == 'formPessoaJuridica') {
 
         var pjExiste = false;
 
@@ -307,7 +307,7 @@ function ajaxCarregaOrgaosExecutivoEstadual() {
       .done(function (dados) {
 
           $.each(dados, function (i) {
-              var optionhtml = '<option value="' + this.id + '">' + this.sigla + ' - ' + this.razaoSocial + '</option>';
+              var optionhtml = '<option value="' + this.guid + '">' + this.sigla + ' - ' + this.razaoSocial + '</option>';
               $('#organizacaoPublica').append(optionhtml);
           });
 
@@ -325,7 +325,7 @@ function ajaxCarregaOutrosOrgaosPublicos() {
       .done(function (dados) {
 
           $.each(dados, function (i) {
-              var optionhtml = '<option value="' + this.id + '">' + this.sigla + ' - ' + this.razaoSocial + '</option>';
+              var optionhtml = '<option value="' + this.guid + '">' + this.sigla + ' - ' + this.razaoSocial + '</option>';
               $('#organizacaoPublica').append(optionhtml);
           });
 
@@ -457,13 +457,12 @@ function bytesToSize(bytes) {
 
 //$(document).ready(function () {
 //    $('.btn-input-file').click(function () {
+//        alert('teste');
 //        $(this).closest($(".input-file").click());
 //    });
 //});
 
-$('button').on('click', '.btn-input-file', function () {
-    alert('teste');
-
+$('body').on('click', '.btn-input-file', function () {
     $(this).closest($(".input-file").click());
 });
 
@@ -476,8 +475,7 @@ $('#btnAutuar').on('click', function (e) {
     var validaResponsavel = formAutuacaoResponsavelValidate.checkForm();
 
     //Valida preenchimento dos campos das abas de Resumo e Sinalização e Responsavel e Interessados
-    if (!validaFormResumo || !validaResponsavel)
-    {
+    if (!validaFormResumo || !validaResponsavel) {
         return false;
     }
 
@@ -490,7 +488,7 @@ $('#btnAutuar').on('click', function (e) {
     if (arrayPJ.length == 0 && arrayPF.length == 0) {
         return false;
     }
-    
+
 
     var formResumo = $('#formResumoSinalizacao')[0];
     var formResponsavel = $('#formAutuacaoResponsavel')[0];
@@ -579,4 +577,27 @@ $(document).ajaxStart(function () {
 
 $(document).ajaxStop(function () {
     $('#modalWaiting').modal('hide');
+});
+
+
+
+/****************************************************************************************************************************************************************************/
+/*MODAL WAITING*/
+$('body').on('change', '#btnFileAnexos', function () {
+    var form;
+    form = new FormData();
+    form.append('fileUpload', event.target.files[0]); // para apenas 1 arquivo
+    //var name = event.target.files[0].content.name; // para capturar o nome do arquivo com sua extenção
+
+
+    $.ajax({
+        url: '/Home/Upload', // Url do lado server que vai receber o arquivo
+        data: form,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function (data) {
+            // utilizar o retorno
+        }
+    });
 });

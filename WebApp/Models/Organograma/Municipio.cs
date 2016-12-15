@@ -7,8 +7,7 @@ namespace WebApp.Models.Organograma
 {
     public class MunicipioModel
     {
-        public string inicioVigencia { get; set; }
-        public int id { get; set; }
+        public string guid { get; set; }
         public int codigoIbge { get; set; }
         public string nome { get; set; }
         public string uf { get; set; }

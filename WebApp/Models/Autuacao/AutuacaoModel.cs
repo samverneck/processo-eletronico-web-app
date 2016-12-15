@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WebApp.Models.Organograma;
 
 namespace WebApp.Models.Autuacao
 {
@@ -11,7 +12,7 @@ namespace WebApp.Models.Autuacao
         public string resumo { get; set; }
         public List<InteressadosPessoaFisica> interessadosPessoaFisica { get; set; }
         public List<InteressadosPessoaJuridica> interessadosPessoaJuridica { get; set; }
-        public List<Municipio> municipios { get; set; }
+        public List<MunicipioModel> municipios { get; set; }
         public List<AnexoModel> anexos { get; set; }
         public List<int> idSinalizacoes { get; set; }
         public int idOrgaoAutuador { get; set; }
@@ -61,6 +62,7 @@ namespace WebApp.Models.Autuacao
 
     public class Municipio
     {
+        public string guidMunicipio { get; set; }
         public string uf { get; set; }
         public string nome { get; set; }
     }    
