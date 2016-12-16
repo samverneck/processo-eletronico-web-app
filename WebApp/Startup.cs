@@ -43,7 +43,7 @@ namespace WebApp
                 PostLogoutRedirectUri = localApp,
                 ResponseType = "code id_token",
                 Scope = "openid profile offline_access cpf email nome ApiProcessoEletronico ApiOrganograma",
-                
+
 
                 TokenValidationParameters = new TokenValidationParameters
                 {
@@ -61,10 +61,10 @@ namespace WebApp
                         var tokenClient = new TokenClient(
                             "https://acessocidadao.es.gov.br/is/connect/token",
                             "processoeletronicowebapp-des",
-                            Environment.GetEnvironmentVariable("SecretProcessoEletronicoApp"));
+                            ConfigurationManager.AppSettings["SecretProcessoEletronicoApp"]);                            
 
                         var tokenResponse = await tokenClient.RequestAuthorizationCodeAsync(
-                            n.Code, n.RedirectUri);
+                                        n.Code, n.RedirectUri);
 
                         if (tokenResponse.IsError)
                         {

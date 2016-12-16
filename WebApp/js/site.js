@@ -99,11 +99,11 @@ function ajaxCarregaAtividades(id, idPlanoClassificacao) {
 /*CARREGA TIPOS CONTATO*/
 
 $(document).ready(function () {
-    ajaxCarregaTiposContato();
+    //ajaxCarregaTiposContato();
 });
 
 function ajaxCarregaTiposContato() {
-    $.ajax({ url: '/Autuacao/TiposContato', async: false })
+    $.ajax({ url: '/Autuacao/TiposContato'})
       .done(function (dados) {
           $.each(dados, function (i) {
               var optionhtml = '<label class="radio-inline">';
@@ -128,29 +128,26 @@ function ajaxCarregaTiposContato() {
 /****************************************************************************************************************************************************************************/
 /*CARREGA MUNICIPIOS*/
 
-$('.campo-uf').on('blur', carregaMunicipios);
+$('body').on('change', '.campo-uf', consultaMunicipios);
 
-function carregaMunicipios(event) {
-    var elemento = event.currentTarget;
-
+var consultaMunicipios = function (e) {    
+    e.stopPropagation();
+    var elemento = this;
     $(elemento).parents().find('form .campo-municipio option:not([value=""])').remove();
 
     if (elemento.value !== '') {
         ajaxCarregaMunicipios(elemento);
-    }
-}
+    }    
+};
 
 function ajaxCarregaMunicipios(elemento) {
     $.ajax({ url: '/Autuacao/MunicipiosPorUf?uf=' + elemento.value, async: false })
       .done(function (dados) {
-
           $.each(dados, function (i) {
-              var optionhtml = '<option value="' + this.nome + '">' + this.nome + '</option>';
+              var optionhtml = '<option data-municipio="'+ this.nome +'" value="' + this.nome + '">' + this.nome + '</option>';
               $(elemento).parents().find('form .campo-municipio').append(optionhtml);
           });
-
           console.log(dados.length);
-
       })
       .fail(function () {
           alert("error");
@@ -204,7 +201,7 @@ $('#btnIncluirInteressado').on('click', function () {
                     return false;
                 }
 
-                arrayPJ.push(new objetoInteressadoPJ(form['razaosocial'].value, form['cnpj'].value.replace(/\/|\.|\-/g, ""), form['sigla'].value, '', '', contatosPJ, emailsPJ, form['uf'].value, form['municipio'].value));
+                arrayPJ.push(new objetoInteressadoPJ(form['razaosocial'].value, form['cnpj'].value.replace(/\/|\.|\-/g, ""), form['sigla'].value, '', '', contatosPJ, emailsPJ, form['municipio'].value));
             }
 
             //Reseta formulario
@@ -215,6 +212,9 @@ $('#btnIncluirInteressado').on('click', function () {
 
         //Limpa Objeto Provisorio
         interessadoPJProvisorio = null;
+
+        //Recarrega Tabela Interessados
+        carregaTabelaInteressados();
     }
 
     //Inclusao de Pessoa Fisica
@@ -246,10 +246,11 @@ $('#btnIncluirInteressado').on('click', function () {
 
             //Reseta formulario
             limparFormPessoaFisica();
-        }
-    }
 
-    carregaTabelaInteressados();
+            //Recarrega Tabela Interessados
+            carregaTabelaInteressados();
+        }
+    }    
 
 });
 
@@ -352,7 +353,7 @@ function prepareMunicipios(event) {
     }
 
     if ($('#municipio').val() != '' && $('#uf').val() != '') {
-        arrayMunicipios.push(new objetoMunicipio($('#municipio').val(), $('#uf').val()));
+        arrayMunicipios.push(new objetoMunicipio($('#municipio').val(), $('#uf').val(), $('#municipio').attr('data-municipio')));
         $('#municipio').prop("selectedIndex", 0);
 
         carregaTabelaMunicipios();
@@ -577,27 +578,4 @@ $(document).ajaxStart(function () {
 
 $(document).ajaxStop(function () {
     $('#modalWaiting').modal('hide');
-});
-
-
-
-/****************************************************************************************************************************************************************************/
-/*MODAL WAITING*/
-$('body').on('change', '#btnFileAnexos', function () {
-    var form;
-    form = new FormData();
-    form.append('fileUpload', event.target.files[0]); // para apenas 1 arquivo
-    //var name = event.target.files[0].content.name; // para capturar o nome do arquivo com sua extenção
-
-
-    $.ajax({
-        url: '/Home/Upload', // Url do lado server que vai receber o arquivo
-        data: form,
-        processData: false,
-        contentType: false,
-        type: 'POST',
-        success: function (data) {
-            // utilizar o retorno
-        }
-    });
 });

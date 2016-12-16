@@ -70,8 +70,6 @@ namespace WebApp.Controllers.Home
             try
             {
                 var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "despachos";
-                //return JsonPostProcessoEletronico(JsonConvert.SerializeObject(despacho).ToString(), url, token);
-
                 return PostJson(despacho, url, token);
             }
             catch (Exception e)

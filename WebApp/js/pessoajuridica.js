@@ -6,19 +6,18 @@
 $('#organizacaoPublica').on('blur', carregaDadosOrgaoExecutivoEstadual);
 
 function carregaDadosOrgaoExecutivoEstadual(event) {
-    var elemento = $('#organizacaoPublica');
+    var elemento = $('#organizacaoPublica')[0].value;
     limpaTabelasListasEmailContatoSite();
-    ajaxCarregaDadosOrgaoExecutivoEstadual(elemento[0]);
-    ajaxCarregaUnidadesOrganizacao(elemento[0]);
+    ajaxCarregaDadosOrgaoExecutivoEstadual(elemento);
+    ajaxCarregaUnidadesOrganizacao(elemento);
     //$('.panelPJ').show();
 }
 
 function ajaxCarregaDadosOrgaoExecutivoEstadual(elemento) {
-    $.ajax('/Autuacao/OrganizacaoPorGuid/' + elemento.value)
+    $.ajax('/Autuacao/OrganizacaoPorGuid?guidOrganizacao=' + elemento)
       .done(function (dados) {
-
           //interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', dados.contatos, dados.emails, dados.endereco.municipio.uf, dados.endereco.municipio.nome);
-          interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', [], [], dados.endereco.municipio.guidMunicipio, dados.tipo);
+          interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', [], [], dados.endereco.municipio.guid, dados.tipo);
           
       })
       .fail(function () {
@@ -31,7 +30,7 @@ function ajaxCarregaDadosOrgaoExecutivoEstadual(elemento) {
 /*CARREGA UNIDADES DA ORGANIZACAO*/
 
 function ajaxCarregaUnidadesOrganizacao(elemento) {
-    $.ajax({ url: '/home/unidadesPorOrganizacao/' + elemento.value, async: false })
+    $.ajax({ url: '/Autuacao/unidadesPorOrganizacao?guidOrganizacao=' + elemento, async: false })
       .done(function (dados) {
           //Exclui itens do combo
           $('select#unidadeOrganizacaoPJ option:not([value="0"])').remove()
@@ -201,7 +200,7 @@ function limparFormPessoaJuridica() {
     $('#selecaoSetorDestino').hide();
 
     formPessoaJuridicaEmailsValidate.resetForm();
-    formPessoaJuridicaContatosValidate.resetaForm();
+    //formPessoaJuridicaContatosValidate.resetaForm();
 }
 
 function resetaForm() {

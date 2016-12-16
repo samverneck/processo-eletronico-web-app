@@ -255,6 +255,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="js\despacho.js" />
+    <Content Include="js\visualizacao.js" />
+    <Content Include="js\home.js" />
     <Content Include="js\models.js" />
     <Content Include="js\pessoafisica.js" />
     <Content Include="js\pessoajuridica.js" />
@@ -1294,7 +1297,7 @@
     <Content Include="Views\Home\_CaixaEntradaSetor.cshtml" />
     <Content Include="Views\Home\_Rascunho.cshtml" />
     <Content Include="Views\Home\_CaixaSaida.cshtml" />
-    <Content Include="Views\Autuacao\Index.cshtml" />
+    <Content Include="Views\Autuacao\_Index.cshtml" />
     <Content Include="Views\Despacho\Index.cshtml" />
     <Content Include="Views\Arquivamento\Index.cshtml" />
     <Content Include="Views\Autuacao\_Autuar.cshtml" />
@@ -1306,7 +1309,12 @@
     <Content Include="Views\Home\_usuario.cshtml" />
     <Content Include="Views\Despacho\_formularioDespacho.cshtml" />
     <Content Include="Views\Home\_DespacharProcesso.cshtml" />
+    <Content Include="Views\Shared\_ConsultaProcessoLayout.cshtml" />
+    <Content Include="Views\Autuacao\Index.cshtml" />
     <None Include="Web.Desenvolvimento.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
@@ -1320,6 +1328,9 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Desenvolvimento|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Homologacao|AnyCPU'">
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

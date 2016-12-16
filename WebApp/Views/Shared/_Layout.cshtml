@@ -57,12 +57,12 @@
                     <span class="logotipo-mini"><img src="~/img/Brasao.png" class="img-responsive" /></span>
                     <span class="logotipo-lg"><img src="~/img/Brasao_Governo_horizontal_white_left_small.png" class="img-responsive" /></span>
                 </a>
-                <!-- search form (Optional) -->
-                <form action="#" method="get" class="sidebar-form">
+                <!-- search form (Optional) -->                
+                <form class="sidebar-form">
                     <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="Processo...">
+                        <input type="text" name="numeroProcesso" id="numeroProcesso" class="form-control" placeholder="Processo...">
                         <span class="input-group-btn">
-                            <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                            <button type="button" name="search" id="search-btn" class="btn btn-flat">
                                 <i class="fa fa-search"></i>
                             </button>
                         </span>
@@ -75,11 +75,11 @@
                     <!-- Optionally, you can add icons to the links -->
                     <li class="active"><a href="@Url.Action("Index", "Home")"><i class="fa fa-tachometer"></i> <span>Meu Painel</span></a></li>
                     <li><a href="@Url.Action("Index", "Autuacao")"><i class="fa fa-file-text-o"></i> <span>Autuar Processo</span></a></li>
-                    <li><a href="@Url.Action("Index", "Despacho")"><i class="fa fa-pencil-square-o"></i> <span>Despachar Processo</span></a></li>
-                    <li><a href="@Url.Action("Index", "Arquivamento")"><i class="fa fa-archive"></i> <span>Arquivar Processo</span></a></li>
-                    <li class="header">CONFIGURAÇÕES</li>
-                    <li><a href="#"><i class="fa fa-bell-o"></i> <span>Sinalização</span></a></li>
-                    <li><a href="#"><i class="fa fa-puzzle-piece"></i> <span>Tipo Documental</span></a></li>
+                    @*<li><a href="@Url.Action("Index", "Despacho")"><i class="fa fa-pencil-square-o"></i> <span>Despachar Processo</span></a></li>
+                        <li><a href="@Url.Action("Index", "Arquivamento")"><i class="fa fa-archive"></i> <span>Arquivar Processo</span></a></li>
+                        <li class="header">CONFIGURAÇÕES</li>
+                        <li><a href="#"><i class="fa fa-bell-o"></i> <span>Sinalização</span></a></li>
+                        <li><a href="#"><i class="fa fa-puzzle-piece"></i> <span>Tipo Documental</span></a></li>*@
                     <!--<li class="treeview">
                         <a href="#">
                             <i class="fa fa-link"></i> <span>Configurações SEP</span>
@@ -138,6 +138,7 @@
         <div class="control-sidebar-bg"></div>
     </div>
     <!-- ./wrapper -->
+
     <!-- Modal Waiting -->
     <div class="modal fade" id="modalWaiting" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -151,14 +152,60 @@
         </div>
     </div>
 
+    <!--Modal Visualizacao Processo-->
+    <div class="modal fade" id="modalProcesso" tabindex="-1" role="dialog" aria-labelledby="modalProcessoLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="modalProcessoLabel">Visualização de Processo</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="visualizarProcesso">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Fechar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <!--Modal Despacho Processo-->
+    <div class="modal fade" id="modalDespacho" tabindex="-1" role="dialog" aria-labelledby="modalDespachoLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="modalProcessoLabel">Despacho</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="despachoProcesso">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Fechar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
     <!-- Modal Error -->
     <div class="modal fade" id="modalError" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="modalErrorLabel">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">                
+            <div class="modal-content">
                 <div class="modal-body">
                     <h3>Sua sessão expirou!</h3>
                     <p>Clique no botão abaixo para iniciar uma nova sessão.</p>
-                    <a href="@Url.Action("Index", "Home")" title="Iniciar nova sessão" class="btn btn-success" ><i class="fa fa-refresh" aria-hidden="true"></i> Iniciar nova sessão</a>
+                    <a href="@Url.Action("Index", "Home")" title="Iniciar nova sessão" class="btn btn-success"><i class="fa fa-refresh" aria-hidden="true"></i> Iniciar nova sessão</a>
                 </div>
             </div>
         </div>
@@ -175,6 +222,9 @@
     <script src="~/Scripts/validate/jquery.validate.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/js/app.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/js/visualizacao.js"></script>
+    <script src="~/js/despacho.js"></script>
 
     @RenderSection("scripts", required: false)
 </body>

@@ -82,16 +82,16 @@ namespace WebApp.Controllers
         public ActionResult OrganizacaoPorGuid(string guidOrganizacao)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetPatriarca(guidOrganizacao, usuario.Token), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetOrganizacaoPorGuid(guidOrganizacao, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
         [ResourceAuthorize("Autuar", "Processo")]
         [HandleForbidden]
         [HttpGet]
-        public ActionResult UnidadesPorOrganizacao(string guid)
+        public ActionResult UnidadesPorOrganizacao(string guidOrganizacao)
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
-            return Json(autuacao_ws.GetUnidadesPorOrganizacao(guid, usuario.Token), JsonRequestBehavior.AllowGet);
+            return Json(autuacao_ws.GetUnidadesPorOrganizacao(guidOrganizacao, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
         [ResourceAuthorize("Autuar", "Processo")]
@@ -183,18 +183,9 @@ namespace WebApp.Controllers
 
         // POST: Autuacao/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult SalvarPessoaFisica(InteressadosPessoaFisica pf)
         {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return Json(pf, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Autuacao/Delete/5

@@ -27,7 +27,7 @@
                     <li class=""><a href="#tab_2" title="Responsáveis e Interessados" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-users"></i> Responsáveis e Interessados</h4></a></li>
                     <li class=""><a href="#tab_3" title="Abrangência" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-list"></i> Abrangência</h4></a></li>
                     <li class=""><a href="#tab_4" title="Anexos" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-link"></i> Anexos</h4></a></li>
-                    <li class=""><a href="#tab_5" title="Confirmar Autuação" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-paper-plane-o"></i> Confirmar Autuação</h4></a></li>
+                    @*<li class=""><a href="#tab_5" title="Confirmar Autuação" data-toggle="tab" aria-expanded="false"><h4><i class="fa fa-paper-plane-o"></i> Confirmar Autuação</h4></a></li>*@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab_1">
@@ -35,12 +35,13 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
-                                        <label for="orgao">Plano de Classificação</label>                                        
+                                        <label for="orgao">Plano de Classificação</label>
 
                                         @Html.DropDownListFor(m => m.planosClassificacao,
                                           new SelectList(Model.planosClassificacao, "id", "descricao"),
                                           "Selecione um Plano de Classificação",
                                           new { @class = "form-control", @onchange = "carregaFuncoes", @id = "planoClassificacao" })
+
 
                                     </div>
                                 </div>
@@ -71,12 +72,12 @@
                                         <label>Sinalização</label>
                                         @foreach (var ckb in Model.sinalizacoes)
                                         {
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" value="@ckb.id" name="sinalizacao">
-                                                @ckb.descricao
-                                            </label>
-                                        </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="@ckb.id" name="sinalizacao">
+                                                    @ckb.descricao
+                                                </label>
+                                            </div>
                                         }
                                     </div>
                                 </div>
@@ -88,6 +89,7 @@
                             </div>
                         </form>
                     </div>
+
                     <div class="tab-pane" id="tab_2">
                         <form id="formAutuacaoResponsavel">
                             <div class="box-body">
@@ -104,13 +106,13 @@
                                     </div>
                                 </div>
                                 @*<div class="row">
-                                    <div class="col-lg-6 form-group">
-                                        <div class="form-group">
-                                            <label for="setor">Unidade Responsável</label>
-                                            <input type="text" value="@Model.siglaUnidadeAutuadora - @Model.nomeUnidadeAutuadora" data-id="@Model.idUnidadeAutuadora" data-sigla="@Model.siglaUnidadeAutuadora" class="form-control" name="nomeUnidadeAutuadora" id="nomeUnidadeAutuadora" disabled="disabled" />
+                                        <div class="col-lg-6 form-group">
+                                            <div class="form-group">
+                                                <label for="setor">Unidade Responsável</label>
+                                                <input type="text" value="@Model.siglaUnidadeAutuadora - @Model.nomeUnidadeAutuadora" data-id="@Model.idUnidadeAutuadora" data-sigla="@Model.siglaUnidadeAutuadora" class="form-control" name="nomeUnidadeAutuadora" id="nomeUnidadeAutuadora" disabled="disabled" />
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>*@
+                                    </div>*@
 
                                 <label>Interessados</label>
                                 <div class="form-group">
@@ -250,24 +252,25 @@
                         <div class="box-footer">
                             <ul class="list-inline pull-right">
                                 <li><a href="#tab_3" class="btn btn-default pull-right prev-step" data-toggle="tab"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Anterior</a></li>
-                                <li><a href="#tab_5" class="btn btn-primary pull-right next-step" data-toggle="tab">Próximo <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane" id="tab_5">
-                        <div class="box-body">
-                            <h3>Confirmar Autuação do Processo</h3>
-                        </div>
-
-                        <div class="box-footer">
-                            <ul class="list-inline pull-right">
-                                <li><a href="#tab_4" class="btn btn-default pull-right prev-step" data-toggle="tab"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Anterior</a></li>
                                 <li><button type="button" id="btnAutuar" class="btn btn-danger pull-right"><i class="fa fa-save" aria-hidden="true"></i> Enviar Processo</button></li>
+                                @*<li><a href="#tab_5" class="btn btn-primary pull-right next-step" data-toggle="tab">Próximo <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></li>*@
                             </ul>
                         </div>
-
                     </div>
+
+                    @*<div class="tab-pane" id="tab_5">
+                            <div class="box-body">
+                                <h3>Confirmar Autuação do Processo</h3>
+                            </div>
+
+                            <div class="box-footer">
+                                <ul class="list-inline pull-right">
+                                    <li><a href="#tab_4" class="btn btn-default pull-right prev-step" data-toggle="tab"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Anterior</a></li>
+                                    <li><button type="button" id="btnAutuar" class="btn btn-danger pull-right"><i class="fa fa-save" aria-hidden="true"></i> Enviar Processo</button></li>
+                                </ul>
+                            </div>
+
+                        </div>*@
                 </div>
             </div>
             <!--Fim do conteúdo da página-->
@@ -319,13 +322,12 @@
 </div>
 
 @section scripts{
-<script>
-    formAutuacao = @Html.Raw(Json.Encode(Model));
-</script>
-<script src="~/js/models.js"></script>
-<script src="~/js/site.js"></script>
-<script src="~/js/pessoajuridica.js"></script>
-<script src="~/js/pessoafisica.js"></script>
-<script src="~/js/validacoes.js"></script>
+    <script>
+        formAutuacao = @Html.Raw(Json.Encode(Model));
+    </script>
+    <script src="~/js/models.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/js/pessoajuridica.js"></script>
+    <script src="~/js/pessoafisica.js"></script>
+    <script src="~/js/validacoes.js"></script>
 }
-

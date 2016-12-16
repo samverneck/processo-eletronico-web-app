@@ -1,0 +1,29 @@
+﻿@model WebApp.Models.Autuacao.FormAutuacaoModel
+
+@{
+    ViewBag.Title = "AUTUAÇÃO";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> MENU PRINCIPAL</a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</section>
+
+<section id="content" class="content">
+    <div class="row">
+        <div class="col-md-6">
+            @Html.DropDownListFor(m => m.planosClassificacao,
+                                          new SelectList(Model.planosClassificacao, "id", "descricao"),
+                                          "Selecione um Plano de Classificação",
+                                          new { @class = "form-control", @onchange = "carregaFuncoes", @id = "planoClassificacao" })
+        </div>
+    </div>
+</section>
+
+

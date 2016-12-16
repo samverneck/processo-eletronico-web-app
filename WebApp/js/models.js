@@ -72,8 +72,10 @@ function objetoInteressadoPF(nome, cpf, contatos, emails, guidMunicipio) {
 
 
 //Objeto Municipio
-function objetoMunicipio(guidMunicipio) {
+function objetoMunicipio(guidMunicipio, uf, municipio) {
     this.guidMunicipio = guidMunicipio;
+    this.uf = uf;
+    this.municipio = municipio;
 };
 
 //Objeto Anexo
@@ -91,5 +93,5 @@ function objetoEmail(endereco) {
 //Objeto Contato
 function objetoContato(telefone, idTipoContato) {
     this.telefone = telefone;
-    this.idTipoContato = idTipoContato;
+    this.idTipoContato = 3;
 };
