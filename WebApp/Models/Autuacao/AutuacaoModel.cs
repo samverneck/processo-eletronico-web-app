@@ -32,6 +32,6 @@ namespace WebApp.Models.Autuacao
         public string descricao { get; set; }
         public string mimeType { get; set; }
         public string conteudo { get; set; }     
-        public int idTipoDocumental { get; set; }
+        public Nullable<int> idTipoDocumental { get; set; }
     }
 }

@@ -247,7 +247,7 @@ $('#btnIncluirInteressado').on('click', function () {
         var pfExiste = false;
 
         $.each(arrayPF, function (i, pf) {
-            if (pf.cpf == form['cpf'].value) {
+            if (pf.cpf == form['cpf'].value.replace(/\/|\.|\-/g, "")) {
                 alert('Interessado já existe no processo.')
                 pfExiste = true;
             }
@@ -259,7 +259,7 @@ $('#btnIncluirInteressado').on('click', function () {
             emailsPF = serializeTable('tabelaListaEmailsPF');
 
             //Adiciona interessado a lista de interessados PF
-            arrayPF.push(new objetoInteressadoPF(form['nome'].value, form['cpf'].value, contatosPF, emailsPF, form['municipio'].value));            
+            arrayPF.push(new objetoInteressadoPF(form['nome'].value, form['cpf'].value.replace(/\/|\.|\-/g, ""), contatosPF, emailsPF, form['municipio'].value));
 
             //Limpa Objeto Provisorio
             interessadoPJProvisorio = null;
