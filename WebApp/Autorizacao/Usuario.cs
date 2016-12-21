@@ -25,32 +25,6 @@ namespace WebApp.Autorizacao
                 this.AddIdentity(identity);
             }
 
-            //Set Órgao
-            OrganizacaoModel _orgao = new OrganizacaoModel();
-            try
-            {
-                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/sigla/" + this.SiglaOrganizacao;
-                _orgao = WorkServiceBase.download_serialized_json_data<OrganizacaoModel>(url, this.Token);
-                this.Orgao = _orgao;
-            }
-            catch (Exception e)
-            {
-                this.Orgao = null;
-            }
-
-
-            //Set Patriarca
-            OrganizacaoModel _patriarca = new OrganizacaoModel();
-            try
-            {
-                var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/" + this.Orgao.guid + "/patriarca";
-                _patriarca = WorkServiceBase.download_serialized_json_data<OrganizacaoModel>(url, this.Token);
-                this.Patriarca = _patriarca;
-            }
-            catch (Exception e)
-            {
-                this.Patriarca = null;
-            }
 
         }
 
@@ -92,9 +66,48 @@ namespace WebApp.Autorizacao
             }
         }
 
-        public OrganizacaoModel Orgao;        
+        public OrganizacaoModel Orgao
+        {
+            get
+            {
+                if (HttpContext.Current.Session["OrgaoUsuario"] == null)
+                {
+                    try
+                    {
+                        var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/sigla/" + this.SiglaOrganizacao;
+                        HttpContext.Current.Session["OrgaoUsuario"] = WorkServiceBase.download_serialized_json_data<OrganizacaoModel>(url, this.Token);
+                    }
+                    catch (Exception e)
+                    {
+                        HttpContext.Current.Session["OrgaoUsuario"] = null;
+                    }
+                }
 
-        public OrganizacaoModel Patriarca;        
+                return (OrganizacaoModel)HttpContext.Current.Session["OrgaoUsuario"];
+            }
+        }
+
+        private OrganizacaoModel _patriarca;
+        public OrganizacaoModel Patriarca
+        {
+            get
+            {
+                if (HttpContext.Current.Session["OrgaoPatriarcaUsuario"] == null)
+                {
+                    try
+                    {
+                        var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/" + this.Orgao.guid + "/patriarca";
+                        HttpContext.Current.Session["OrgaoPatriarcaUsuario"] = WorkServiceBase.download_serialized_json_data<OrganizacaoModel>(url, this.Token);
+                    }
+                    catch (Exception e)
+                    {
+                        HttpContext.Current.Session["OrgaoPatriarcaUsuario"] = null;
+                    }
+                }
+
+                return (OrganizacaoModel)HttpContext.Current.Session["OrgaoPatriarcaUsuario"];
+            }
+        }
 
     }
 }
