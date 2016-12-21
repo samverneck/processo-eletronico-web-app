@@ -36,7 +36,7 @@
         <label>Órgão Destino</label>
         @Html.DropDownListFor(m => m.orgaosDestino,
         new SelectList(Model.orgaosDestino, "guid", "sigla"),
-        "Selecione um Plano de Classificação",
+        "Selecione um Órgão",
         new { @class = "form-control", @onchange = "javascript:carregaUnidades(this.value);", @id = "orgaoDestino" })
     </div>
     <div class="form-group">
@@ -58,8 +58,10 @@
                         <table id="tabelaAnexos" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
                             <thead>
                                 <tr role="row">
-                                    <th class="sorting_asc col-md-6" data-header="">Documento</th>
+                                    <th class="sorting_asc col-md-3" data-header="">Documento</th>
+                                    <th class="sorting" data-header="">Tipo</th>
                                     <th class="sorting" data-header="">Tamanho</th>
+                                    <th class="sorting" data-header="">Descrição</th>
                                     <th class="sorting_asc col-md-1">Excluir</th>
                                 </tr>
                             </thead>

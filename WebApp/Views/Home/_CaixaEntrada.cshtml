@@ -28,7 +28,7 @@
                     <tr>
                         <th>@item.numero</th>
                         <td>@item.siglaOrganizacaoAutuadora - @item.nomeOrganizacaoAutuadora</td>
-                        <td>@item.dataUltimoTramite_DateTime.ToString("d")</td>
+                        <td>@item.dataUltimoTramite_DateTime.ToString("dd/MM/yyyy hh:mm")</td>
                         <td class="text-center">
                             <button class="btn btn-xs btn-info btn-processo-visualizar" data-id="@item.numero" data-organizacao="@item.idOrganizacaoProcesso" title="Visualizar processo @item.numero"><i class="fa fa-folder-open-o" aria-hidden="true"></i></button>
                             <button class="btn btn-xs btn-success btn-processo-despachar" data-id="@item.numero" data-organizacao="@item.idOrganizacaoProcesso" title="Despachar Processo @item.numero"><i class="fa fa-edit" aria-hidden="true"></i></button>

@@ -12,6 +12,7 @@ using System.Web;
 using WebApp.Models;
 using WebApp.Models.Autuacao;
 using WebApp.Models.Organograma;
+using WebApp.Models.ProcessoEletronico;
 
 namespace WebApp.Controllers.Autuacao
 {
@@ -226,6 +227,23 @@ namespace WebApp.Controllers.Autuacao
             }            
         }
 
+        public List<TipoDocumentalModel> GetTipoDocumental(int idAtividade, string token)
+        {
+            List<TipoDocumentalModel> tiposDocumentais = new List<TipoDocumentalModel>();
+
+            try
+            {
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "tipos-documento/atividade/" + idAtividade;
+                tiposDocumentais = download_serialized_json_data<List<TipoDocumentalModel>>(url, token);
+                return tiposDocumentais;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return tiposDocumentais;
+            }
+        }
+
         public string PostAtuacao(Object objeto, string url, string token)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "organizacoes-processo/" + "/processos");
@@ -255,7 +273,7 @@ namespace WebApp.Controllers.Autuacao
             
         }
 
-        public string PostAtuacao(AutuacaoModel autuacao, string token)
+        public string PostAutuacao(AutuacaoModel autuacao, string token)
         {
 
             try

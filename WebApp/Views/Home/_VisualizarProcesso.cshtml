@@ -36,38 +36,41 @@
         <th>Unidade</th>
         <td>@Model.nomeUnidadeAutuadora</td>
     </tr>
-    <tr>
-        @if (Model.sinalizacoes.Count > 0)
-            {
-            <th>Sinalização</th>
+    @if (Model.interessadosPessoaFisica != null && Model.sinalizacoes.Count > 0)
+    {
+        <tr>
+            <th>Sinalizações</th>
             <td>
                 @foreach (var sn in Model.sinalizacoes)
                 {
                     sn.cor.ToString();
                 }
             </td>
-        }
-    </tr>
+        </tr>
+    }
 </table>
 
-<h3>Abrangência</h3>
-<table class="table table-bordered table-condensed table-striped">
-    <thead>
-        <tr>
-            <th>UF</th>
-            <th>Município</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var mc in Model.municipiosProcesso)
-            {
+@if (Model.municipiosProcesso != null && Model.municipiosProcesso.Count > 0)
+{
+    <h3>Abrangência</h3>
+    <table class="table table-bordered table-condensed table-striped">
+        <thead>
             <tr>
-                <td>@mc.uf</td>
-                <td>@mc.nome</td>
+                <th>UF</th>
+                <th>Município</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var mc in Model.municipiosProcesso)
+            {
+                <tr>
+                    <td>@mc.uf</td>
+                    <td>@mc.nome</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 <h3>Interessados</h3>
 <table class="table table-bordered table-condensed table-striped">
@@ -78,7 +81,7 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model.interessadosPessoaFisica.Count > 0)
+        @if (Model.interessadosPessoaFisica != null && Model.interessadosPessoaFisica.Count > 0)
             {
                 foreach (var pf in Model.interessadosPessoaFisica)
                 {
@@ -88,12 +91,13 @@
                 </tr>
             }
         }
-        @if (Model.interessadosPessoaJuridica.Count > 0)
+        @if (Model.interessadosPessoaJuridica != null && Model.interessadosPessoaJuridica.Count > 0)
+
+        {
+            foreach (var pj in Model.interessadosPessoaJuridica)
             {
-                foreach (var pj in Model.interessadosPessoaJuridica)
-                {
                 <tr>
-                    <td>@pj.razaoSocial</td>
+                    <td>@pj.sigla - @pj.razaoSocial</td>
                     <td>@pj.cnpj</td>
                 </tr>
             }
@@ -101,50 +105,56 @@
     </tbody>
 </table>
 
-<h3>Despachos</h3>
-<table class="table table-bordered table-condensed table-striped">
-    <thead>
-        <tr>
-            <th>Destino</th>
-            <th>Despacho</th>
-            <th>Despachante</th>
-            <th>Data</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var des in Model.despachos)
-            {
+@if (Model.despachos != null && Model.despachos.Count > 0)
+{
+    <h3>Despachos</h3>
+    <table class="table table-bordered table-condensed table-striped">
+        <thead>
             <tr>
-                <td>@des.siglaOrganizacaoDestino - @des.siglaUnidadeDestino</td>
-                <td>@des.texto</td>
-                <td>@des.nomeUsuarioDespachante</td>
-                <td>@des.dataHoraDespacho.AsDateTime().ToShortDateString()</td>
+                <th>Destino</th>
+                <th>Despacho</th>
+                <th>Despachante</th>
+                <th>Data</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var des in Model.despachos)
+            {
+                <tr>
+                    <td>@des.siglaOrganizacaoDestino - @des.siglaUnidadeDestino</td>
+                    <td>@des.texto</td>
+                    <td>@des.nomeUsuarioDespachante</td>
+                    <td>@des.dataHoraDespacho.AsDateTime().ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
-<h3>Anexos</h3>
-<table class="table table-bordered table-condensed table-striped">
-    <thead>
-        <tr>
-            <th>Arquivo</th>
-            <th>Tipo</th>
-            <th class="col-md-2 text-center">Baixar</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var anexo in Model.anexos)
-            {
+@if (Model.anexos != null && Model.anexos.Count > 0)
+{
+    <h3>Anexos</h3>
+    <table class="table table-bordered table-condensed table-striped">
+        <thead>
             <tr>
-                <td>@anexo.nome</td>
-                <td>@anexo.mimeType</td>
-                <td class="text-center">
-                    <a href="@Url.Action("Download", "Home", new { id = anexo.id })" class="btn btn-warning btn-xs">
-                        <i class="fa fa-download" aria-hidden="true"></i>                        
-                    </a>
-                </td>
+                <th>Arquivo</th>
+                <th>Tipo</th>
+                <th class="col-md-2 text-center">Baixar</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var anexo in Model.anexos)
+            {
+                <tr>
+                    <td>@anexo.nome</td>
+                    <td>@anexo.mimeType</td>
+                    <td class="text-center">
+                        <a href="@Url.Action("Download", "Home", new { id = anexo.id })" class="btn btn-warning btn-xs">
+                            <i class="fa fa-download" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

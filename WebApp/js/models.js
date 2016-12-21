@@ -23,14 +23,19 @@ var interessadoPFProvisorio = null;
 //Objeto Dados Iniciais Autuacao
 var formAutuacao;
 
+//Tipo Documental
+var tipoDocumental="";
+
 
 /****************************************************************************************************************************************************************************/
 /*MODELOS OBJETOS*/
 
 //Objeto Autuacao
+//function objetoAutuacao(idAtividade, resumo, interessadosPessoaFisica, interessadosPessoaJuridica,
+//    municipios, anexos, idSinalizacoes, idOrgaoAutuador, orgaoAutuador, siglaOrgaoAutuador, idUnidadeAutuadora,
+//    unidadeAutuadora, siglaUnidadeAutuadora, idUsuarioAutuador, usuarioAutuador) {
 function objetoAutuacao(idAtividade, resumo, interessadosPessoaFisica, interessadosPessoaJuridica,
-    municipios, anexos, idSinalizacoes, idOrgaoAutuador, orgaoAutuador, siglaOrgaoAutuador, idUnidadeAutuadora,
-    unidadeAutuadora, siglaUnidadeAutuadora, idUsuarioAutuador, usuarioAutuador) {
+    municipios, anexos, idSinalizacoes, guidOrganizacaoAutuadora, guidUnidadeAutuadora) {
     this.idAtividade = idAtividade;
     this.resumo = resumo;
     this.interessadosPessoaFisica = interessadosPessoaFisica;
@@ -38,14 +43,16 @@ function objetoAutuacao(idAtividade, resumo, interessadosPessoaFisica, interessa
     this.municipios = municipios;
     this.anexos = anexos;
     this.idSinalizacoes = idSinalizacoes;
-    this.idOrgaoAutuador = idOrgaoAutuador;
-    this.nomeOrgaoAutuador = orgaoAutuador;
-    this.siglaOrgaoAutuador = siglaOrgaoAutuador;
-    this.idUnidadeAutuadora = idUnidadeAutuadora;
-    this.nomeUnidadeAutuadora = unidadeAutuadora;
-    this.siglaUnidadeAutuadora = siglaUnidadeAutuadora;
-    this.idUsuarioAutuador = idUsuarioAutuador;
-    this.nomeUsuarioAutuador = usuarioAutuador;
+    //this.idOrgaoAutuador = idOrgaoAutuador;
+    //this.nomeOrgaoAutuador = orgaoAutuador;
+    //this.siglaOrgaoAutuador = siglaOrgaoAutuador;
+    //this.idUnidadeAutuadora = idUnidadeAutuadora;
+    //this.nomeUnidadeAutuadora = unidadeAutuadora;    
+    this.guidOrganizacaoAutuadora = guidOrganizacaoAutuadora;
+    this.guidUnidadeAutuadora = guidUnidadeAutuadora;
+    //this.siglaUnidadeAutuadora = siglaUnidadeAutuadora;
+    //this.idUsuarioAutuador = idUsuarioAutuador;
+    //this.nomeUsuarioAutuador = usuarioAutuador;
 }
 
 //Objeto Interessado Pessoa Juridica
@@ -72,18 +79,38 @@ function objetoInteressadoPF(nome, cpf, contatos, emails, guidMunicipio) {
 
 
 //Objeto Municipio
-function objetoMunicipio(guidMunicipio, uf, municipio) {
-    this.guidMunicipio = guidMunicipio;
+function objetoMunicipio(guid, uf, municipio) {
+    this.guidMunicipio = guid;
     this.uf = uf;
-    this.municipio = municipio;
+    this.nome = municipio;
 };
 
 //Objeto Anexo
-function objetoAnexos(nome, conteudo, tipo) {
+//function objetoAnexos(nome, conteudo, tamanho, tipo) {
+//    this.nome = nome;
+//    this.conteudo = conteudo;
+//    this.tamanho = tamanho;
+//    this.tipo = tipo;
+//};
+
+function objetoAnexos(nome, conteudo, mimeType, tamanho, tipo, descricao) {
     this.nome = nome;
+    //var novoFile = {
+    //    'lastModified': conteudo.lastModified,
+    //    'lastModifiedDate': conteudo.lastModifiedDate,
+    //    'name': conteudo.name,
+    //    'size': conteudo.size,
+    //    'type': conteudo.type
+    //};
+    //this.conteudo = novoFile;
     this.conteudo = conteudo;
-    this.tipo = tipo;
+    this.mimeType = mimeType;
+    this.descricao = descricao;
+    this.tipoDocumental = tipo;
+    this.tamanho = tamanho;
 };
+
+
 
 //Objeto Email
 function objetoEmail(endereco) {

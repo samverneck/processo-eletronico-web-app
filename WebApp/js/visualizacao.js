@@ -14,6 +14,6 @@ function ajaxCarregaProcessoVisualizar(numeroProcesso) {
           $('#modalProcesso').modal('show');
       })
       .fail(function () {
-          alert("error");
+          toastr["warning"]("Não foi possível realizar esta operação!");
       });
 }

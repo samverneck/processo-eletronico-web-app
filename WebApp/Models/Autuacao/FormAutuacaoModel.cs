@@ -15,6 +15,7 @@ namespace WebApp.Models.Autuacao
 
         public string guidOrgao { get; set; }
         public string guidPatriarca { get; set; }
+        public List<UnidadeModel> unidadesOrgao { get; set; }
 
         public List<SinalizacaoModel> sinalizacoes {get; set;}
 

@@ -96,23 +96,26 @@
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
                                         <label for="orgao">Usuário Autuador</label>
-                                        <input type="text" value="@Model.nomeUsuarioAutuador" data-id="@Model.idOrgaoAutuador" class="form-control" name="nomeUsuarioAutuador" id="nomeUsuarioAutuador" disabled="disabled" />
+                                        <input type="text" value="@Model.nomeUsuarioAutuador" class="form-control" name="nomeUsuarioAutuador" id="nomeUsuarioAutuador" disabled="disabled" />
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
                                         <label for="orgao">Órgão Responsável</label>
-                                        <input type="text" value="@Model.siglaOrgaoAutuador - @Model.nomeOrgaoAutuador" data-id="@Model.idOrgaoAutuador" data-sigla="@Model.siglaOrgaoAutuador" class="form-control" name="nomeOrgaoAutuador" id="nomeOrgaoAutuador" disabled="disabled" />
+                                        <input type="text" value="@Model.siglaOrgaoAutuador - @Model.nomeOrgaoAutuador" data-id="@Model.guidOrgao" data-sigla="@Model.siglaOrgaoAutuador" class="form-control" name="nomeOrgaoAutuador" id="nomeOrgaoAutuador" disabled="disabled" />
                                     </div>
                                 </div>
-                                @*<div class="row">
-                                        <div class="col-lg-6 form-group">
-                                            <div class="form-group">
-                                                <label for="setor">Unidade Responsável</label>
-                                                <input type="text" value="@Model.siglaUnidadeAutuadora - @Model.nomeUnidadeAutuadora" data-id="@Model.idUnidadeAutuadora" data-sigla="@Model.siglaUnidadeAutuadora" class="form-control" name="nomeUnidadeAutuadora" id="nomeUnidadeAutuadora" disabled="disabled" />
-                                            </div>
+                                <div class="row">
+                                    <div class="col-lg-6 form-group">
+                                        <div class="form-group">
+                                            <label for="setor">Unidade Responsável</label>
+                                            @Html.DropDownListFor(m => m.unidadesOrgao,
+                                          new SelectList(Model.unidadesOrgao, "guid", "sigla"),
+                                          "Selecione uma Unidade",
+                                          new { @class = "form-control", @id = "unidadeAutuadora", @required = "true" })
                                         </div>
-                                    </div>*@
+                                    </div>
+                                </div>
 
                                 <label>Interessados</label>
                                 <div class="form-group">
@@ -224,7 +227,7 @@
                     </div>
 
                     <div class="tab-pane" id="tab_4">
-                        <form id="formAutuacaoAnexos">
+                        <form id="formAutuacaoAnexos" enctype="multipart/form-data">
                             <div class="box-body">
                                 <label>Anexos</label>
                                 <div class="form-group input-file-group">
@@ -237,8 +240,10 @@
                                             <table id="tabelaAnexos" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
                                                 <thead>
                                                     <tr role="row">
-                                                        <th class="sorting_asc col-md-6" data-header="">Documento</th>
+                                                        <th class="sorting_asc col-md-3" data-header="">Documento</th>
+                                                        <th class="sorting" data-header="">Tipo</th>
                                                         <th class="sorting" data-header="">Tamanho</th>
+                                                        <th class="sorting" data-header="">Descrição</th>
                                                         <th class="sorting_asc col-md-1">Excluir</th>
                                                     </tr>
                                                 </thead>
@@ -252,7 +257,7 @@
                         <div class="box-footer">
                             <ul class="list-inline pull-right">
                                 <li><a href="#tab_3" class="btn btn-default pull-right prev-step" data-toggle="tab"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Anterior</a></li>
-                                <li><button type="button" id="btnAutuar" class="btn btn-danger pull-right"><i class="fa fa-save" aria-hidden="true"></i> Enviar Processo</button></li>
+                                <li><button type="button" id="btnAutuar" class="btn btn-danger pull-right"><i class="fa fa-save" aria-hidden="true"></i> Enviar</button></li>
                                 @*<li><a href="#tab_5" class="btn btn-primary pull-right next-step" data-toggle="tab">Próximo <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></li>*@
                             </ul>
                         </div>
@@ -326,7 +331,6 @@
         formAutuacao = @Html.Raw(Json.Encode(Model));
     </script>
     <script src="~/js/models.js"></script>
-    <script src="~/js/site.js"></script>
     <script src="~/js/pessoajuridica.js"></script>
     <script src="~/js/pessoafisica.js"></script>
     <script src="~/js/validacoes.js"></script>

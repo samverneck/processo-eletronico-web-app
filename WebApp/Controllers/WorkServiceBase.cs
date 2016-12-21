@@ -81,9 +81,7 @@ namespace WebApp.Controllers
                 // Do the actual request and await the response
                 var httpResponse = client.PostAsync(urlPost, httpContent);
 
-                var teste = httpResponse.Result.Content.ToString();
-
-                return httpResponse.Result.Content.ToString();
+                return httpResponse.Result.ToString();
 
             }
         }

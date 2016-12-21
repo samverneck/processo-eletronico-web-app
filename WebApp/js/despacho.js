@@ -15,7 +15,7 @@ function ajaxCarregaProcessoDespachar(numeroProcesso) {
           $('#modalDespacho').modal('show');
       })
       .fail(function () {
-          alert("error");
+          toastr["warning"]("Não foi possível realizar está operação!")
       });
 }
 
@@ -32,6 +32,8 @@ function ajaxCarregaUnidades(guidOrganizacao) {
     $.ajax({ url: '/home/unidadesPorOrganizacao', type: 'POST', data: { 'guidOrganizacao': guidOrganizacao } })
       .done(function (dados) {
 
+          arrayAnexos = [];
+
           var optionhtml = "<option value='0'>Selecione uma Unidade</option>";
 
           $.each(dados, function (i) {
@@ -41,6 +43,6 @@ function ajaxCarregaUnidades(guidOrganizacao) {
           $("#unidadeDestino").html(optionhtml);
       })
       .fail(function () {
-          alert("error");
+          toastr["warning"]("Não foi possível realizar está operação!")
       });
 }

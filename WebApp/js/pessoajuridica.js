@@ -3,25 +3,32 @@
 
 //$('#btnCarregarOrganizacao').on('click', carregaDadosOrgaoExecutivoEstadual);
 
-$('#organizacaoPublica').on('blur', carregaDadosOrgaoExecutivoEstadual);
+$('#organizacaoPublica').on('change', carregaDadosOrgaoExecutivoEstadual);
 
-function carregaDadosOrgaoExecutivoEstadual(event) {
-    var elemento = $('#organizacaoPublica')[0].value;
-    limpaTabelasListasEmailContatoSite();
-    ajaxCarregaDadosOrgaoExecutivoEstadual(elemento);
-    ajaxCarregaUnidadesOrganizacao(elemento);
-    //$('.panelPJ').show();
+function carregaDadosOrgaoExecutivoEstadual(event) {    
+    if ($('#organizacaoPublica')[0].value != '0') {
+        var elemento = $('#organizacaoPublica')[0].value;
+        limpaTabelasListasEmailContatoSite();
+        ajaxCarregaDadosOrgaoExecutivoEstadual(elemento);
+        ajaxCarregaUnidadesOrganizacao(elemento);
+        //$('.panelPJ').show();
+    }
 }
 
 function ajaxCarregaDadosOrgaoExecutivoEstadual(elemento) {
     $.ajax('/Autuacao/OrganizacaoPorGuid?guidOrganizacao=' + elemento)
       .done(function (dados) {
-          //interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', dados.contatos, dados.emails, dados.endereco.municipio.uf, dados.endereco.municipio.nome);
-          interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', [], [], dados.endereco.municipio.guid, dados.tipo);
+          console.log(dados);          
           
+          try {
+              interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', [], [], dados.endereco.municipio.guid, dados.tipo);
+          }
+          catch (err) {
+              toastr["warning"]("Não foi possível realizar esta operação!");
+          }
       })
       .fail(function () {
-          alert("error");
+          toastr["warning"]("Não foi possível realizar esta operação!");
       });
 }
 
@@ -42,7 +49,7 @@ function ajaxCarregaUnidadesOrganizacao(elemento) {
           });
       })
       .fail(function () {
-          alert("error");
+          toastr["warning"]("Não foi possível realizar esta operação!");
       });
 }
 
@@ -66,7 +73,7 @@ function incluirContatoPJ(event) {
     if (!formPessoaJuridicaContatosValidate.form())
         return false;
 
-    if ($('#contatoPJ').val() != '') {        
+    if ($('#contatoPJ').val() != '') {
         $('#tabelaListaContatosPJ tbody').append('<tr><td>' + $('#contatoPJ').val() + '</td><td data-value="' + $('#formPessoaJuridica input:checked').attr('data-id') + '">' + $('#formPessoaJuridica input:checked').val() + '</td><td class="text-center colunaExcluir"><button class="btn btn-xs btn-danger btn-excluir"><i class="fa fa-remove"></i></button></td></tr>');
         //Limpa campo contato
         $('#contatoPJ').val('');
@@ -205,8 +212,8 @@ function limparFormPessoaJuridica() {
 
 function resetaForm() {
     $('#modalInteressados div.tab-content .active form')[0].reset();
-    limpaTabelasListasEmailContatoSite();    
-    $('select#organizacaoPublica option:not([value="0"])').remove()    
+    limpaTabelasListasEmailContatoSite();
+    $('select#organizacaoPublica option:not([value="0"])').remove()
 }
 
 function resetaFormSelecaoPJ() {

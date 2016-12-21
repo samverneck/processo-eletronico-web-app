@@ -7,7 +7,7 @@ $(document).ready(function () {
         "sPaginationType": "full_numbers",
         "language": {
             "lengthMenu": " _MENU_ Processos por página",
-            "zeroRecords": "Nenhuma processo encontado",
+            "zeroRecords": "Nenhum processo encontrado",
             "info": "Página _PAGE_ de _PAGES_",
             "infoEmpty": "",
             "infoFiltered": "(Registros filtrados do total de _MAX_ processos.)",
