@@ -94,7 +94,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public ActionResult OrganizacoesPorPatriarca()
         {
-            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();            
+            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
             return Json(autuacao_ws.GetOrgaosPorPatriarca(usuario.Patriarca.guid, usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
@@ -169,23 +169,26 @@ namespace WebApp.Controllers
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
 
-            foreach (var anexo in autuacao.anexos)
+            if (autuacao.anexos != null)
             {
-                int i = 0;
-                byte[] byteArray = Encoding.UTF8.GetBytes(anexo.conteudo);
-                MemoryStream stream = new MemoryStream(byteArray);
-                Byte[] Content = new BinaryReader(stream).ReadBytes(anexo.conteudo.Length);
+                foreach (var anexo in autuacao.anexos)
+                {
+                    int i = 0;
+                    byte[] byteArray = Encoding.UTF8.GetBytes(anexo.conteudo);
+                    MemoryStream stream = new MemoryStream(byteArray);
+                    Byte[] Content = new BinaryReader(stream).ReadBytes(anexo.conteudo.Length);
 
-                autuacao.anexos[i].conteudo = Convert.ToBase64String(Content);
+                    autuacao.anexos[i].conteudo = Convert.ToBase64String(Content);
 
-                i++;
+                    i++;
+                }
             }
 
             var resultado = autuacao_ws.PostAutuacao(autuacao, usuario.Token);
             string[] codeStatus = resultado.Split(',');
 
             return Json(codeStatus[0].Split(':')[1], JsonRequestBehavior.AllowGet);
-            
+
         }
 
         public ActionResult Details(int id)

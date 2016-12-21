@@ -106,7 +106,7 @@ function objetoAnexos(nome, conteudo, mimeType, tamanho, tipo, descricao) {
     this.conteudo = conteudo;
     this.mimeType = mimeType;
     this.descricao = descricao;
-    this.tipoDocumental = tipo;
+    this.idTipoDocumental = tipo;
     this.tamanho = tamanho;
 };
 

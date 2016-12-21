@@ -8,7 +8,7 @@
     <table class="table table-bordered table-condensed table-striped">
         <tr>
             <th class="col-md-3">Número do Processo</th>
-            <td>@Model.processo.numero - @Model.processo.id</td>
+            <td>@Model.processo.numero</td>
             @Html.HiddenFor(x => x.processo.id, new { @id = "idProcesso"})
         </tr>
         @if (Model.processo.atividade != null)
@@ -75,4 +75,9 @@
             <button class="btn btn-danger" type="submit">Enviar Despacho</button>
         </div>    
 </div>
+}
+@section scripts{
+    <script>
+        TiposDocumentaisDespacho(@Html.Raw(Json.Encode(Model.tiposDocumentais)));
+    </script>
 }

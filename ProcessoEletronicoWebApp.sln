@@ -10,6 +10,7 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 		Desenvolvimento|Any CPU = Desenvolvimento|Any CPU
 		Homologacao|Any CPU = Homologacao|Any CPU
+		Producao|Any CPU = Producao|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
@@ -20,6 +21,8 @@ Global
 		{A0D39237-D450-4F23-A3CC-79EBCA1D720D}.Desenvolvimento|Any CPU.Build.0 = Desenvolvimento|Any CPU
 		{A0D39237-D450-4F23-A3CC-79EBCA1D720D}.Homologacao|Any CPU.ActiveCfg = Homologacao|Any CPU
 		{A0D39237-D450-4F23-A3CC-79EBCA1D720D}.Homologacao|Any CPU.Build.0 = Homologacao|Any CPU
+		{A0D39237-D450-4F23-A3CC-79EBCA1D720D}.Producao|Any CPU.ActiveCfg = Producao|Any CPU
+		{A0D39237-D450-4F23-A3CC-79EBCA1D720D}.Producao|Any CPU.Build.0 = Producao|Any CPU
 		{A0D39237-D450-4F23-A3CC-79EBCA1D720D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0D39237-D450-4F23-A3CC-79EBCA1D720D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

@@ -259,7 +259,7 @@ $('#btnIncluirInteressado').on('click', function () {
             emailsPF = serializeTable('tabelaListaEmailsPF');
 
             //Adiciona interessado a lista de interessados PF
-            arrayPF.push(new objetoInteressadoPF(form['nome'].value, form['cpf'].value, contatosPF, emailsPF, form['uf'].value, form['municipio'].value));
+            arrayPF.push(new objetoInteressadoPF(form['nome'].value, form['cpf'].value, contatosPF, emailsPF, form['municipio'].value));            
 
             //Limpa Objeto Provisorio
             interessadoPJProvisorio = null;
@@ -535,7 +535,9 @@ $('#btnAutuar').on('click', function (e) {
 
 
     $.each(arrayAnexos, function (i, v) {
-        v.idTipoDocumental = $('select#sel-' + i).val();
+        if ($('select#sel-' + i).val()!=0) {
+            v.idTipoDocumental = $('select#sel-' + i).val();
+        }        
         v.descricao = $('textarea#text-' + i).val();
     });
 
@@ -558,10 +560,12 @@ $('#btnAutuar').on('click', function (e) {
     //Cria objeto autuacao com os dados dos formularios
     var autuacao = new objetoAutuacao(formResumo.atividade.value, formResumo.resumo.value, arrayPF, arrayPJ, arrayMunicipios, arrayAnexos, arraySinalizacao, formAutuacao.guidOrgao, $('#unidadeAutuadora').val());    
 
+    console.log(autuacao);
+
     console.log(JSON.stringify(autuacao));
 
     $.ajax({
-        url: '/Autuacao/Autuar?autuacao',
+        url: '/Autuacao/Autuar',
         type: 'POST',
         data: JSON.stringify(autuacao),
         dataType: 'json',
@@ -569,7 +573,7 @@ $('#btnAutuar').on('click', function (e) {
         //contentType: "application/x-www-form-urlencoded"
     }).done(function (dados, textStatus, request) {
 
-        console.log(dados.StatusCode);
+        console.log(dados);
 
         switch ($.trim(dados)) {
             case '400':

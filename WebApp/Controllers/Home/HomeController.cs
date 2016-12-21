@@ -67,7 +67,7 @@ namespace WebApp.Controllers
 
             processo = home_ws.GetProcessoPorNumero(numeroProcesso, usuario.Token);
 
-
+            telaDespacho.tiposDocumentais = autuacao_ws.GetTipoDocumental(processo.atividade.id, usuario.Token);
             telaDespacho.processo = home_ws.GetProcessoPorNumero(numeroProcesso, usuario.Token);
             telaDespacho.orgaosDestino = autuacao_ws.GetOrgaosPorPatriarca(usuario.Patriarca.guid, usuario.Token);
 
@@ -112,7 +112,7 @@ namespace WebApp.Controllers
                         Byte[] Content = new BinaryReader(anexo.InputStream).ReadBytes(anexo.ContentLength);
 
                         conteudo.nome = anexo.FileName;
-                        conteudo.descricao = anexo.FileName + anexo.FileName;
+                        //conteudo.descricao = anexo.FileName + anexo.FileName;
                         conteudo.id = 59;
                         conteudo.mimeType = anexo.ContentType;
                         conteudo.conteudo = Convert.ToBase64String(Content);

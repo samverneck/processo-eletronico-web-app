@@ -46,3 +46,15 @@ function ajaxCarregaUnidades(guidOrganizacao) {
           toastr["warning"]("Não foi possível realizar está operação!")
       });
 }
+
+function TiposDocumentaisDespacho(dados) {
+    var optionhtml = '<option value="">Tipo Documental</option>';
+    $.each(dados, function (i) {
+        optionhtml += '<option value="' + this.id + '">' + this.codigo + ' - ' + this.descricao + '</option>';
+    });
+
+    tipos = optionhtml;
+
+    $('.selectTipoDocumental option').remove();
+    $('.selectTipoDocumental').append(optionhtml);
+}

@@ -150,4 +150,8 @@ span.round-tab:hover {
 .modal{
     overflow-y: auto;
 }
-    
+
+
+h4.modal-title{
+    font-size: 25px;
+}

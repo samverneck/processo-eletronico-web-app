@@ -31,8 +31,8 @@ namespace WebApp
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = "Cookies",
-                ExpireTimeSpan = TimeSpan.FromMinutes(10),
-                SlidingExpiration = true
+                ExpireTimeSpan = TimeSpan.FromMinutes(30),
+                SlidingExpiration = true                
             });
 
             app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions

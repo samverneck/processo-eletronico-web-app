@@ -255,6 +255,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="img\usergeneric.png" />
     <Content Include="js\despacho.js" />
     <Content Include="js\visualizacao.js" />
     <Content Include="js\home.js" />
@@ -305,6 +306,7 @@
     <Content Include="Scripts\input-mask\phone-codes\phone-codes.json" />
     <None Include="Properties\PublishProfiles\DESENVOLVIMENTO.pubxml" />
     <None Include="Properties\PublishProfiles\HOMOLOGACAO.pubxml" />
+    <None Include="Properties\PublishProfiles\PRODUCAO.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="img\avatar.png" />
     <Content Include="img\avatar04.png" />
@@ -1318,6 +1320,9 @@
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <None Include="Web.Producao.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -1332,6 +1337,9 @@
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Homologacao|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Producao|AnyCPU'">
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

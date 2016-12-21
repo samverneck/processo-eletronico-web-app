@@ -29,6 +29,7 @@ namespace WebApp.Models.Despacho
     {   
         public ProcessoEletronicoModel processo { get; set; }
         public List<OrganizacaoModel> orgaosDestino { get; set; }
+        public List<TipoDocumentalModel> tiposDocumentais { get; set; }
     }
 
     public class DespachoForm
