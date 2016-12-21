@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using StackExchange.Profiling;
 using System;
 using System.IO;
 using System.Net;
@@ -15,25 +16,28 @@ namespace WebApp.Controllers
 
         public static T download_serialized_json_data<T>(string url, string token) where T : new()
         {
-            using (var client = new HttpClient())
+            using (MiniProfiler.Current.Step($"url: {url}"))
             {
-                //TODO: Está pulando a validação de certificado por causa do certificado inválido de DES e HMG
-                ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-                var result = client.GetAsync(url).Result;
-
-                if (result.IsSuccessStatusCode)
+                using (var client = new HttpClient())
                 {
-                    string teste = result.Content.ReadAsStringAsync().Result.ToString();
+                    //TODO: Está pulando a validação de certificado por causa do certificado inválido de DES e HMG
+                    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-                    return JsonConvert.DeserializeObject<T>(result.Content.ReadAsStringAsync().Result);
-                }
-                else
-                {
-                    return new T();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                    var result = client.GetAsync(url).Result;
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        string teste = result.Content.ReadAsStringAsync().Result.ToString();
+
+                        return JsonConvert.DeserializeObject<T>(result.Content.ReadAsStringAsync().Result);
+                    }
+                    else
+                    {
+                        return new T();
+                    }
                 }
             }
         }
