@@ -435,7 +435,7 @@ function carregaTabelaAnexos() {
 }
 
 //Exclui elemento da tabela e do arrayAnexos
-$('body').on('click', '.btn-excluir-anexo', function () {
+$('tbody').on('click', '.btn-excluir-anexo', function () {
     arrayAnexos.splice($(this).attr('data-id'), 1);
     carregaTabelaAnexos()
 });

@@ -44,7 +44,7 @@ function ajaxCarregaUnidadesOrganizacao(elemento) {
 
           //Preenche combo com novo itens
           $.each(dados, function (i) {
-              var optionhtml = '<option value="' + this.sigla + '">' + this.nome + '</option>';
+              var optionhtml = '<option value="' + this.sigla + '">' + this.sigla +' - '+this.nome + '</option>';
               $('#unidadeOrganizacaoPJ').append(optionhtml);
           });
       })

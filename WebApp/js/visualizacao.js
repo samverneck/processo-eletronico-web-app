@@ -1,14 +1,6 @@
 ﻿/****************************************************************************************************************************************************************************/
 /*CARREGA PROCESSO*/
-var formSearch = $("#formConsultaProcesso").validate(
-    {
-        messages: {
-            numeroProcesso: "Informe o número do processo."
-        }
-    });
-
-$('#formConsultaProcesso').submit(function (event) {
-    console.log(formSearch.checkForm());
+$('#formConsultaProcesso').submit(function (event) {    
     ajaxCarregaProcessoVisualizar($('#numeroProcesso').val());
     return false;
 });

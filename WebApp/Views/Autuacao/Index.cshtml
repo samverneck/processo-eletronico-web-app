@@ -109,8 +109,14 @@
                                     <div class="col-lg-6 form-group">
                                         <div class="form-group">
                                             <label for="setor">Unidade Responsável</label>
+                                            @{
+                                                foreach (var unidade in Model.unidadesOrgao)
+                                                {
+                                                    unidade.nome = unidade.sigla + " - " + unidade.nome;
+                                                }
+                                            }
                                             @Html.DropDownListFor(m => m.unidadesOrgao,
-                                          new SelectList(Model.unidadesOrgao, "guid", "sigla"),
+                                          new SelectList(Model.unidadesOrgao, "guid", "nome"),
                                           "Selecione uma Unidade",
                                           new { @class = "form-control", @id = "unidadeAutuadora", @required = "true" })
                                         </div>

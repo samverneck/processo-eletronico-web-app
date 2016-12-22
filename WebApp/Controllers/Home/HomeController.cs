@@ -84,7 +84,12 @@ namespace WebApp.Controllers
 
             unidades = autuacao_ws.GetUnidadesPorOrganizacao(guidOrganizacao, usuario.Token);
 
-            SelectList cbxUnidades = new SelectList(unidades, "guid", "sigla", 0);
+            foreach (var unidade in unidades)
+            {
+                unidade.nome = unidade.sigla + " - " + unidade.nome;
+            }
+
+            SelectList cbxUnidades = new SelectList(unidades, "guid", "nome", 0);
             return Json(cbxUnidades, JsonRequestBehavior.AllowGet);
         }
 

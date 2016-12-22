@@ -26,14 +26,18 @@
         <hr />
         <div class="form-group">
             <label for="Resumo">Texto do Despacho</label>
-            <textarea rows="10" class="form-control" id="textoDespacho" name="textoDespacho" placeholder="Informe a descrição do despacho."
-                      title="Informe a descrição do despacho." required aria-required="true" aria-invalid="true">
-            </textarea>
+            <textarea rows="10" class="form-control" id="textoDespacho" name="textoDespacho" placeholder="Informe a descrição do despacho." title="Informe a descrição do despacho." required></textarea>
         </div>
         <div class="form-group">
             <label>Órgão Destino</label>
+            @{                 
+                foreach(var orgao in Model.orgaosDestino)
+                {
+                    orgao.nomeFantasia = orgao.sigla + " - " + orgao.nomeFantasia;
+                }
+            }
             @Html.DropDownListFor(m => m.orgaosDestino,
-        new SelectList(Model.orgaosDestino, "guid", "sigla"),
+        new SelectList(Model.orgaosDestino,"guid", "nomeFantasia"),
         "Selecione um Órgão",
         new { @class = "form-control", @onchange = "javascript:carregaUnidades(this.value);", @id = "orgaoDestino" })
         </div>
