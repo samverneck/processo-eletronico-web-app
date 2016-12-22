@@ -1,5 +1,5 @@
 .vs/
-*.zip
+
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -13,4 +13,5 @@ bld/
 [Ll]ib/
 [Pp]ackage/
 [Pp]ackages/
+
 [Ww]eb.config.*
