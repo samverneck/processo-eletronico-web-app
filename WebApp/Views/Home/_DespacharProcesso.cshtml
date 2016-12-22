@@ -1,51 +1,49 @@
 ﻿@model WebApp.Models.Despacho.DespachoTela
 
-@using (Html.BeginForm("Despachar", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-
-<div class="box-body">
-    <h3>Dados do Processo</h3>
-    <table class="table table-bordered table-condensed table-striped">
-        <tr>
-            <th class="col-md-3">Número do Processo</th>
-            <td>@Model.processo.numero</td>
-            @Html.HiddenFor(x => x.processo.id, new { @id = "idProcesso"})
-        </tr>
-        @if (Model.processo.atividade != null)
-            {
+@*@using (Html.BeginForm("Despachar", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{*@
+<form id="formDespacho">
+    <div class="box-body">
+        <h3>Dados do Processo</h3>
+        <table class="table table-bordered table-condensed table-striped">
             <tr>
-                <th>Plano de Classificação</th>
-                <td>@Model.processo.atividade.descricao</td>
+                <th class="col-md-3">Número do Processo</th>
+                <td>@Model.processo.numero</td>
+                @Html.HiddenFor(x => x.processo.id, new { @id = "idProcesso" })
             </tr>
-        }
-        <tr>
-            <th>Resumo</th>
-            <td>@Model.processo.resumo</td>
-        </tr>
-    </table>
-    <hr />
-    <div class="form-group">
-        <label for="Resumo">Texto</label>        
-        <textarea class="form-control" id="textoDespacho" name="textoDespacho" placeholder="Informe a descrição do despacho." 
-        title="Informe a descrição do despacho." required aria-required="true" aria-invalid="true"></textarea>
-    </div>
-    <hr />
-
-
-    <div class="form-group">
-        <label>Órgão Destino</label>
-        @Html.DropDownListFor(m => m.orgaosDestino,
+            @if (Model.processo.atividade != null)
+            {
+                <tr>
+                    <th>Plano de Classificação</th>
+                    <td>@Model.processo.atividade.descricao</td>
+                </tr>
+            }
+            <tr>
+                <th>Resumo</th>
+                <td>@Model.processo.resumo</td>
+            </tr>
+        </table>
+        <hr />
+        <div class="form-group">
+            <label for="Resumo">Texto do Despacho</label>
+            <textarea rows="10" class="form-control" id="textoDespacho" name="textoDespacho" placeholder="Informe a descrição do despacho."
+                      title="Informe a descrição do despacho." required aria-required="true" aria-invalid="true">
+            </textarea>
+        </div>
+        <div class="form-group">
+            <label>Órgão Destino</label>
+            @Html.DropDownListFor(m => m.orgaosDestino,
         new SelectList(Model.orgaosDestino, "guid", "sigla"),
         "Selecione um Órgão",
         new { @class = "form-control", @onchange = "javascript:carregaUnidades(this.value);", @id = "orgaoDestino" })
-    </div>
-    <div class="form-group">
-        <label>Unidade Destino</label>
-        <select id="unidadeDestino" name="unidadeDestino" class="form-control"></select>
-    </div>
+        </div>
+        <div class="form-group">
+            <label>Unidade Destino</label>
+            <select id="unidadeDestino" name="unidadeDestino" class="form-control"></select>
+        </div>
 
-    <hr />
-    
+        <hr />
+
         <div class="form-group">
             <label>Incluir Anexos</label>
             <div class="form-group input-file-group">
@@ -70,14 +68,11 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="pull-right">
-            <button class="btn btn-danger" type="submit">Enviar Despacho</button>
-        </div>    
-</div>
-}
-@section scripts{
-    <script>
-        TiposDocumentaisDespacho(@Html.Raw(Json.Encode(Model.tiposDocumentais)));
-    </script>
-}
+        </div>        
+    </div>
+</form>
+@*}*@
+
+<script>
+    carregaTipoDocumentalDespacho(@Html.Raw(Json.Encode(Model.tiposDocumentais)))    
+</script>

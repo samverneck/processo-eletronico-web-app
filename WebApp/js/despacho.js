@@ -10,7 +10,6 @@ $('table').on('click', '.btn-processo-despachar', function (event) {
 function ajaxCarregaProcessoDespachar(numeroProcesso) {
     $.ajax('/home/DespacharProcesso?numeroProcesso=' + numeroProcesso)
       .done(function (dados) {
-
           $('#despachoProcesso').html(dados);
           $('#modalDespacho').modal('show');
       })
@@ -47,14 +46,44 @@ function ajaxCarregaUnidades(guidOrganizacao) {
       });
 }
 
-function TiposDocumentaisDespacho(dados) {
-    var optionhtml = '<option value="">Tipo Documental</option>';
-    $.each(dados, function (i) {
-        optionhtml += '<option value="' + this.id + '">' + this.codigo + ' - ' + this.descricao + '</option>';
+//Despachar Processo
+$('body').on('click', '#btnDespacharProcesso', function () {
+    var form = $('#formDespacho')[0];
+
+    var despacho = new objetoDespacho(form.idProcesso.value, form.textoDespacho.value, form.orgaoDestino.value, unidadeDestino.value, prepararAnexos(arrayAnexos));
+
+    console.log(despacho);
+
+    $.ajax({
+        url: '/Home/DespacharProcessoPost',
+        type: 'POST',
+        data: JSON.stringify(despacho),
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8"
+        //contentType: "application/x-www-form-urlencoded"
+    }).done(function (dados, textStatus, request) {
+
+        console.log(dados);
+
+        switch ($.trim(dados)) {
+            case '400':
+                toastr["warning"]("Não foi possível realizar esta operação.");
+                break;
+            case '404':
+                toastr["warning"]("Não foi possível realizar esta operação.");
+                break;
+            case '500':
+                toastr["error"]("Erro reportado pela API.");
+                break;
+            case '201': {
+                toastr["success"]("Processo despachado com sucesso!");
+                window.location.href = '/Home';
+            }
+        }
+
+    }).fail(function () {
+        toastr["warning"]("Não foi possível realizar esta operação!");        
     });
 
-    tipos = optionhtml;
-
-    $('.selectTipoDocumental option').remove();
-    $('.selectTipoDocumental').append(optionhtml);
-}
+    return false;
+});

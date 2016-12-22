@@ -62,11 +62,11 @@
                     <span class="logotipo-lg"><img src="~/img/Brasao_Governo_horizontal_white_left_small.png" class="img-responsive" /></span>
                 </a>
                 <!-- search form (Optional) -->                
-                <form class="sidebar-form">
+                <form id="formConsultaProcesso" class="sidebar-form">
                     <div class="input-group">
-                        <input type="text" name="numeroProcesso" id="numeroProcesso" class="form-control" placeholder="Processo...">
+                        <input type="text" required data-msg="Informe o número do processo." name="numeroProcesso" id="numeroProcesso" class="form-control" placeholder="Processo...">
                         <span class="input-group-btn">
-                            <button type="button" name="search" id="search-btn" class="btn btn-flat">
+                            <button type="submit" name="search" id="search-btn" class="btn btn-flat">
                                 <i class="fa fa-search"></i>
                             </button>
                         </span>
@@ -195,6 +195,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Fechar</button>
+                    <button class="btn btn-danger" id="btnDespacharProcesso" type="submit"><i class="fa fa-check"></i> Despachar Processo</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -230,8 +231,7 @@
     <script src="~/js/app.min.js"></script>
     <script src="~/js/models.js"></script>
     <script src="~/js/site.js"></script>
-    <script src="~/js/visualizacao.js"></script>
-    <script src="~/js/despacho.js"></script>    
+    <script src="~/js/visualizacao.js"></script>    
 
     @RenderSection("scripts", required: false)
 </body>

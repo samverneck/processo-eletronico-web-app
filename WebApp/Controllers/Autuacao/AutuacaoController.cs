@@ -173,13 +173,8 @@ namespace WebApp.Controllers
             {
                 foreach (var anexo in autuacao.anexos)
                 {
-                    int i = 0;
-                    byte[] byteArray = Encoding.UTF8.GetBytes(anexo.conteudo);
-                    MemoryStream stream = new MemoryStream(byteArray);
-                    Byte[] Content = new BinaryReader(stream).ReadBytes(anexo.conteudo.Length);
-
-                    autuacao.anexos[i].conteudo = Convert.ToBase64String(Content);
-
+                    int i = 0;                    
+                    autuacao.anexos[i].conteudo = ConvertAnexoBase64(anexo.conteudo);
                     i++;
                 }
             }

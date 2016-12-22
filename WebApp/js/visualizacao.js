@@ -1,9 +1,19 @@
 ﻿/****************************************************************************************************************************************************************************/
 /*CARREGA PROCESSO*/
+var formSearch = $("#formConsultaProcesso").validate(
+    {
+        messages: {
+            numeroProcesso: "Informe o número do processo."
+        }
+    });
 
-$('#search-btn').click(function (event) {    
+$('#formConsultaProcesso').submit(function (event) {
+    console.log(formSearch.checkForm());
     ajaxCarregaProcessoVisualizar($('#numeroProcesso').val());
+    return false;
 });
+
+
 
 
 //Carrega orgaos publicos do executivo estadual ES para o combo

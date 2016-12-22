@@ -23,12 +23,29 @@ var interessadoPFProvisorio = null;
 //Objeto Dados Iniciais Autuacao
 var formAutuacao;
 
+
+//Objeto Despacho Post
+var formDespacho;
+
+
 //Tipo Documental
-var tipoDocumental="";
+var tipoDocumental = "";
+
+var tiposDocumentais;
+
+var processoEletronico = $(window)[0];
 
 
 /****************************************************************************************************************************************************************************/
 /*MODELOS OBJETOS*/
+
+function objetoDespacho(idProcesso, texto, guidOrganizacaoDestino, guidUnidadeDestino, anexos) {
+    this.idProcesso = idProcesso;
+    this.anexos = anexos;
+    this.texto = texto;
+    this.guidOrganizacaoDestino = guidOrganizacaoDestino;
+    this.guidUnidadeDestino = guidUnidadeDestino;
+}
 
 //Objeto Autuacao
 //function objetoAutuacao(idAtividade, resumo, interessadosPessoaFisica, interessadosPessoaJuridica,
