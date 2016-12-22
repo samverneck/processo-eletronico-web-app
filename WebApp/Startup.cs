@@ -37,7 +37,7 @@ namespace WebApp
 
             app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions
             {
-                ClientId = "processoeletronicowebapp-des",
+                ClientId = ConfigurationManager.AppSettings["ClientIdProcessoEletronicoApp"],
                 Authority = "https://acessocidadao.es.gov.br/is",
                 RedirectUri = localApp + "Home/Index/",
                 PostLogoutRedirectUri = localApp,
@@ -60,8 +60,8 @@ namespace WebApp
                         // use the code to get the access and refresh token
                         var tokenClient = new TokenClient(
                             "https://acessocidadao.es.gov.br/is/connect/token",
-                            "processoeletronicowebapp-des",
-                            ConfigurationManager.AppSettings["SecretProcessoEletronicoApp"]);                            
+                            ConfigurationManager.AppSettings["ClientIdProcessoEletronicoApp"],
+                            ConfigurationManager.AppSettings["SecretProcessoEletronicoApp"]);
 
                         var tokenResponse = await tokenClient.RequestAuthorizationCodeAsync(
                                         n.Code, n.RedirectUri);
