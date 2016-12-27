@@ -1,15 +1,19 @@
 ﻿/****************************************************************************************************************************************************************************/
 /*VALIDAR FORMULARIO INTERESSADO PESSOA FISICA*/
 
-var formResumoSinalizacaoValidate = $("#formResumoSinalizacao").validate({ debug: true });
+//var formResumoSinalizacaoValidate = $("#formResumoSinalizacao").validate();
 
-var formAutuacaoResponsavelValidate = $("#formAutuacaoResponsavel").validate();
+//var formAutuacaoResponsavelValidate = $("#formAutuacaoResponsavel").validate();
 
-var formAutuacaoMunicipioValidate = $("#formAutuacaoMunicipio").validate({    
-    errorLabelContainer: '.msgErrorMunicipio'
-});
+var formResumoSinalizacaoValidate = $("#formResumoSinalizacao").validate();
 
-var formAutuacaoAnexosValidate = $("#formAutuacaoAnexos").validate();
+//var formAutuacaoResponsavelValidate = $("#formAutuacaoResponsavel");
+
+//var formAutuacaoMunicipioValidate = $("#formAutuacaoMunicipio").validate({
+//    errorLabelContainer: '.msgErrorMunicipio'
+//});
+
+//var formAutuacaoAnexosValidate = $("#formAutuacaoAnexos").validate();
 
 /****************************************************************************************************************************************************************************/
 /*VALIDAR FORMULARIO INTERESSADO PESSOA FISICA*/
@@ -17,7 +21,7 @@ var formAutuacaoAnexosValidate = $("#formAutuacaoAnexos").validate();
 var formPessoaFisicaValidate = $("#formPessoaFisica").validate(
     {
         ignore: "#contatoPF, #emailPF",
-        debug: true        
+        debug: true
     }
 );
 
@@ -29,7 +33,7 @@ var formPessoaFisicaContatosValidate = $("#formPessoaFisicaContatos").validate(
 );
 
 var formPessoaFisicaEmailsValidate = $("#formPessoaFisicaEmails").validate(
-    {        
+    {
         debug: true,
         errorLabelContainer: '#msgErrorEmailsPF'
     }
@@ -59,11 +63,3 @@ var formPessoaJuridicaEmailsValidate = $("#formPessoaJuridicaEmails").validate(
         errorLabelContainer: '#msgErrorEmailsPJ'
     }
 );
-
-
-
-
-
-
-
-
