@@ -20,7 +20,8 @@ namespace WebApp
 
         protected void Application_BeginRequest()
         {
-            if (Request.IsLocal)
+            if (!Request.Url.Host.Contains("processoeletronico.es.gov.br"))
+            //if (Request.IsLocal)
             {
                 MiniProfiler.Start();
             }
