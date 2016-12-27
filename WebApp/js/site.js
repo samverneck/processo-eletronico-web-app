@@ -430,7 +430,7 @@ function carregaTabelaAnexos() {
     $('#tabelaAnexos tbody tr').remove();
 
     $.each(arrayAnexos, function (i, file) {
-        $('#tabelaAnexos tbody').append('<tr><td>' + file.nome + '</td><td><select id="sel-'+ i + '" class="form-control selectTipoDocumental">' + tipos + '</select></td><td>' + bytesToSize(file.tamanho) + '</td><td><textarea id="text-' + i + '" class="form-control descricaoTipoDocumental"></textarea></td><td class="text-center colunaExcluir"><button type="button" data-id="' + i + '" class="btn btn-xs btn-danger btn-excluir btn-excluir-anexo"><i class="fa fa-remove"></i></button></td></tr>');
+        $('#tabelaAnexos tbody').append('<tr><td>' + file.nome + '</td><td><select id="sel-' + i + '" class="form-control selectTipoDocumental">' + tiposDocumentais + '</select></td><td>' + bytesToSize(file.tamanho) + '</td><td><textarea id="text-' + i + '" class="form-control descricaoTipoDocumental"></textarea></td><td class="text-center colunaExcluir"><button type="button" data-id="' + i + '" class="btn btn-xs btn-danger btn-excluir btn-excluir-anexo"><i class="fa fa-remove"></i></button></td></tr>');
     });
 }
 
@@ -541,13 +541,6 @@ $('#btnAutuar').on('click', function (e) {
         v.descricao = $('textarea#text-' + i).val();
     });
 
-
-    //Convertendo anexos em byte
-    $.each(arrayAnexos, function (i, value) {
-        //arrayAnexos[i].conteudo = previewFile(arrayAnexos[i].conteudo);
-    });    
-
-
     arraySinalizacao = [];
 
     $("input:checkbox[name=sinalizacao]:checked").each(function () {
@@ -600,6 +593,20 @@ $('#btnAutuar').on('click', function (e) {
     return false;
 
 });
+
+/****************************************************************************************************************************************************************************/
+/*PREPARANDO OBJETO ANEXO*/
+
+function prepararAnexos(anexos) {
+    $.each(anexos, function (i, v) {
+        if ($('select#sel-' + i).val() != 0) {
+            v.idTipoDocumental = $('select#sel-' + i).val();
+        }
+        v.descricao = $('textarea#text-' + i).val();
+    });
+
+    return anexos;
+}
 
 /****************************************************************************************************************************************************************************/
 /*ENVIAR ARQUIVOS*/
@@ -675,13 +682,24 @@ $(document).ajaxStop(function () {
 /*CONSULTA TIPO DOCUMENTAL*/
 $('#atividade').on('change', carregaTipoDocumental);
 
-var tipos;
+function carregaTipoDocumentalDespacho(dados) {
+
+    var optionhtml = '<option value="">Tipo Documental</option>';
+    $.each(dados, function (i) {
+        optionhtml += '<option value="' + this.id + '">' + this.codigo + ' - ' + this.descricao + '</option>';
+    });
+
+    tiposDocumentais = optionhtml;
+
+    $('.selectTipoDocumental option').remove();
+    $('.selectTipoDocumental').append(optionhtml);
+}
 
 function carregaTipoDocumental(event) {
     var elemento = event.currentTarget;
 
     if (elemento.value > 0) {        
-        tipos = ajaxCarregaTipoDocumental(elemento.value);
+        tiposDocumentais = ajaxCarregaTipoDocumental(elemento.value);
     }
 }
 
@@ -694,7 +712,7 @@ function ajaxCarregaTipoDocumental(idAtividade) {
               optionhtml += '<option value="' + this.id + '">' + this.codigo + ' - ' + this.descricao + '</option>';
           });          
 
-          tipos = optionhtml;
+          tiposDocumentais = optionhtml;
 
           $('.selectTipoDocumental option').remove();
           $('.selectTipoDocumental').append(optionhtml);

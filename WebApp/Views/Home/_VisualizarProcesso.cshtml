@@ -36,15 +36,17 @@
         <th>Unidade</th>
         <td>@Model.nomeUnidadeAutuadora</td>
     </tr>
-    @if (Model.interessadosPessoaFisica != null && Model.sinalizacoes.Count > 0)
+    @if (Model.sinalizacoes != null && Model.sinalizacoes.Count > 0)
     {
         <tr>
             <th>Sinalizações</th>
             <td>
-                @foreach (var sn in Model.sinalizacoes)
-                {
-                    sn.cor.ToString();
-                }
+                <ul>
+                    @foreach (var sn in Model.sinalizacoes)
+                    {
+                        <li>@sn.descricao;</li>
+                    }
+                </ul>
             </td>
         </tr>
     }
@@ -112,8 +114,8 @@
         <thead>
             <tr>
                 <th>Destino</th>
-                <th>Texto</th>
-                <th>Despachante</th>
+                <th>Texto do Despacho</th>
+                <th>Usuário</th>
                 <th>Data</th>
             </tr>
         </thead>
@@ -124,7 +126,7 @@
                     <td>@des.siglaOrganizacaoDestino - @des.siglaUnidadeDestino</td>
                     <td>@des.texto</td>
                     <td>@des.nomeUsuarioDespachante</td>
-                    <td>@des.dataHoraDespacho.AsDateTime().ToShortDateString()</td>
+                    <td>@des.dataHoraDespacho.AsDateTime().ToString("dd/MM/yyyy HH:MM")</td>
                 </tr>
             }
         </tbody>

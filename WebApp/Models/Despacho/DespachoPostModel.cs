@@ -10,7 +10,7 @@ namespace WebApp.Models.Despacho
     {
         public int idProcesso { get; set; }
         public string texto { get; set; }
-        public List<AnexoModel> anexos { get; set; }
+        public List<AnexoAutuacaoModel> anexos { get; set; }
         public string guidOrganizacaoDestino { get; set; }
         public string guidUnidadeDestino { get; set; }
     }    
