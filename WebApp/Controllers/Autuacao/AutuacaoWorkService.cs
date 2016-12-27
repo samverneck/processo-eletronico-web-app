@@ -210,6 +210,23 @@ namespace WebApp.Controllers.Autuacao
             }            
         }
 
+        public List<AtividadeModel> GetAtividades(string token)
+        {
+            List<AtividadeModel> atividades = new List<AtividadeModel>();
+
+            try
+            {
+                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "atividades";
+                atividades = download_serialized_json_data<List<AtividadeModel>>(url, token);
+                return atividades;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return atividades;
+            }
+        }
+
         public List<SinalizacaoModel> GetSinalizacoes(string guidPatriarca, string token)
         {
             List<SinalizacaoModel> sinalizacoes = new List<SinalizacaoModel>();

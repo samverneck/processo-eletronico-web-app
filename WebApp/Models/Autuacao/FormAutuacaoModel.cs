@@ -24,6 +24,8 @@ namespace WebApp.Models.Autuacao
         [Display(Name = "First Name")]
         public List<PlanoClassificacaoModel> planosClassificacao { get; set; }
 
+        public List<AtividadeModel> atividades { get; set; }
+
         public int idOrgaoAutuador { get; set; }
         public string nomeOrgaoAutuador { get; set; }
         public string siglaOrgaoAutuador { get; set; }

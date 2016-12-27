@@ -327,7 +327,7 @@ function carregaOrgaosExecutivoEstadual(event) {
 //Carrega orgaos publicos do executivo estadual ES para o combo
 function ajaxCarregaOrgaosExecutivoEstadual() {
     //$.ajax('/Autuacao/OrganizacoesPorEsferaPoderUf?esfera=estadual&poder=executivo&uf=es')
-    $.ajax('/Autuacao/OrganizacoesPorPatriarca')    
+    $.ajax('/Autuacao/OrganizacoesPorPatriarca')
       .done(function (dados) {
           $.each(dados, function (i) {
               var optionhtml = '<option value="' + this.guid + '">' + this.sigla + ' - ' + this.razaoSocial + '</option>';
@@ -365,9 +365,9 @@ $('#btnIncluirMunicipio').on('click', prepareMunicipios);
 
 // Adiciona os arquivos selecionados ao array files[] e exibe-os na tabela de arquivos selecionados
 function prepareMunicipios(event) {
-    if (!formAutuacaoMunicipioValidate.form()) {
-        return false;
-    }
+    //if (!formAutuacaoMunicipioValidate.form()) {
+    //    return false;
+    //}
 
     if ($('#municipio').val() != '' && $('#uf').val() != '') {
         arrayMunicipios.push(new objetoMunicipio($('#municipio').val(), $('#uf').val(), $('#municipio option:selected').text()));
@@ -402,15 +402,15 @@ $('tbody').on('click', '.btn-excluir', function () {
 
 // Executa funcao prepareUpload ao selecionar arquivos
 //$('input[type=file]').on('change', prepareUpload);
-$('body').on('change','input[type=file]', prepareUpload);
+$('body').on('change', 'input[type=file]', prepareUpload);
 
 // Adiciona os arquivos selecionados ao array files[] e exibe-os na tabela de arquivos selecionados
 function prepareUpload(event) {
     var cont = 0;
 
     $.each(event.target.files, function (i, obj) {
-        $.each(arrayAnexos, function (i, anexo) {           
-            if(obj.name == anexo.nome){
+        $.each(arrayAnexos, function (i, anexo) {
+            if (obj.name == anexo.nome) {
                 cont = 1;
             }
         });
@@ -421,9 +421,9 @@ function prepareUpload(event) {
                 arrayAnexos.push(new objetoAnexos(obj.name, event.target.result, obj.type, obj.size));
                 carregaTabelaAnexos();
             };
-            reader.readAsDataURL(obj);            
+            reader.readAsDataURL(obj);
         }
-    });    
+    });
 }
 
 function carregaTabelaAnexos() {
@@ -507,13 +507,30 @@ $('body').on('click', '.btn-input-file', btnUpload);
 /****************************************************************************************************************************************************************************/
 /*ENVIAR AUTUACAO*/
 
-$('#btnAutuar').on('click', function (e) {
 
-    var validaFormResumo = formResumoSinalizacaoValidate.checkForm();
-    var validaResponsavel = formAutuacaoResponsavelValidate.checkForm();
+$('#btnAutuar').on('click', function (e) {    
+
+    //formResumoSinalizacaoValidate.validate();
+    //formAutuacaoResponsavelValidate.validate();       
+       
+    $("#formResumoSinalizacao").valid();
+
+    //var validaFormResumo = formResumoSinalizacaoValidate.valid();
+    //var validaResponsavel = formAutuacaoResponsavelValidate.valid();
+
+    //var validaFormResumo = formResumoSinalizacaoValidate.checkForm();
+    //var validaResponsavel = formAutuacaoResponsavelValidate.checkForm();
+
+    //var formResumo = $("#formResumoSinalizacao").valid();
+    //var formResponsavel = $("#formAutuacaoResponsavel").valid();
+
 
     //Valida preenchimento dos campos das abas de Resumo e Sinalização e Responsavel e Interessados
-    if (!validaFormResumo || !validaResponsavel) {
+    //if (!validaFormResumo) {
+    //    return false;
+    //}
+
+    if (!formResumoSinalizacaoValidate.checkForm()) {
         return false;
     }
 
@@ -535,9 +552,9 @@ $('#btnAutuar').on('click', function (e) {
 
 
     $.each(arrayAnexos, function (i, v) {
-        if ($('select#sel-' + i).val()!=0) {
+        if ($('select#sel-' + i).val() != 0) {
             v.idTipoDocumental = $('select#sel-' + i).val();
-        }        
+        }
         v.descricao = $('textarea#text-' + i).val();
     });
 
@@ -551,10 +568,9 @@ $('#btnAutuar').on('click', function (e) {
 
 
     //Cria objeto autuacao com os dados dos formularios
-    var autuacao = new objetoAutuacao(formResumo.atividade.value, formResumo.resumo.value, arrayPF, arrayPJ, arrayMunicipios, arrayAnexos, arraySinalizacao, formAutuacao.guidOrgao, $('#unidadeAutuadora').val());    
+    var autuacao = new objetoAutuacao(formResumo.atividade.value, formResumo.resumo.value, arrayPF, arrayPJ, arrayMunicipios, arrayAnexos, arraySinalizacao, formAutuacao.guidOrgao, $('#unidadeAutuadora').val());
 
     console.log(autuacao);
-
     console.log(JSON.stringify(autuacao));
 
     $.ajax({
@@ -579,20 +595,21 @@ $('#btnAutuar').on('click', function (e) {
                 toastr["error"]("Erro reportado pela API.");
                 break;
             case '201': {
-                toastr["success"]("Processo autuado com sucesso!");                
+                toastr["success"]("Processo autuado com sucesso!");
                 window.location.href = '/Autuacao';
             }
-                
+
 
         }
-        
+
     }).fail(function () {
         toastr["warning"]("Não foi possível realizar esta operação!");
-    });    
+    });
 
     return false;
 
 });
+
 
 /****************************************************************************************************************************************************************************/
 /*PREPARANDO OBJETO ANEXO*/
@@ -622,8 +639,8 @@ function previewFile(anexo) {
     }
 
     reader.onloadend = function () {
-        console.log(reader.result);        
-    }           
+        console.log(reader.result);
+    }
 }
 
 //$('form').on('submit', uploadFiles);
@@ -695,30 +712,38 @@ function carregaTipoDocumentalDespacho(dados) {
     $('.selectTipoDocumental').append(optionhtml);
 }
 
+/**/
 function carregaTipoDocumental(event) {
     var elemento = event.currentTarget;
 
-    if (elemento.value > 0) {        
+    if (elemento.value > 0) {
         tiposDocumentais = ajaxCarregaTipoDocumental(elemento.value);
     }
 }
 
-
+/**/
 function ajaxCarregaTipoDocumental(idAtividade) {
     $.ajax('/Autuacao/TiposDocumentais?idAtividade=' + idAtividade)
       .done(function (dados) {
           var optionhtml = '<option value="">Tipo Documental</option>';
           $.each(dados, function (i) {
               optionhtml += '<option value="' + this.id + '">' + this.codigo + ' - ' + this.descricao + '</option>';
-          });          
+          });
 
           tiposDocumentais = optionhtml;
 
           $('.selectTipoDocumental option').remove();
           $('.selectTipoDocumental').append(optionhtml);
-          
+
       })
       .fail(function () {
           toastr["warning"]("Não foi possível realizar esta operação!");
       });
 }
+
+/**/
+
+
+$(document).ready(function() {
+    $("#atividade").select2();
+});

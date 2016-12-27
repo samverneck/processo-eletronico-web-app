@@ -29,6 +29,8 @@ namespace WebApp.Controllers
             formAutuacao.planosClassificacao = autuacao_ws.GetPlanosClassificacao(usuario.Orgao.guid, usuario.Token);
             formAutuacao.sinalizacoes = autuacao_ws.GetSinalizacoes(usuario.Patriarca.guid, usuario.Token);
 
+            formAutuacao.atividades = autuacao_ws.GetAtividades(usuario.Token);
+
             OrganizacaoModel orgao = usuario.Orgao;
 
             formAutuacao.guidOrgao = orgao.guid;
@@ -141,6 +143,15 @@ namespace WebApp.Controllers
         {
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
             return Json(autuacao_ws.GetAtividades(idFuncao, usuario.Token), JsonRequestBehavior.AllowGet);
+        }
+
+        [ResourceAuthorize("Autuar", "Processo")]
+        [HandleForbidden]
+        [HttpGet]
+        public ActionResult Atividades()
+        {
+            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
+            return Json(autuacao_ws.GetAtividades(usuario.Token), JsonRequestBehavior.AllowGet);
         }
 
         [ResourceAuthorize("Autuar", "Processo")]
