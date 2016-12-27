@@ -15,6 +15,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WebApp.Autorizacao;
+using WebApp.Controllers;
+using WebApp.Models;
 
 [assembly: OwinStartup(typeof(WebApp.Startup))]
 
@@ -32,14 +34,15 @@ namespace WebApp
             {
                 AuthenticationType = "Cookies",
                 ExpireTimeSpan = TimeSpan.FromMinutes(30),
-                SlidingExpiration = true                
+                SlidingExpiration = true,
+                                
             });
 
             app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions
             {
                 ClientId = ConfigurationManager.AppSettings["ClientIdProcessoEletronicoApp"],
                 Authority = "https://acessocidadao.es.gov.br/is",
-                RedirectUri = localApp + "Home/Index/",
+                RedirectUri = localApp,
                 PostLogoutRedirectUri = localApp,
                 ResponseType = "code id_token",
                 Scope = "openid profile offline_access cpf email nome ApiProcessoEletronico ApiOrganograma",
@@ -47,7 +50,7 @@ namespace WebApp
 
                 TokenValidationParameters = new TokenValidationParameters
                 {
-                    NameClaimType = "name",
+                    NameClaimType = "nome",
                     RoleClaimType = "role"
                 },
 
@@ -72,11 +75,9 @@ namespace WebApp
                         }
 
                         // use the access token to retrieve claims from userinfo
-                        var userInfoClient = new UserInfoClient(
-                        new Uri("https://acessocidadao.es.gov.br/is/connect/userinfo"),
-                        tokenResponse.AccessToken);
+                        var userInfoClient = new UserInfoClient("https://acessocidadao.es.gov.br/is/connect/userinfo");
 
-                        var userInfoResponse = await userInfoClient.GetAsync();
+                        var userInfoResponse = await userInfoClient.GetAsync(tokenResponse.AccessToken);
 
                         // create new identity
                         var id = new ClaimsIdentity(n.AuthenticationTicket.Identity.AuthenticationType);
@@ -84,16 +85,16 @@ namespace WebApp
                         var userInfoList = userInfoResponse.Claims.ToList();
                         foreach (var ui in userInfoList)
                         {
-                            if (ui.Item1 != "permissao")
+                            if (ui.Type != "permissao")
                             {
-                                id.AddClaim(new Claim(ui.Item1, ui.Item2));
+                                id.AddClaim(new Claim(ui.Type, ui.Value));
                             }
                         }
 
-                        var permissaoClaims = userInfoResponse.Claims.Where(x => x.Item1 == "permissao").ToList();
+                        var permissaoClaims = userInfoResponse.Claims.Where(x => x.Type == "permissao").ToList();
                         foreach (var permissaoClaim in permissaoClaims)
                         {
-                            dynamic objetoPermissao = JsonConvert.DeserializeObject(permissaoClaim.Item2.ToString());
+                            dynamic objetoPermissao = JsonConvert.DeserializeObject(permissaoClaim.Value.ToString());
                             string recurso = objetoPermissao.Recurso;
                             id.AddClaim(new Claim("Recurso", recurso));
                             var listaAcoes = ((JArray)objetoPermissao.Acoes).Select(x => x.ToString()).ToList();
@@ -103,8 +104,9 @@ namespace WebApp
                             }
                         }
 
+                        id.AddClaims(userInfoResponse.Claims);
 
-                        id.AddClaims(userInfoResponse.GetClaimsIdentity().Claims);
+                        FillOrgaoEPatriarca(id, tokenResponse.AccessToken);
 
                         id.AddClaim(new Claim("access_token", tokenResponse.AccessToken));
                         id.AddClaim(new Claim("expires_at", DateTime.Now.AddSeconds(tokenResponse.ExpiresIn).ToLocalTime().ToString()));
@@ -113,7 +115,7 @@ namespace WebApp
                         //id.AddClaim(new Claim("sid", n.AuthenticationTicket.Identity.FindFirst("sid").Value));
 
                         n.AuthenticationTicket = new AuthenticationTicket(
-                            new ClaimsIdentity(id.Claims, n.AuthenticationTicket.Identity.AuthenticationType, "name", "role"),
+                            new ClaimsIdentity(id.Claims, n.AuthenticationTicket.Identity.AuthenticationType, "nome", "role"),
                             n.AuthenticationTicket.Properties);
                     },
 
@@ -137,6 +139,24 @@ namespace WebApp
             });
 
             app.UseResourceAuthorization(new AuthorizationManager());
+        }
+
+        private void FillOrgaoEPatriarca(ClaimsIdentity id, string token)
+        {
+            string siglaOrganizacao = string.Empty;
+            if (id.HasClaim(a => a.Type == "orgao"))
+            {
+                siglaOrganizacao = id.FindFirst("orgao").Value;
+            }
+
+            var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/sigla/" + siglaOrganizacao;
+            var organizacaoString = WorkServiceBase.download_data(url, token);
+            id.AddClaim(new Claim("organizacao", organizacaoString));
+
+            var organizacao = JsonConvert.DeserializeObject<OrganizacaoModel>(organizacaoString);
+            url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/" + organizacao.guid + "/patriarca";
+            var patriarcaString = WorkServiceBase.download_data(url, token);
+            id.AddClaim(new Claim("organizacao_patriarca", patriarcaString));
         }
     }
 }

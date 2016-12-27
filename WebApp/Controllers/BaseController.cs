@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using WebApp.Autorizacao;
@@ -19,12 +14,14 @@ namespace WebApp.Controllers
                                        
         }
 
+        [AllowAnonymous]
         public ActionResult Signout()
         {
             Request.GetOwinContext().Authentication.SignOut();
             return Redirect("/");
         }
 
+        [AllowAnonymous]
         public void SignoutCleanup(string sid)
         {
             var cp = (ClaimsPrincipal)User;

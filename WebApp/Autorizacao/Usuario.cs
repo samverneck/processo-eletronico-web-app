@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Protocols;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -24,8 +25,6 @@ namespace WebApp.Autorizacao
 
                 this.AddIdentity(identity);
             }
-
-
         }
 
         public bool Autenticado
@@ -57,11 +56,13 @@ namespace WebApp.Autorizacao
         {
             get
             {
-                if (this.HasClaim(a => a.Type == "orgao")){
-                    return this.FindFirst("orgao").Value;
-                }else
+                if (this.HasClaim(a => a.Type == "orgao"))
                 {
-                    return "";
+                    return this.FindFirst("orgao").Value;
+                }
+                else
+                {
+                    throw new Exception($"Usuário {Nome} sem Organização.");
                 }
             }
         }
@@ -70,42 +71,29 @@ namespace WebApp.Autorizacao
         {
             get
             {
-                if (HttpContext.Current.Session["OrgaoUsuario"] == null)
+                if (this.HasClaim(a => a.Type == "organizacao"))
                 {
-                    try
-                    {
-                        var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/sigla/" + this.SiglaOrganizacao;
-                        HttpContext.Current.Session["OrgaoUsuario"] = WorkServiceBase.download_serialized_json_data<OrganizacaoModel>(url, this.Token);
-                    }
-                    catch (Exception e)
-                    {
-                        HttpContext.Current.Session["OrgaoUsuario"] = null;
-                    }
+                    return JsonConvert.DeserializeObject<OrganizacaoModel>(this.FindFirst("organizacao").Value);
                 }
-
-                return (OrganizacaoModel)HttpContext.Current.Session["OrgaoUsuario"];
+                else
+                {
+                    throw new Exception($"Usuário {Nome} sem Organização.");
+                }
             }
         }
 
-        private OrganizacaoModel _patriarca;
         public OrganizacaoModel Patriarca
         {
             get
             {
-                if (HttpContext.Current.Session["OrgaoPatriarcaUsuario"] == null)
+                if (this.HasClaim(a => a.Type == "organizacao_patriarca"))
                 {
-                    try
-                    {
-                        var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/" + this.Orgao.guid + "/patriarca";
-                        HttpContext.Current.Session["OrgaoPatriarcaUsuario"] = WorkServiceBase.download_serialized_json_data<OrganizacaoModel>(url, this.Token);
-                    }
-                    catch (Exception e)
-                    {
-                        HttpContext.Current.Session["OrgaoPatriarcaUsuario"] = null;
-                    }
+                    return JsonConvert.DeserializeObject<OrganizacaoModel>(this.FindFirst("organizacao_patriarca").Value);
                 }
-
-                return (OrganizacaoModel)HttpContext.Current.Session["OrgaoPatriarcaUsuario"];
+                else
+                {
+                    throw new Exception($"Usuário {Nome} sem Organização Patriarca.");
+                }
             }
         }
 

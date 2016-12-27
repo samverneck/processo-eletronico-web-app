@@ -6,15 +6,13 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
-using WebApp.Autorizacao;
 
 namespace WebApp.Controllers
 {
     public class WorkServiceBase
     {
 
-        public static T download_serialized_json_data<T>(string url, string token) where T : new()
+        public static string download_data(string url, string token)
         {
             using (MiniProfiler.Current.Step($"url: {url}"))
             {
@@ -30,15 +28,26 @@ namespace WebApp.Controllers
 
                     if (result.IsSuccessStatusCode)
                     {
-                        string teste = result.Content.ReadAsStringAsync().Result.ToString();
-
-                        return JsonConvert.DeserializeObject<T>(result.Content.ReadAsStringAsync().Result);
+                        return result.Content.ReadAsStringAsync().Result;
                     }
                     else
                     {
-                        return new T();
+                        return null;
                     }
                 }
+            }
+        }
+
+        public static T download_serialized_json_data<T>(string url, string token) where T : new()
+        {
+            var data = download_data(url, token);
+            if (data != null)
+            {
+                return JsonConvert.DeserializeObject<T>(data);
+            }
+            else
+            {
+                return new T();
             }
         }
 
@@ -84,13 +93,12 @@ namespace WebApp.Controllers
 
                 // Do the actual request and await the response
                 var httpResponse = client.PostAsync(urlPost, httpContent);
-                
+
 
                 return httpResponse.Result.ToString();
 
             }
         }
 
-    }   
-
+    }
 }

@@ -49,8 +49,8 @@
       <HintPath>..\packages\Constant.2.0\lib\portable-net45+sl50+win+wp80\Constant.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="IdentityModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IdentityModel.1.9.2\lib\net45\IdentityModel.dll</HintPath>
+    <Reference Include="IdentityModel, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdentityModel.2.1.1\lib\net45\IdentityModel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -82,8 +82,8 @@
       <HintPath>..\packages\MiniProfiler.3.2.0.157\lib\net40\MiniProfiler.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin">
@@ -182,6 +182,7 @@
     <Compile Include="Controllers\Autuacao\AutuacaoWorkService.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Despacho\DespachoController.cs" />
+    <Compile Include="Controllers\Externo\ExternoController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Home\HomeWorkService.cs" />
     <Compile Include="Controllers\WorkServiceBase.cs" />
@@ -1318,6 +1319,7 @@
     <Content Include="Views\Home\_DespacharProcesso.cshtml" />
     <Content Include="Views\Shared\_ConsultaProcessoLayout.cshtml" />
     <Content Include="Views\Autuacao\Index.cshtml" />
+    <Content Include="Views\Externo\Index.cshtml" />
     <None Include="Web.Desenvolvimento.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
