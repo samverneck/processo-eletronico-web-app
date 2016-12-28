@@ -24,11 +24,9 @@ namespace WebApp.Controllers
         public ActionResult Index()
         {
             FormAutuacaoModel formAutuacao = new FormAutuacaoModel();
-            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
+            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();            
 
-            formAutuacao.planosClassificacao = autuacao_ws.GetPlanosClassificacao(usuario.Orgao.guid, usuario.Token);
             formAutuacao.sinalizacoes = autuacao_ws.GetSinalizacoes(usuario.Patriarca.guid, usuario.Token);
-
             formAutuacao.atividades = autuacao_ws.GetAtividades(usuario.Token);
 
             OrganizacaoModel orgao = usuario.Orgao;

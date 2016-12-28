@@ -143,19 +143,6 @@
     </div>
     <!-- ./wrapper -->
 
-    <!-- Modal Waiting -->
-    <div class="modal fade" id="modalWaiting" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <p class="text-center">
-                        <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!--Modal Visualizacao Processo-->
     <div class="modal fade" id="modalProcesso" tabindex="-1" role="dialog" aria-labelledby="modalProcessoLabel">
         <div class="modal-dialog modal-lg" role="document">
@@ -195,7 +182,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Fechar</button>
-                    <button class="btn btn-danger" id="btnDespacharProcesso" type="submit"><i class="fa fa-check"></i> Despachar Processo</button>
+                    <button class="btn btn-danger" id="btnDespacharProcesso" type="button"><i class="fa fa-check"></i> Despachar Processo</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -211,6 +198,19 @@
                     <h3>Sua sessão expirou!</h3>
                     <p>Clique no botão abaixo para iniciar uma nova sessão.</p>
                     <a href="@Url.Action("Index", "Home")" title="Iniciar nova sessão" class="btn btn-success"><i class="fa fa-refresh" aria-hidden="true"></i> Iniciar nova sessão</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Waiting -->
+    <div class="modal fade" id="modalWaiting" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="text-center">
+                        <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+                    </p>
                 </div>
             </div>
         </div>

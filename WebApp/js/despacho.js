@@ -48,6 +48,12 @@ function ajaxCarregaUnidades(guidOrganizacao) {
 
 //Despachar Processo
 $('body').on('click', '#btnDespacharProcesso', function () {
+
+    if (!validaForm('#formDespacho')) {
+        toastr["warning"]("Não foi possíve realizar a autuação! Verifique os campos obrigatórios e tente novamente!");
+        return false;
+    }
+
     var form = $('#formDespacho')[0];
 
     var despacho = new objetoDespacho(form.idProcesso.value, form.textoDespacho.value, form.orgaoDestino.value, unidadeDestino.value, prepararAnexos(arrayAnexos));

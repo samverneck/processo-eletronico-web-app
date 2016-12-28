@@ -5,18 +5,26 @@ toastr.options = {
     "debug": false,
     "newestOnTop": false,
     "progressBar": false,
-    "positionClass": "toast-bottom-right",
+    "positionClass": "toast-top-center",
     "preventDuplicates": false,
     "onclick": null,
     "showDuration": "300",
     "hideDuration": "1000",
-    "timeOut": "2000",
+    "timeOut": "5000",
     "extendedTimeOut": "1000",
     "showEasing": "swing",
     "hideEasing": "linear",
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
 }
+
+/****************************************************************************************************************************************************************************/
+/*POPOVERS AJUDA*/
+
+$('body').on('mouseover click','a[data-toggle="popover"]', function () {
+    var e = $(this);    
+    e.popover('show');    
+});
 
 /****************************************************************************************************************************************************************************/
 /*WIZARD FORM*/
@@ -503,44 +511,28 @@ var btnUpload = function (event) {
 $('body').on('click', '.btn-input-file', btnUpload);
 
 
-
 /****************************************************************************************************************************************************************************/
 /*ENVIAR AUTUACAO*/
-
-
 $('#btnAutuar').on('click', function (e) {    
 
-    //formResumoSinalizacaoValidate.validate();
-    //formAutuacaoResponsavelValidate.validate();       
-       
-    $("#formResumoSinalizacao").valid();
-
-    //var validaFormResumo = formResumoSinalizacaoValidate.valid();
-    //var validaResponsavel = formAutuacaoResponsavelValidate.valid();
-
-    //var validaFormResumo = formResumoSinalizacaoValidate.checkForm();
-    //var validaResponsavel = formAutuacaoResponsavelValidate.checkForm();
-
-    //var formResumo = $("#formResumoSinalizacao").valid();
-    //var formResponsavel = $("#formAutuacaoResponsavel").valid();
-
-
-    //Valida preenchimento dos campos das abas de Resumo e Sinalização e Responsavel e Interessados
-    //if (!validaFormResumo) {
-    //    return false;
-    //}
-
-    if (!formResumoSinalizacaoValidate.checkForm()) {
+    if (!validaForm('#formResumoSinalizacao')) {
+        toastr["warning"]("Não foi possíve realizar a autuação! Verifique os campos obrigatórios e tente novamente!");
         return false;
     }
 
+    //if (!formResumoSinalizacaoValidate.checkForm()) {
+    //    return false;
+    //}
+
     //Verifica se algum municipio foi selecionado na aba Abrangencia
     if (arrayMunicipios.length == 0) {
+        toastr["warning"]("Não foi possíve realizar a autuação! Informe pelo menos um município na aba Abrangência.");
         return false;
     }
 
     //Verifica se algum interessado foi informado na aba Responsavel e Interessados
     if (arrayPJ.length == 0 && arrayPF.length == 0) {
+        toastr["warning"]("Não foi possíve realizar a autuação! Informe pelo menos um interessado na aba Responsáveis e Interessados.");
         return false;
     }
 
@@ -747,3 +739,42 @@ function ajaxCarregaTipoDocumental(idAtividade) {
 $(document).ready(function() {
     $("#atividade").select2();
 });
+
+
+/****************************************************************************************************************************************************************************/
+/*VALIDAR FORMULARIO*/
+validaElemento('#formResumoSinalizacao');
+
+function validaElemento(form) {
+    $(form).on('blur', '[required="required"]', function () {
+        verificaElemento(this);
+    });
+}
+
+function validaForm(form) {
+    var result = true;
+
+    $.each($(form).find('[required="required"]'), function (i, e) {
+        if (!verificaElemento(e)) {
+            result = false;
+        }
+    });
+
+    return result;
+}
+
+function verificaElemento(e) {
+    var result = true;
+    var elementError = '#' + $(e).prop('id') + '-error';
+
+    if ($(elementError) != null) {
+        $(elementError).remove();
+    }
+
+    if ($(e).val() == '' || $(e).val() == 0 || $(e).val() == null) {
+        $(e).before('<label id="' + $(e).prop('id') + '-error" class="error" for="' + $(e).prop('id') + '">' + $(e).attr('title') + '</label>');
+        result = false;
+    }
+
+    return result;
+}

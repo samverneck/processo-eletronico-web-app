@@ -25,11 +25,11 @@
         </table>
         <hr />
         <div class="form-group">
-            <label for="Resumo">Texto do Despacho</label>
-            <textarea rows="10" class="form-control" id="textoDespacho" name="textoDespacho" placeholder="Informe a descrição do despacho." title="Informe a descrição do despacho." required></textarea>
+            <label for="Resumo">Texto do Despacho <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Texto do Despacho" data-content="O campo Texto do Despacho é obrigatório e deve conter informações sobre o despacho que está sendo realizado."><i class="fa fa-question" aria-hidden="true"></i></a></label>
+            <textarea rows="10" class="form-control" id="textoDespacho" name="textoDespacho" placeholder="Informe o texto do despacho." title="Informe o texto do despacho." required="required"></textarea>
         </div>
         <div class="form-group">
-            <label>Órgão Destino</label>
+            <label>Órgão Destino <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Órgão Destino" data-content="O campo Órgão Destino é obrigatório e indica o órgão para o qual o processo será encaminhado após confirmação do despacho."><i class="fa fa-question" aria-hidden="true"></i></a></label>
             @{                 
                 foreach(var orgao in Model.orgaosDestino)
                 {
@@ -39,17 +39,17 @@
             @Html.DropDownListFor(m => m.orgaosDestino,
         new SelectList(Model.orgaosDestino,"guid", "nomeFantasia"),
         "Selecione um Órgão",
-        new { @class = "form-control", @onchange = "javascript:carregaUnidades(this.value);", @id = "orgaoDestino" })
+        new { @class = "form-control", @onchange = "javascript:carregaUnidades(this.value);", @id = "orgaoDestino", @required = "required", @title = "Informe a Órgão de Destino." })
         </div>
         <div class="form-group">
-            <label>Unidade Destino</label>
-            <select id="unidadeDestino" name="unidadeDestino" class="form-control"></select>
+            <label>Unidade Destino <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Unidade Destino" data-content="O campo Unidade Destino é obrigatório e indica a unidade do órgão, selecionado no campo acima, para a qual o processo será encaminhado após confirmação do despacho."><i class="fa fa-question" aria-hidden="true"></i></a></label>
+            <select id="unidadeDestino" required="required" title="Informe a Unidade de Destino." name="unidadeDestino" class="form-control"></select>
         </div>
 
         <hr />
 
-        <div class="form-group">
-            <label>Incluir Anexos</label>
+        <div class="form-group">            
+            <label>Anexos <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Anexos" data-content="Em Anexos podem ser incluidos documentos que irão compor o processo. Ao clicar no botão Adicionar o sistema permitirá selecionar multiplos arquivos para serem anexados."><i class="fa fa-question" aria-hidden="true"></i></a></label>
             <div class="form-group input-file-group">
                 <input type="file" class="form-control input-file" id="anexos" style="display:none" name="anexos" multiple />
                 <button type="button" class="btn btn-info btn-input-file"><i class="fa fa-link" aria-hidden="true"></i> Adicionar</button>

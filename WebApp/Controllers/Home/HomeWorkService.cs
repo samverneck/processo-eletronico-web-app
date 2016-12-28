@@ -19,14 +19,13 @@ namespace WebApp.Controllers.Home
             try
             {
                 var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "processos/organizacao/" + guidOrganizacao;
-                listaProcessos = download_serialized_json_data<List<ProcessoEletronicoModel>>(url, token);
+                listaProcessos = download_serialized_json_data<List<ProcessoEletronicoModel>>(url, token);                
 
                 return listaProcessos.OrderByDescending(a=>a.dataUltimoTramite_DateTime).ToList();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                return listaProcessos;
+                throw e;
             }
         }
 

@@ -21,18 +21,19 @@ namespace WebApp.Controllers
                     //TODO: Está pulando a validação de certificado por causa do certificado inválido de DES e HMG
                     ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));                    
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                     var result = client.GetAsync(url).Result;
 
                     if (result.IsSuccessStatusCode)
-                    {
+                    {                        
                         return result.Content.ReadAsStringAsync().Result;
                     }
                     else
                     {
-                        return null;
+                        throw new Exception("Erro inesperado: " + result.StatusCode);
+                        //return null;                        
                     }
                 }
             }

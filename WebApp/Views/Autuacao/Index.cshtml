@@ -64,7 +64,7 @@
 
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
-                                        <label for="planoClassificacao">Atividade</label>
+                                        <label for="planoClassificacao">Atividade <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Atividades" data-content="O campo Atividades representa a classificação do processo...."><i class="fa fa-question" aria-hidden="true"></i></a></label>
                                         @Html.DropDownListFor(m => m.atividades,
                                           new SelectList(Model.atividades, "id", "descricao"),
                                           "Selecione uma Atividade",
@@ -81,13 +81,13 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
-                                        <label for="resumo">Resumo</label>
+                                        <label for="resumo">Resumo <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Resumo" data-content="O campo Resumo é obrigatório para autuação do processo e deve conter informações sobre...."><i class="fa fa-question" aria-hidden="true"></i></a></label>
                                         <textarea rows="5" class="form-control" id="resumo" name="resumo" placeholder="Resumo" title="Informe o Resumo do processo." required="required"></textarea>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
-                                        <label>Sinalizações</label>
+                                        <label>Sinalizações <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Sinalizações" data-content="O campo Sinalizações é opcional e representa...."><i class="fa fa-question" aria-hidden="true"></i></a></label>
                                         @foreach (var ckb in Model.sinalizacoes)
                                         {
                                             <div class="checkbox">
@@ -113,20 +113,20 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
-                                        <label for="orgao">Usuário Autuador</label>
+                                        <label for="orgao">Usuário Autuador <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Usuário Autuador" data-content="O campo Usuário Autuador é obrigatório e preenchido automaticamente pelo sistema ao identificar o usuário autenticado. Este campo representa o usuário responsável pela autuação processo."><i class="fa fa-question" aria-hidden="true"></i></a></label>
                                         <input type="text" value="@Model.nomeUsuarioAutuador" class="form-control" name="nomeUsuarioAutuador" id="nomeUsuarioAutuador" disabled="disabled" />
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
-                                        <label for="orgao">Órgão Responsável</label>
+                                        <label for="orgao">Órgão Responsável <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Órgão Responsável" data-content="O campo Órgão Responsável é obrigatório e preenchido automaticamente pelo sistema ao identificar o usuário autenticado e a organização a qual está vinculado. Este campo representa o órgão responsável pela autuação processo."><i class="fa fa-question" aria-hidden="true"></i></a></label>
                                         <input type="text" value="@Model.siglaOrgaoAutuador - @Model.nomeOrgaoAutuador" data-id="@Model.guidOrgao" data-sigla="@Model.siglaOrgaoAutuador" class="form-control" name="nomeOrgaoAutuador" id="nomeOrgaoAutuador" disabled="disabled" />
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
                                         <div class="form-group">
-                                            <label for="unidadeAutuadora">Unidade Responsável</label>
+                                            <label for="unidadeAutuadora">Unidade Responsável <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Unidade Responsável" data-content="O campo Unidade Responsável é obrigatório e deve ser selecionado pelo usuário. Este campo representa a unidade responsável pela autuação processo."><i class="fa fa-question" aria-hidden="true"></i></a></label>
                                             @{
                                                 foreach (var unidade in Model.unidadesOrgao)
                                                 {
@@ -141,7 +141,7 @@
                                     </div>
                                 </div>
 
-                                <label>Interessados</label>
+                                <label>Interessados <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Interessado" data-content="Interessados permite que sejam informados os interessado no processo, podendo ser pessoa física ou pessoa jurídica. Deve ser informado pelo menos um interessado."><i class="fa fa-question" aria-hidden="true"></i></a></label>
                                 <div class="form-group">
                                     <button type="button" onclick="$('#modalInteressados').modal('show')" class="btn btn-info"><i class="fa fa-user-plus"></i> Adicionar</button>
                                 </div>
@@ -175,7 +175,7 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-6 form-group">
-                                        <label>Estado</label>
+                                        <label>Estado <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="UF" data-content="O campo UF representa serve de base para pesquisa de municípios. Para adicionar um município à lista de abrangência do processo deve-se indicar o estado ao qual ele pertence."><i class="fa fa-question" aria-hidden="true"></i></a></label>
                                         <select class="form-control campo-uf" id="uf" name="uf">
                                             <option value="">Selecione o Estado</option>
                                             <option value="ac">Acre</option>
@@ -211,7 +211,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 form-group">
-                                        <label for="municipio">Município</label>
+                                        <label for="municipio">Município <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Município" data-content="O campo Município deve ser selecionado para que possa ser adicionado na lista de abrangência do processo. Na autuação deve ser informado pelo menos um município na aba Abrangência."><i class="fa fa-question" aria-hidden="true"></i></a></label>
                                         <div class="input-group">
                                             <select class="form-control campo-municipio" id="municipio" name="municipio">
                                                 <option value="">Selecione um Município</option>
@@ -226,7 +226,7 @@
                                 <div id="Municipios" class="dataTables_wrapper form-inline dt-bootstrap">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <table id="tabelaMunicipios" required class="table table-bordered table-striped dataTable" role="grid" aria-describedby="Municipios">
+                                            <table id="tabelaMunicipios" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="Municipios">
                                                 <thead>
                                                     <tr role="row">
                                                         <th class="sorting_asc col-md-2">UF</th>
@@ -253,7 +253,7 @@
                         <div class="tab-pane" id="tab_4">
                             @*<form id="formAutuacaoAnexos" enctype="multipart/form-data">*@
                             <div class="box-body">
-                                <label>Anexos</label>
+                                <label>Anexos <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Anexos" data-content="Em Anexos podem ser incluidos documentos que irão compor o processo. Ao clicar no botão Adicionar o sistema permitirá selecionar multiplos arquivos para serem anexados."><i class="fa fa-question" aria-hidden="true"></i></a></label>
                                 <div class="form-group input-file-group">
                                     <input type="file" class="form-control input-file" id="btnFileAnexos" style="display:none" name="btnFileAnexos" multiple />
                                     <button type="button" class="btn btn-info btn-input-file"><i class="fa fa-link" aria-hidden="true"></i> Adicionar</button>
@@ -359,6 +359,5 @@
     </script>
     <script src="~/js/models.js"></script>
     <script src="~/js/pessoajuridica.js"></script>
-    <script src="~/js/pessoafisica.js"></script>
-    <script src="~/js/validacoes.js"></script>
+    <script src="~/js/pessoafisica.js"></script>    
 }

@@ -1,11 +1,9 @@
-﻿/****************************************************************************************************************************************************************************/
-/*VALIDAR FORMULARIO INTERESSADO PESSOA FISICA*/
-
+﻿
 //var formResumoSinalizacaoValidate = $("#formResumoSinalizacao").validate();
 
 //var formAutuacaoResponsavelValidate = $("#formAutuacaoResponsavel").validate();
 
-var formResumoSinalizacaoValidate = $("#formResumoSinalizacao").validate();
+//var formResumoSinalizacaoValidate = $("#formResumoSinalizacao").validate();
 
 //var formAutuacaoResponsavelValidate = $("#formAutuacaoResponsavel");
 

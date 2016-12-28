@@ -12,24 +12,14 @@ namespace WebApp.Models.Autuacao
         public int idUsuarioAutuador { get; set; }
         public string nomeUsuarioAutuador { get; set; }
         public int idOrganizacaoPai { get; set; }
-
         public string guidOrgao { get; set; }
         public string guidPatriarca { get; set; }
         public List<UnidadeModel> unidadesOrgao { get; set; }
-
         public List<SinalizacaoModel> sinalizacoes {get; set;}
-
-        [Required]
-        [StringLength(50, MinimumLength = 2, ErrorMessage = "* A valid first name is required.")]
-        [Display(Name = "First Name")]
-        public List<PlanoClassificacaoModel> planosClassificacao { get; set; }
-
         public List<AtividadeModel> atividades { get; set; }
-
         public int idOrgaoAutuador { get; set; }
         public string nomeOrgaoAutuador { get; set; }
-        public string siglaOrgaoAutuador { get; set; }
-        
+        public string siglaOrgaoAutuador { get; set; }        
         public int idUnidadeAutuadora { get; set; }
         public string nomeUnidadeAutuadora { get; set; }
         public string siglaUnidadeAutuadora { get; set; }        
