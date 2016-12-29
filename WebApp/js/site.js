@@ -739,11 +739,12 @@ function ajaxCarregaTipoDocumental(idAtividade) {
       });
 }
 
-/**/
-
-
-$(document).ready(function() {
-    $("#atividade").select2();
+/*SELECT2*/
+$(document).ready(function () {
+    $("#unidadeAutuadora").select2({ width: '100%' });
+    $("#atividade").select2({ width: '100%' });
+    $(".campo-uf").select2({ width: '100%' });
+    $(".campo-municipio").select2({ width: '100%' });
 });
 
 

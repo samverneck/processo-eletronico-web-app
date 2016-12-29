@@ -14,8 +14,8 @@
             @if (Model.processo.atividade != null)
             {
                 <tr>
-                    <th>Plano de Classificação</th>
-                    <td>@Model.processo.atividade.descricao</td>
+                    <th>Classificação</th>
+                    <td>@Model.processo.atividade.codigo - @Model.processo.atividade.descricao</td>
                 </tr>
             }
             <tr>

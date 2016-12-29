@@ -2,14 +2,14 @@
 
 <table class="table table-bordered table-condensed table-striped">
     <tr>
-        <th class="col-md-3">Número do Processo</th>
+        <th class="col-md-3">Número</th>
         <td>@Model.numero</td>
     </tr>
     @if (Model.atividade != null)
     {
         <tr>
-            <th>Plano de Classificação</th>
-            <td>@Model.atividade.descricao</td>
+            <th>Classificação</th>
+            <td>@Model.atividade.codigo - @Model.atividade.descricao</td>
         </tr>
     }
     <tr>

@@ -31,52 +31,27 @@
                 <form id="formResumoSinalizacao" method="post">
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab_1">
-                            @*<form id="formResumoSinalizacao">*@
                             <div class="box-body">
-                                @*<div class="row">
-                                    <div class="col-lg-6 form-group">
-                                        <label for="planoClassificacao">Plano de Classificação</label>
-
-                                        @Html.DropDownListFor(m => m.planosClassificacao,
-                                          new SelectList(Model.planosClassificacao, "id", "descricao"),
-                                          "Selecione um Plano de Classificação",
-                                          new { @class = "form-control", @onchange = "carregaFuncoes", @id = "planoClassificacao", @name = "planoClassificacao", @required = "required",
-                                              @title = "Informe o Plano de Classificação." })
-
-                                    </div>
-                                </div>
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
-                                        <label for="funcao">Função</label>
-                                        <select class="form-control" name="funcao" id="funcao" title="Informe a Função." required="required">
-                                            <option value="">Selecione a Função</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6 form-group">
-                                        <label for="atividade">Atividade</label>
-                                        <select class="form-control" name="atividade" id="atividade" title="Informe a Atividade." required="required">
-                                            <option value="">Selecione uma Atividade</option>
-                                        </select>
-                                    </div>
-                                </div>*@
-
-                                <div class="row">
-                                    <div class="col-lg-6 form-group">
-                                        <label for="planoClassificacao">Atividade <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Atividades" data-content="O campo Atividades representa a classificação do processo."><i class="fa fa-question" aria-hidden="true"></i></a></label>
+                                        <label for="atividade">Classificação <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Atividades" data-content="O campo Atividades representa a classificação do processo."><i class="fa fa-question" aria-hidden="true"></i></a></label>
+                                        @{
+                                            foreach (var atividade in Model.atividades)
+                                            {
+                                                atividade.descricao = atividade.codigo + " - " + atividade.descricao;
+                                            }
+                                        }
                                         @Html.DropDownListFor(m => m.atividades,
                                           new SelectList(Model.atividades, "id", "descricao"),
                                           "Selecione uma Atividade",
                                           new
                                           {
-                                              @class = "form-control",                                              
+                                              @class = "form-control",
                                               @id = "atividade",
                                               @name = "atividade",
                                               @required = "required",
                                               @title = "Informe uma Atividade."
                                           })
-
                                     </div>
                                 </div>
                                 <div class="row">
@@ -125,42 +100,50 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
-                                        <div class="form-group">
-                                            <label for="unidadeAutuadora">Unidade Responsável <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Unidade Responsável" data-content="O campo Unidade Responsável é obrigatório e deve ser selecionado pelo usuário. Este campo representa a unidade responsável pela autuação processo."><i class="fa fa-question" aria-hidden="true"></i></a></label>
-                                            @{
-                                                foreach (var unidade in Model.unidadesOrgao)
-                                                {
-                                                    unidade.nome = unidade.sigla + " - " + unidade.nome;
-                                                }
+                                        <label for="unidadeAutuadora">Unidade Responsável <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Unidade Responsável" data-content="O campo Unidade Responsável é obrigatório e deve ser selecionado pelo usuário. Este campo representa a unidade responsável pela autuação processo."><i class="fa fa-question" aria-hidden="true"></i></a></label>                                        
+                                        @{
+                                            foreach (var unidade in Model.unidadesOrgao)
+                                            {
+                                                unidade.nome = unidade.sigla + " - " + unidade.nome;
                                             }
-                                            @Html.DropDownListFor(m => m.unidadesOrgao,
+                                        }
+                                        @Html.DropDownListFor(m => m.unidadesOrgao,
                                           new SelectList(Model.unidadesOrgao, "guid", "nome"),
                                           "Selecione uma Unidade",
-                                          new { @class = "form-control", @id = "unidadeAutuadora", @name = "unidadeAutuadora", @required = "required", @title = "Informe a Unidade Autuadora." })
-                                        </div>
+                                          new {
+                                              @class = "form-control",
+                                              @id = "unidadeAutuadora",
+                                              @name = "unidadeAutuadora",
+                                              @required = "required",
+                                              @title = "Informe a Unidade Autuadora."
+                                          })                                        
                                     </div>
                                 </div>
-
-                                <label>Interessados <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Interessado" data-content="Interessados permite que sejam informados os interessado no processo, podendo ser pessoa física ou pessoa jurídica. Deve ser informado pelo menos um interessado."><i class="fa fa-question" aria-hidden="true"></i></a></label>
-                                <div class="form-group">
-                                    <button type="button" onclick="$('#modalInteressados').modal('show')" class="btn btn-info"><i class="fa fa-user-plus"></i> Adicionar</button>
-                                </div>
-                                <div id="listaTabelaInteressados" class="dataTables_wrapper form-inline dt-bootstrap">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <table id="tabelaInteressados" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="listaTabelaInteressados">
-                                                <thead>
-                                                    <tr role="row">
-                                                        <th class="col-md-6">Nome / Razão Social</th>
-                                                        <th class="col-md-4">CPF/CNPJ</th>
-                                                        <th class="colunaExcluir">Excluir</th>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
+                                <div class="row">
+                                    <div class="col-lg-6 form-group">
+                                        <label>Interessados <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Interessado" data-content="Interessados permite que sejam informados os interessado no processo, podendo ser pessoa física ou pessoa jurídica. Deve ser informado pelo menos um interessado."><i class="fa fa-question" aria-hidden="true"></i></a></label>
+                                        <div class="form-group">
+                                            <button type="button" onclick="$('#modalInteressados').modal('show')" class="btn btn-info"><i class="fa fa-user-plus"></i> Adicionar</button>
+                                        </div>
+                                        <div id="listaTabelaInteressados" class="dataTables_wrapper form-inline dt-bootstrap">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <table id="tabelaInteressados" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="listaTabelaInteressados">
+                                                        <thead>
+                                                            <tr role="row">
+                                                                <th class="col-md-6">Nome / Razão Social</th>
+                                                                <th class="col-md-4">CPF/CNPJ</th>
+                                                                <th class="colunaExcluir">Excluir</th>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="box-footer">
                                 <ul class="list-inline pull-right">
                                     <li><a href="#tab_1" class="btn btn-default pull-right prev-step" data-toggle="tab"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Anterior</a></li>

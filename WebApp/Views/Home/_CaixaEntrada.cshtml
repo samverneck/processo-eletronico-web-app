@@ -17,7 +17,8 @@
             <thead>
                 <tr>
                     <th class="col-md-2">Processo</th>
-                    <th class="col-md-6">Responsável</th>
+                    <th class="col-md-2">Responsável</th>
+                    <th class="col-md-4">Resumo</th>
                     <th class="col-md-2">Data</th>
                     <th>Ações</th>
                 </tr>
@@ -27,7 +28,8 @@
                 {
                     <tr>
                         <th>@item.numero</th>
-                        <td>@item.siglaOrganizacaoAutuadora - @item.nomeOrganizacaoAutuadora</td>
+                        <td>@item.siglaOrganizacaoAutuadora - @item.siglaUnidadeAutuadora</td>
+                        <td>@item.resumo</td>
                         <td>@item.dataUltimoTramite_DateTime.ToString("dd/MM/yyyy HH:mm")</td>
                         <td class="text-center">
                             <button class="btn btn-xs btn-info btn-processo-visualizar" data-id="@item.numero" data-organizacao="@item.idOrganizacaoProcesso" title="Visualizar processo @item.numero"><i class="fa fa-eye" aria-hidden="true"></i></button>
