@@ -194,20 +194,20 @@ $('#btnIncluirInteressado').on('click', function () {
 
         var pjExiste = false;
 
-        $.each(arrayPJ, function (i, pj) {
-            if (interessadoPJProvisorio != null) {
-                if (pj.cnpj == interessadoPJProvisorio.cnpj) {
-                    alert('Interessado já existe no processo.')
-                    pjExiste = true;
-                }
-            }
-            else {
-                if (pj.cnpj == form['cnpj'].value.replace(/\/|\.|\-/g, "")) {
-                    alert('Interessado já existe no processo.')
-                    pjExiste = true;
-                }
-            }
-        });
+        //$.each(arrayPJ, function (i, pj) {
+        //    if (interessadoPJProvisorio != null) {
+        //        if (pj.cnpj == interessadoPJProvisorio.cnpj) {
+        //            alert('Interessado já existe no processo.')
+        //            pjExiste = true;
+        //        }
+        //    }
+        //    else {
+        //        if (pj.cnpj == form['cnpj'].value.replace(/\/|\.|\-/g, "")) {
+        //            alert('Interessado já existe no processo.')
+        //            pjExiste = true;
+        //        }
+        //    }
+        //});
 
         if (!pjExiste) {
             //Listas dados do interessado
@@ -438,15 +438,21 @@ function carregaTabelaAnexos() {
     $('#tabelaAnexos tbody tr').remove();
 
     $.each(arrayAnexos, function (i, file) {
-        $('#tabelaAnexos tbody').append('<tr><td>' + file.nome + '</td><td><select id="sel-' + i + '" class="form-control selectTipoDocumental">' + tiposDocumentais + '</select></td><td>' + bytesToSize(file.tamanho) + '</td><td><textarea id="text-' + i + '" class="form-control descricaoTipoDocumental"></textarea></td><td class="text-center colunaExcluir"><button type="button" data-id="' + i + '" class="btn btn-xs btn-danger btn-excluir btn-excluir-anexo"><i class="fa fa-remove"></i></button></td></tr>');
+        $('#tabelaAnexos tbody').append('<tr><td>' + file.nome + '</td><td><select id="sel-' + i + '" class="form-control selectTipoDocumental">' + tiposDocumentais + '</select></td><td>' + bytesToSize(file.tamanho) + '</td><td><textarea id="text-' + i + '" class="form-control descricaoTipoDocumental"></textarea></td><td class="text-center colunaExcluir"><button type="button" data-id="' + i + '" class="btn btn-xs btn-danger btn-excluir btn-excluir-arquivo"><i class="fa fa-remove"></i></button></td></tr>');
     });
 }
 
 //Exclui elemento da tabela e do arrayAnexos
-$('tbody').on('click', '.btn-excluir-anexo', function () {
+$('tbody').on('click', '.btn-excluir-arquivo', function () {
     arrayAnexos.splice($(this).attr('data-id'), 1);
-    carregaTabelaAnexos()
+    carregaTabelaAnexos();
 });
+
+$('body').on('click', '.btn-excluir-arquivo', function () {
+    arrayAnexos.splice($(this).attr('data-id'), 1);
+    carregaTabelaAnexos();
+});
+
 
 /****************************************************************************************************************************************************************************/
 /*SERIALIZAR DADOS TABELA*/

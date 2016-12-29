@@ -19,3 +19,21 @@ function ajaxCarregaProcessoVisualizar(numeroProcesso) {
           toastr["warning"]("Não foi possível realizar esta operação!");
       });
 }
+
+
+$('body').on('click', '.btn-download', function () {
+    $.ajax($(this).prop('href'))
+      .done(function (dados) {
+
+          console.log(dados);
+
+          var link = document.createElement('a');
+          link.download = dados[1];
+          link.href = dados[0];
+          link.click();
+      })
+      .fail(function () {
+          toastr["warning"]("Não foi possível realizar esta operação!");
+      });
+    return false;
+});

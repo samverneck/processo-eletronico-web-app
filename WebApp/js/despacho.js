@@ -31,8 +31,6 @@ function ajaxCarregaUnidades(guidOrganizacao) {
     $.ajax({ url: '/home/unidadesPorOrganizacao', type: 'POST', data: { 'guidOrganizacao': guidOrganizacao } })
       .done(function (dados) {
 
-          arrayAnexos = [];
-
           var optionhtml = "<option value='0'>Selecione uma Unidade</option>";
 
           $.each(dados, function (i) {

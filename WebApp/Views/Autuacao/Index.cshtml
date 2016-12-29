@@ -64,7 +64,7 @@
 
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
-                                        <label for="planoClassificacao">Atividade <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Atividades" data-content="O campo Atividades representa a classificação do processo...."><i class="fa fa-question" aria-hidden="true"></i></a></label>
+                                        <label for="planoClassificacao">Atividade <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Atividades" data-content="O campo Atividades representa a classificação do processo."><i class="fa fa-question" aria-hidden="true"></i></a></label>
                                         @Html.DropDownListFor(m => m.atividades,
                                           new SelectList(Model.atividades, "id", "descricao"),
                                           "Selecione uma Atividade",
@@ -81,13 +81,13 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
-                                        <label for="resumo">Resumo <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Resumo" data-content="O campo Resumo é obrigatório para autuação do processo e deve conter informações sobre...."><i class="fa fa-question" aria-hidden="true"></i></a></label>
+                                        <label for="resumo">Resumo <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Resumo" data-content="O campo Resumo é obrigatório para autuação do processo e deve conter informações sobre teor do processo."><i class="fa fa-question" aria-hidden="true"></i></a></label>
                                         <textarea rows="5" class="form-control" id="resumo" name="resumo" placeholder="Resumo" title="Informe o Resumo do processo." required="required"></textarea>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
-                                        <label>Sinalizações <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Sinalizações" data-content="O campo Sinalizações é opcional e representa...."><i class="fa fa-question" aria-hidden="true"></i></a></label>
+                                        <label>Sinalizações <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Sinalizações" data-content="O campo Sinalizações é opcional e indica se o processo necessita de tratamento diferenciado."><i class="fa fa-question" aria-hidden="true"></i></a></label>
                                         @foreach (var ckb in Model.sinalizacoes)
                                         {
                                             <div class="checkbox">
@@ -359,5 +359,5 @@
     </script>
     <script src="~/js/models.js"></script>
     <script src="~/js/pessoajuridica.js"></script>
-    <script src="~/js/pessoafisica.js"></script>    
+    <script src="~/js/pessoafisica.js"></script>
 }

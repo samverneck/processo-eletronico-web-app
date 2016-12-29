@@ -12,9 +12,9 @@ namespace WebApp.Controllers
     public class WorkServiceBase
     {
 
-        public static string download_data(string url, string token)
+        public static string download_data(string url, string token, int i = 0)
         {
-            using (MiniProfiler.Current.Step($"url: {url}"))
+            using (MiniProfiler.Current.Step($"url{i}: {url}"))
             {
                 using (var client = new HttpClient())
                 {
@@ -32,8 +32,11 @@ namespace WebApp.Controllers
                     }
                     else
                     {
-                        throw new Exception("Erro inesperado: " + result.StatusCode);
-                        //return null;                        
+                        if (i < 5)
+                            return download_data(url, token, i++);
+
+                        //throw new Exception("Erro inesperado: " + result.StatusCode);
+                        return null;                        
                     }
                 }
             }

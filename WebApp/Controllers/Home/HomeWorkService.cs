@@ -25,7 +25,7 @@ namespace WebApp.Controllers.Home
             }
             catch (Exception e)
             {
-                throw e;
+                return listaProcessos;
             }
         }
 

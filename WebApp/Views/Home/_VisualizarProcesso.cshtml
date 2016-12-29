@@ -126,7 +126,7 @@
                     <td>@des.siglaOrganizacaoDestino - @des.siglaUnidadeDestino</td>
                     <td>@des.texto</td>
                     <td>@des.nomeUsuarioDespachante</td>
-                    <td>@des.dataHoraDespacho.AsDateTime().ToString("dd/MM/yyyy HH:MM")</td>
+                    <td>@des.dataHoraDespacho.AsDateTime().ToString("dd/MM/yyyy HH:mm")</td>
                 </tr>
             }
         </tbody>
@@ -151,7 +151,7 @@
                     <td>@anexo.nome</td>
                     <td>@anexo.descricao</td>
                     <td class="text-center">
-                        <a href="@Url.Action("Download", "Home", new { id = anexo.id })" class="btn btn-warning btn-xs">
+                        <a href="@Url.Action("Download", "Home", new { id = anexo.id })" class="btn btn-warning btn-xs btn-download">
                             <i class="fa fa-download" aria-hidden="true"></i>
                         </a>
                     </td>

@@ -171,10 +171,12 @@ namespace WebApp.Controllers
             AnexoModel anexo = home_ws.GetAnexo(id, usuario.Token);
 
             byte[] fileBase64 = Convert.FromBase64String(anexo.conteudo);
+            string file = Encoding.UTF8.GetString(fileBase64, 0, fileBase64.Length);
 
-            //return File(Convert.FromBase64String(anexo.conteudo), "application/octet-stream", anexo.nome);
-            //return File(fileBase64, "application/octet-stream", anexo.nome);
-            return File(fileBase64, anexo.mimeType, anexo.nome);
+            string[] fileDados = new string[] { file , anexo.nome};
+
+            return Json(fileDados, JsonRequestBehavior.AllowGet);
+
         }
     }
 }
