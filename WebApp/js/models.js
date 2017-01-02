@@ -137,5 +137,5 @@ function objetoEmail(endereco) {
 //Objeto Contato
 function objetoContato(telefone, idTipoContato) {
     this.telefone = telefone;
-    this.idTipoContato = 3;
+    this.idTipoContato = idTipoContato;
 };

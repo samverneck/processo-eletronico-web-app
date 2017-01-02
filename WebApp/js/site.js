@@ -127,7 +127,7 @@ function ajaxCarregaAtividades(id, idPlanoClassificacao) {
 /*CARREGA TIPOS CONTATO*/
 
 $(document).ready(function () {
-    //ajaxCarregaTiposContato();
+    ajaxCarregaTiposContato();
 });
 
 function ajaxCarregaTiposContato() {

@@ -21,7 +21,7 @@ function ajaxCarregaDadosOrgaoExecutivoEstadual(elemento) {
           console.log(dados);          
           
           try {
-              interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', [], [], dados.endereco.municipio.guid, dados.tipo);
+              interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', contatos, emails, dados.endereco.municipio.guid, dados.tipo);
           }
           catch (err) {
               toastr["warning"]("Não foi possível realizar esta operação!");

@@ -14,4 +14,11 @@ bld/
 [Pp]ackage/
 [Pp]ackages/
 
-[Ww]eb.config.*
+[Ww]eb.Desenvolvimento.*
+[Ww]eb.Homologacao.*
+[Ww]eb.Producao.*
+[Ww]eb.config
+[Ww]eb.Debug.*
+[Ww]ebapp.csproj.user
+*.config
+.suo
