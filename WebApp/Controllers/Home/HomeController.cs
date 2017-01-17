@@ -157,10 +157,19 @@ namespace WebApp.Controllers
             }
 
             HomeWorkService home_ws = new HomeWorkService();
-            var resultado = home_ws.PostDespacho(despacho, usuario.Token);
-            string[] codeStatus = resultado.Split(',');
 
-            return Json(codeStatus[0].Split(':')[1], JsonRequestBehavior.AllowGet);
+            var resultado = home_ws.PostDespacho(despacho, usuario.Token);
+
+            if (resultado.IsSuccessStatusCode)
+            {
+                AdicionarMensagem(TipoMensagem.Sucesso, "Despacho realizado com sucesso!");
+            }
+            else
+            {
+                AdicionarMensagem(TipoMensagem.Atencao, resultado.content);
+            }
+
+            return Json(resultado, JsonRequestBehavior.AllowGet);
 
         }
 

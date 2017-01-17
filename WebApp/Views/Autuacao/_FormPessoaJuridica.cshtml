@@ -13,7 +13,7 @@
     <div id="selecaoOrgaosExecutivoEstadual" class="col-md-12 form-group" style="display:none">
         <label for="poder">Órgão do Executivo Estadual</label>
         <select class="form-control" id="organizacaoPublica">
-            <option value="0">Selecione um Orgão</option>
+            <option value="">Selecione um Orgão</option>
         </select>
     </div>
 </div>
@@ -24,7 +24,7 @@
         <div class="col-md-12 form-group">
             <label>Setor de Destino</label>
             <select class="form-control" id="unidadeOrganizacaoPJ" name="unidadeOrganizacaoPJ">
-                <option value="0">Selecione o Setor</option>
+                <option value="">Selecione o Setor</option>
             </select>
         </div>
     </div>
@@ -116,9 +116,7 @@
         <div class="row">
             <div class="col-md-12 form-group">
                 <label for="contato">Contatos</label>
-                <div class="input-group">
-                    @*<span class="input-group-addon tiposContato">
-                    </span>*@
+                <div class="input-group">                    
                     <span class="input-group-addon tiposContato"></span>
                     <input type="tel" class="form-control" id="contatoPJ" name="contatoPJ" title="Informe um Telefone válido para o interessado." required aria-required="true" aria-invalid="true"/>
                     <span class="input-group-btn">

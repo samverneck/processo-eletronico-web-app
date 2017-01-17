@@ -73,7 +73,7 @@ function objetoAutuacao(idAtividade, resumo, interessadosPessoaFisica, interessa
 }
 
 //Objeto Interessado Pessoa Juridica
-function objetoInteressadoPJ(razaoSocial, cnpj, sigla, nomeUnidade, siglaUnidade, contatos, emails, guidMunicipio, tipo) {
+function objetoInteressadoPJ(razaoSocial, cnpj, sigla, nomeUnidade, siglaUnidade, contatos, emails, sites, guidMunicipio, tipo) {
     this.razaoSocial = razaoSocial;
     this.cnpj = cnpj;
     this.sigla = sigla;
@@ -83,6 +83,7 @@ function objetoInteressadoPJ(razaoSocial, cnpj, sigla, nomeUnidade, siglaUnidade
     this.emails = emails;
     this.guidMunicipio = guidMunicipio;
     this.tipo = tipo;
+    this.sites = sites;
 }
 
 //Objeto Interessado Pessoa Física

@@ -25,7 +25,7 @@ $('body').on('click', '.btn-download', function () {
     $.ajax($(this).prop('href'))
       .done(function (dados) {
 
-          console.log(dados);
+          //console.log(dados);
 
           var link = document.createElement('a');
           link.download = dados[1];

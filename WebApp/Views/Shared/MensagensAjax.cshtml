@@ -1,0 +1,36 @@
+﻿@using WebApp.Models
+
+@if (ListaMensagens.Mensagens != null)
+{
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "progressBar": true,
+            "positionClass": "toast-bottom-center",
+            "onclick": null,
+            "showDuration": "400",
+            "hideDuration": "1300",
+            "timeOut": "5000",
+            "extendedTimeOut": "1500",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+        @foreach (var msg in ListaMensagens.Mensagens)
+        {
+            <text>
+                var obj = {
+                    tipo: "@msg.TipoToastr",
+                    mensagem: "@Html.Raw(msg.Texto.Replace("\n", ""))",
+                    titulo: "@msg.Titulo"
+                };
+                toastr[obj.tipo](obj.mensagem, obj.titulo);
+            </text>
+        }
+    </script>
+
+    ListaMensagens.Limpar();
+}

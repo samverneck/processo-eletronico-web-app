@@ -89,21 +89,37 @@
                 {
                 <tr>
                     <td>@pf.nome</td>
-                    <td>@pf.cpf</td>
+                    <td class="campoCpf">
+                        @{
+                            var CPFFormatado = String.Format(@"{0:000\.000\.000\-00}", pf.cpf);
+                        }
+                        @CPFFormatado
+                    </td>
                 </tr>
-            }
-        }
+                                }
+                            }
         @if (Model.interessadosPessoaJuridica != null && Model.interessadosPessoaJuridica.Count > 0)
 
         {
             foreach (var pj in Model.interessadosPessoaJuridica)
             {
                 <tr>
-                    <td>@pj.sigla - @pj.razaoSocial</td>
-                    <td>@pj.cnpj</td>
+                    <td>
+                    @if (pj.sigla != null)
+                    {
+                        @pj.sigla<text> - </text>
+                    } 
+                    @pj.razaoSocial</td>
+                    <td class="campoCnpj">
+                        @{
+                            var CNPJFormatado = String.Format(@"{0:00\.000\.000\/0000\-00}", pj.cnpj);
+                        }
+                        @CNPJFormatado
+                    </td>
+
                 </tr>
-            }
-        }
+                                }
+                            }
     </tbody>
 </table>
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web;
+using WebApp.Models;
 using WebApp.Models.Autuacao;
 using WebApp.Models.Despacho;
 using WebApp.Models.ProcessoEletronico;
@@ -19,9 +20,9 @@ namespace WebApp.Controllers.Home
             try
             {
                 var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "processos/organizacao/" + guidOrganizacao;
-                listaProcessos = download_serialized_json_data<List<ProcessoEletronicoModel>>(url, token);                
+                listaProcessos = download_serialized_json_data<List<ProcessoEletronicoModel>>(url, token);
 
-                return listaProcessos.OrderByDescending(a=>a.dataUltimoTramite_DateTime).ToList();
+                return listaProcessos.OrderByDescending(a => a.dataUltimoTramite_DateTime).ToList();
             }
             catch (Exception e)
             {
@@ -45,7 +46,7 @@ namespace WebApp.Controllers.Home
                 return processos;
             }
         }
-        
+
         public AnexoModel GetAnexo(int idAnexo, string token)
         {
             AnexoModel anexo = new AnexoModel();
@@ -63,19 +64,11 @@ namespace WebApp.Controllers.Home
             }
         }
 
-        public string PostDespacho(DespachoPostModel despacho, string token)
+        public RetornoAjaxModel PostDespacho(DespachoPostModel despacho, string token)
         {
-            
-            try
-            {
-                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "despachos";
-                return PostJson(despacho, url, token);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return "0";
-            }
+            var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "despachos";
+            //return PostJson(despacho, url, token);
+            return Post(despacho, url, token);
         }
     }
 }

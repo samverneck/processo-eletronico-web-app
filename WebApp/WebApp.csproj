@@ -201,6 +201,8 @@
     <Compile Include="Models\Despacho\DespachoModel.cs" />
     <Compile Include="Models\Despacho\DespachoPostModel.cs" />
     <Compile Include="Models\Home\HomeModel.cs" />
+    <Compile Include="Models\ListaMensagens.cs" />
+    <Compile Include="Models\Mensagem.cs" />
     <Compile Include="Models\Organograma\UnidadeModel.cs" />
     <Compile Include="Models\ProcessoEletronico\InteressadoPessoaFisica.cs" />
     <Compile Include="Models\ProcessoEletronico\InteressadoPessoaJuridica.cs" />
@@ -212,6 +214,8 @@
     <Compile Include="Models\Organograma\PoderModel.cs" />
     <Compile Include="Models\Organograma\TipoOrganizacaoModel.cs" />
     <Compile Include="Models\ProcessoEletronico\TipoDocumentalModel.cs" />
+    <Compile Include="Models\RetornoAjaxModel.cs" />
+    <Compile Include="Models\TipoMensagem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1321,6 +1325,7 @@
     <Content Include="Views\Shared\_ConsultaProcessoLayout.cshtml" />
     <Content Include="Views\Autuacao\Index.cshtml" />
     <Content Include="Views\Externo\Index.cshtml" />
+    <Content Include="Views\Shared\MensagensAjax.cshtml" />
     <None Include="Web.Desenvolvimento.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

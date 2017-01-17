@@ -131,8 +131,9 @@
                                                     <table id="tabelaInteressados" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="listaTabelaInteressados">
                                                         <thead>
                                                             <tr role="row">
-                                                                <th class="col-md-6">Nome / Razão Social</th>
-                                                                <th class="col-md-4">CPF/CNPJ</th>
+                                                                <th class="col-md-5">Nome / Razão Social</th>
+                                                                <th class="col-md-3">CPF/CNPJ</th>
+                                                                <th class="col-md-2">Unidade</th>
                                                                 <th class="colunaExcluir">Excluir</th>
                                                         </thead>
                                                         <tbody></tbody>
@@ -146,7 +147,7 @@
 
                             <div class="box-footer">
                                 <ul class="list-inline pull-right">
-                                    <li><a href="#tab_1" class="btn btn-default pull-right prev-step" data-toggle="tab"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Anterior</a></li>
+                                    <li><a href="#tab_2" class="btn btn-default pull-right prev-step" data-toggle="tab"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Anterior</a></li>
                                     <li><a href="#tab_3" class="btn btn-primary pull-right next-step" data-toggle="tab">Próximo <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></li>
                                 </ul>
                             </div>
@@ -338,6 +339,9 @@
 
 @section scripts{
     <script>
+
+        //var myWindow = window.open("http://acessocidadao.es.gov.br", "", "width=200,height=100");
+
         formAutuacao = @Html.Raw(Json.Encode(Model));
     </script>
     <script src="~/js/models.js"></script>

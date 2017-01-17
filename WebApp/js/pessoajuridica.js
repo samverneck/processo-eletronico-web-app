@@ -18,12 +18,14 @@ function carregaDadosOrgaoExecutivoEstadual(event) {
 function ajaxCarregaDadosOrgaoExecutivoEstadual(elemento) {
     $.ajax('/Autuacao/OrganizacaoPorGuid?guidOrganizacao=' + elemento)
       .done(function (dados) {
-          console.log(dados);          
+          //console.log(dados);          
           
           try {
-              interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', contatos, emails, dados.endereco.municipio.guid, dados.tipo);
+              //Não envia contatos de organograma para processoeletronico
+              interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', null, dados.emails, dados.sites, dados.endereco.municipio.guid, dados.tipoOrganizacao.descricao);
           }
           catch (err) {
+              //console.log(err);
               toastr["warning"]("Não foi possível realizar esta operação!");
           }
       })
@@ -40,7 +42,7 @@ function ajaxCarregaUnidadesOrganizacao(elemento) {
     $.ajax({ url: '/Autuacao/unidadesPorOrganizacao?guidOrganizacao=' + elemento, async: false })
       .done(function (dados) {
           //Exclui itens do combo
-          $('select#unidadeOrganizacaoPJ option:not([value="0"])').remove()
+          $('select#unidadeOrganizacaoPJ option:not([value=""])').remove()
 
           //Preenche combo com novo itens
           $.each(dados, function (i) {
@@ -68,13 +70,33 @@ function limpaTabelasListasEmailContatoSite() {
 // Executa funcao prepareUpload ao selecionar arquivos
 $('#btnIncluirContatoPJ').on('click', incluirContatoPJ);
 
+$('body').on('focus', '#contatoPJ', function () {
+    try {
+        var digitos = $('#formPessoaJuridicaContatos input:checked').attr('data-digitos');
+
+        switch (digitos) {
+            case '10':
+                $(this).mask('(99)9999-9999');
+                break;
+            case '11':
+                $(this).mask('(99)99999-9999');
+                break;
+            case '14':
+                $(this).mask('(99)9999-9999/9999 ');
+        }
+    }
+    catch (error) {
+        //console.log(error);
+    }
+});
+
 // Adiciona os arquivos selecionados ao array files[] e exibe-os na tabela de arquivos selecionados
 function incluirContatoPJ(event) {
     if (!formPessoaJuridicaContatosValidate.form())
         return false;
 
     if ($('#contatoPJ').val() != '') {
-        $('#tabelaListaContatosPJ tbody').append('<tr><td>' + $('#contatoPJ').val() + '</td><td data-value="' + $('#formPessoaJuridica input:checked').attr('data-id') + '">' + $('#formPessoaJuridica input:checked').val() + '</td><td class="text-center colunaExcluir"><button class="btn btn-xs btn-danger btn-excluir"><i class="fa fa-remove"></i></button></td></tr>');
+        $('#tabelaListaContatosPJ tbody').append('<tr><td>' + $('#contatoPJ').val() + '</td><td data-value="' + $('#formPessoaJuridicaContatos input:checked').attr('data-id') + '">' + $('#formPessoaJuridicaContatos input:checked').val() + '</td><td class="text-center colunaExcluir"><button class="btn btn-xs btn-danger btn-excluir"><i class="fa fa-remove"></i></button></td></tr>');
         //Limpa campo contato
         $('#contatoPJ').val('');
     }
@@ -203,7 +225,7 @@ function limparFormPessoaJuridica() {
     $('#selecaoOrgaosExecutivoEstadual').hide();
     $('.panelPJ').hide();
     $('#formPessoaJuridica .campo-municipio option:not([value="0"])').remove();
-    $('#selecaoSetorDestino option:not([value="0"])').remove();
+    $('#selecaoSetorDestino option:not([value=""])').remove();
     $('#selecaoSetorDestino').hide();
 
     formPessoaJuridicaEmailsValidate.resetForm();
@@ -213,7 +235,7 @@ function limparFormPessoaJuridica() {
 function resetaForm() {
     $('#modalInteressados div.tab-content .active form')[0].reset();
     limpaTabelasListasEmailContatoSite();
-    $('select#organizacaoPublica option:not([value="0"])').remove()
+    $('select#organizacaoPublica option:not([value=""])').remove()
 }
 
 function resetaFormSelecaoPJ() {

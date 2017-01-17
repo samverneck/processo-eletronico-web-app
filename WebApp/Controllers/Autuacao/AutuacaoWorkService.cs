@@ -113,8 +113,12 @@ namespace WebApp.Controllers.Autuacao
             try
             {
                 var url = ConfigurationManager.AppSettings["OrganogramaAPIBase"] + "organizacoes/" + guidOrganizacao;
-                organizacao = download_serialized_json_data<OrganizacaoModel>(url, token);
-                return organizacao;
+
+                var dados = Get(url, token);
+                //organizacao = download_serialized_json_data<OrganizacaoModel>(url, token);
+                //return organizacao;
+                return JsonConvert.DeserializeObject<OrganizacaoModel>(dados.content);
+                
             }
             catch (Exception e)
             {
@@ -290,19 +294,11 @@ namespace WebApp.Controllers.Autuacao
             
         }
 
-        public string PostAutuacao(AutuacaoModel autuacao, string token)
-        {
-
-            try
-            {
-                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "processos";
-                return PostJson(autuacao, url, token);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return "0";
-            }
+        public RetornoAjaxModel PostAutuacao(AutuacaoModel autuacao, string token)
+        {   
+            var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "processos";
+            //return PostJson(autuacao, url, token);
+            return Post(autuacao, url, token);
         }
     }
 }

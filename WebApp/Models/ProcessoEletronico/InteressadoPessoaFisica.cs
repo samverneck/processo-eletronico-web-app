@@ -9,8 +9,8 @@ namespace WebApp.Models.ProcessoEletronico
     {
         public int id { get; set; }
         public string nome { get; set; }
-        public string cpf { get; set; }
-        public string guidMunicipio { get; set; }        
+        public string cpf { get; set; }        
+        public string guidMunicipio { get; set; }
         public List<ContatoModel> contatos { get; set; }
         public List<EmailModel> emails { get; set; }
     }

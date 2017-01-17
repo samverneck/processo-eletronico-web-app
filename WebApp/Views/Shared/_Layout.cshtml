@@ -76,26 +76,8 @@
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu">
                     <li class="header">MENU PRINCIPAL</li>
-                    <!-- Optionally, you can add icons to the links -->
                     <li class="active"><a href="@Url.Action("Index", "Home")"><i class="fa fa-tachometer"></i> <span>Meu Painel</span></a></li>
-                    <li><a href="@Url.Action("Index", "Autuacao")"><i class="fa fa-file-text-o"></i> <span>Autuar Processo</span></a></li>
-                    @*<li><a href="@Url.Action("Index", "Despacho")"><i class="fa fa-pencil-square-o"></i> <span>Despachar Processo</span></a></li>
-                        <li><a href="@Url.Action("Index", "Arquivamento")"><i class="fa fa-archive"></i> <span>Arquivar Processo</span></a></li>
-                        <li class="header">CONFIGURAÇÕES</li>
-                        <li><a href="#"><i class="fa fa-bell-o"></i> <span>Sinalização</span></a></li>
-                        <li><a href="#"><i class="fa fa-puzzle-piece"></i> <span>Tipo Documental</span></a></li>*@
-                    <!--<li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-link"></i> <span>Configurações SEP</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-caret-right"></i> Sinalização</a></li>
-                            <li><a href="#"><i class="fa fa-caret-right"></i> Tipo Documental</a></li>
-                        </ul>
-                    </li>-->
+                    <li><a href="@Url.Action("Index", "Autuacao")"><i class="fa fa-file-text-o"></i> <span>Autuar Processo</span></a></li>                   
                 </ul>
                 <!-- /.sidebar-menu -->
             </section>
@@ -240,5 +222,21 @@
     <script src="~/js/validacoes.js"></script>
 
     @RenderSection("scripts", required: false)
+
+
+    <script>
+        function ExibirMensagens() {
+            var url = '@Url.Action("MensagensAjax", "Home")';
+            $.ajax({
+                url: url,
+                success: function (data) {
+                    $('body').append(data);
+                },
+                global: false,
+            });
+        }
+
+        ExibirMensagens();
+    </script>
 </body>
 </html>

@@ -19,11 +19,16 @@ toastr.options = {
 }
 
 /****************************************************************************************************************************************************************************/
+/*FORMATA VALOR CNPJ E CPF NA EXIBICAO DO VALOR*/
+//$('.campoCpf').mask('999.999.999-99');
+//$('.campoCnpj').mask('99.999.999/9999-99');
+
+/****************************************************************************************************************************************************************************/
 /*POPOVERS AJUDA*/
 
-$('body').on('mouseover click','a[data-toggle="popover"]', function () {
-    var e = $(this);    
-    e.popover('show');    
+$('body').on('mouseover click', 'a[data-toggle="popover"]', function () {
+    var e = $(this);
+    e.popover('show');
 });
 
 /****************************************************************************************************************************************************************************/
@@ -133,16 +138,20 @@ $(document).ready(function () {
 function ajaxCarregaTiposContato() {
     $.ajax({ url: '/Autuacao/TiposContato' })
       .done(function (dados) {
+
+          //console.log("Tipo Contato");
+          //console.log(dados);
+
           $.each(dados, function (i) {
               var optionhtml = '<label class="radio-inline">';
-              optionhtml += '<input type="radio" name="tipoTelefone" data-id="' + this.id + '" data-digitos="' + this.quantidadeDigitos + '" value="' + this.descricao + '"/>' + this.descricao;
+              optionhtml += '<input type="radio" name="tipotelefone" data-id="' + this.id + '" data-digitos="' + this.quantidadeDigitos + '" value="' + this.descricao + '"/>' + this.descricao;
               optionhtml += '</label>';
 
               $('.tiposContato').append(optionhtml);
           });
 
           $('#formPessoaFisicaContatos input[type="radio"]:first').prop('checked', true);
-          $('#formPessoaJuridicaContatos input[type="radio"]:last').prop('checked', true);
+          $('#formPessoaJuridicaContatos input[type="radio"]:first').prop('checked', true);
       })
       .fail(function () {
           toastr["warning"]("Não foi possível realizar esta operação!");
@@ -173,7 +182,7 @@ function ajaxCarregaMunicipios(elemento) {
               var optionhtml = '<option value="' + this.guid + '">' + this.nome + '</option>';
               $(elemento).parents().find('form .campo-municipio').append(optionhtml);
           });
-          console.log(dados);
+          //console.log(dados);
       })
       .fail(function () {
           toastr["warning"]("Não foi possível realizar esta operação!");
@@ -194,32 +203,42 @@ $('#btnIncluirInteressado').on('click', function () {
 
         var pjExiste = false;
 
-        //$.each(arrayPJ, function (i, pj) {
-        //    if (interessadoPJProvisorio != null) {
-        //        if (pj.cnpj == interessadoPJProvisorio.cnpj) {
-        //            alert('Interessado já existe no processo.')
-        //            pjExiste = true;
-        //        }
-        //    }
-        //    else {
-        //        if (pj.cnpj == form['cnpj'].value.replace(/\/|\.|\-/g, "")) {
-        //            alert('Interessado já existe no processo.')
-        //            pjExiste = true;
-        //        }
-        //    }
-        //});
+        $.each(arrayPJ, function (i, pj) {
+            if (interessadoPJProvisorio != null) {
+                if (pj.razaoSocial == interessadoPJProvisorio.razaoSocial && pj.siglaUnidade == $('#unidadeOrganizacaoPJ').val()) {
+                    toastr["warning"]("Interessado Pessoa Jurídica já está relacionado.", "Atenção!");
+                    pjExiste = true;
+                }
+            }
+            else {
+                if (pj.razaoSocial == form['razaosocial'].value && pj.siglaUnidade == form['sigla'].value) {
+                    toastr["warning"]("Interessado Pessoa Jurídica já está relacionado.", "Atenção!");
+                    pjExiste = true;
+                }
+            }
+        });
 
         if (!pjExiste) {
             //Listas dados do interessado
             contatosPJ = serializeTable('tabelaListaContatosPJ');
+            //limpaTelefone(contatosPJ);
+
             emailsPJ = serializeTable('tabelaListaEmailsPJ');
 
             if (interessadoPJProvisorio != null) {
-                if ($('#unidadeOrganizacaoPJ').val() != '0') {
-                    interessadoPJProvisorio.nomeUnidade = $('#unidadeOrganizacaoPJ option:selected').text();
-                    interessadoPJProvisorio.siglaUnidade = $('#unidadeOrganizacaoPJ').val();
+                try {
+
+                    if ($('#unidadeOrganizacaoPJ').val() != '') {
+                        interessadoPJProvisorio.nomeUnidade = $('#unidadeOrganizacaoPJ option:selected').text();
+                        interessadoPJProvisorio.siglaUnidade = $('#unidadeOrganizacaoPJ').val();
+                    }
+                    arrayPJ.push(interessadoPJProvisorio);
+                    toastr["success"]("Interessado Pessoa Jurídica incluído com sucesso.", "Sucesso!");
                 }
-                arrayPJ.push(interessadoPJProvisorio);
+                catch (err) {
+                    //console.log(err);
+                    toastr["warning"]("Não foi possível incluir interessado Pessoa Jurídica!");
+                }
             }
             else {
 
@@ -227,22 +246,31 @@ $('#btnIncluirInteressado').on('click', function () {
                     return false;
                 }
 
-                arrayPJ.push(new objetoInteressadoPJ(form['razaosocial'].value, form['cnpj'].value.replace(/\/|\.|\-/g, ""), form['sigla'].value, '', '', contatosPJ, emailsPJ, form['municipio'].value));
+                try {
+
+                    //arrayPJ.push(new objetoInteressadoPJ(form['razaosocial'].value, form['cnpj'].value.replace(/\/|\.|\-/g, ""), form['sigla'].value, '', '', '', emailsPJ, form['municipio'].value));
+                    arrayPJ.push(new objetoInteressadoPJ(form['razaosocial'].value, form['cnpj'].value, form['sigla'].value, '', '', contatosPJ, emailsPJ, null, form['municipio'].value));
+                    toastr["success"]("Interessado Pessoa Jurídica incluído com sucesso.", "Sucesso!");
+                }
+                catch (err) {
+                    //console.log(err);
+                    toastr["warning"]("Não foi possível incluir interessado Pessoa Física!");
+                }
             }
 
             //Reseta formulario
             resetaForm();
             resetaFormSelecaoPJ();
             limparFormPessoaJuridica();
+
+            //Limpa Objeto Provisorio
+            interessadoPJProvisorio = null;
+
+            //Recarrega Tabela Interessados
+            carregaTabelaInteressados();
         }
 
-        //Limpa Objeto Provisorio
-        interessadoPJProvisorio = null;
-
-        //Recarrega Tabela Interessados
-        carregaTabelaInteressados();
-
-        toastr["success"]("Interessado pessoa jurídica incluído com sucesso!");
+           
     }
 
     //Inclusao de Pessoa Fisica
@@ -256,7 +284,7 @@ $('#btnIncluirInteressado').on('click', function () {
 
         $.each(arrayPF, function (i, pf) {
             if (pf.cpf == form['cpf'].value.replace(/\/|\.|\-/g, "")) {
-                alert('Interessado já existe no processo.')
+                toastr["warning"]("Interessado Pessoa Física já está relacionado.", "Atenção!");
                 pfExiste = true;
             }
         });
@@ -264,10 +292,14 @@ $('#btnIncluirInteressado').on('click', function () {
         if (!pfExiste) {
             //Listas dados do interessado PF
             contatosPF = serializeTable('tabelaListaContatosPF');
+            limpaTelefone(contatosPF);
+
+
             emailsPF = serializeTable('tabelaListaEmailsPF');
 
             //Adiciona interessado a lista de interessados PF
-            arrayPF.push(new objetoInteressadoPF(form['nome'].value, form['cpf'].value.replace(/\/|\.|\-/g, ""), contatosPF, emailsPF, form['municipio'].value));
+            //arrayPF.push(new objetoInteressadoPF(form['nome'].value, form['cpf'].value.replace(/\/|\.|\-/g, ""), contatosPF, emailsPF, form['municipio'].value));
+            arrayPF.push(new objetoInteressadoPF(form['nome'].value, form['cpf'].value, contatosPF, emailsPF, form['municipio'].value));
 
             //Limpa Objeto Provisorio
             interessadoPJProvisorio = null;
@@ -278,7 +310,7 @@ $('#btnIncluirInteressado').on('click', function () {
             //Recarrega Tabela Interessados
             carregaTabelaInteressados();
 
-            toastr["success"]("Interessado pessoa física incluído com sucesso!");
+            toastr["success"]("Interessado Pessoa Física incluído com sucesso.", "Sucesso!");
         }
     }
 
@@ -292,8 +324,8 @@ function carregaTabelaInteressados() {
     });
 
     $.each(arrayPJ, function (i, interessado) {
-        console.log(interessado);
-        $('#tabelaInteressados tbody').append('<tr><td>' + interessado.razaoSocial + '</td><td>' + interessado.cnpj + '</td><td class="text-center colunaExcluir"><button data-id="' + i + '" class="btn btn-xs btn-danger btn-excluir btn-excluir-interessado-pj"><i class="fa fa-remove"></i></button></td></tr>');
+        //console.log(interessado);
+        $('#tabelaInteressados tbody').append('<tr><td>' + interessado.razaoSocial + '</td><td>' + interessado.cnpj + '</td><td>' + interessado.siglaUnidade + '</td><td class="text-center colunaExcluir"><button data-id="' + i + '" class="btn btn-xs btn-danger btn-excluir btn-excluir-interessado-pj"><i class="fa fa-remove"></i></button></td></tr>');
     });
 }
 
@@ -308,6 +340,15 @@ $('tbody').on('click', '.btn-excluir-interessado-pj', function () {
     carregaTabelaInteressados()
 });
 
+/****************************************************************************************************************************************************************************/
+/*PREPARA TELEFONES PARA ENVIO*/
+
+function limpaTelefone(lista) {
+    $.each(lista, function (i, v) {
+        v.telefone = v.telefone.replace(/\/|\.|\-|\(|\s|\)/g, "");
+
+    });
+}
 
 /****************************************************************************************************************************************************************************/
 /*CARREGA ORGÃOS DO EXECUTIVO ESTADUAL*/
@@ -319,12 +360,12 @@ function carregaOrgaosExecutivoEstadual(event) {
 
     if (elemento.value == '1') {
         //$('#organizacaoPublica').children().remove();
-        $('select#organizacaoPublica option:not([value="0"])').remove()
+        $('select#organizacaoPublica option:not([value=""])').remove()
         ajaxCarregaOrgaosExecutivoEstadual();
     }
     else if (elemento.value == '2') {
         //$('#organizacaoPublica').children().remove();
-        $('select#organizacaoPublica option:not([value="0"])').remove()
+        $('select#organizacaoPublica option:not([value=""])').remove()
         ajaxCarregaOutrosOrgaosPublicos();
     }
     else {
@@ -342,7 +383,7 @@ function ajaxCarregaOrgaosExecutivoEstadual() {
               $('#organizacaoPublica').append(optionhtml);
           });
 
-          console.log(dados.length);
+          ////console.log(dados.length);
 
       })
       .fail(function () {
@@ -358,7 +399,7 @@ function ajaxCarregaOutrosOrgaosPublicos() {
               var optionhtml = '<option value="' + this.guid + '">' + this.sigla + ' - ' + this.razaoSocial + '</option>';
               $('#organizacaoPublica').append(optionhtml);
           });
-          console.log(dados.length);
+          //console.log(dados.length);
       })
       .fail(function () {
           toastr["warning"]("Não foi possível realizar esta operação!");
@@ -519,7 +560,7 @@ $('body').on('click', '.btn-input-file', btnUpload);
 
 /****************************************************************************************************************************************************************************/
 /*ENVIAR AUTUACAO*/
-$('#btnAutuar').on('click', function (e) {    
+$('#btnAutuar').on('click', function (e) {
 
     if (!validaForm('#formResumoSinalizacao')) {
         toastr["warning"]("Não foi possíve realizar a autuação! Verifique os campos obrigatórios e tente novamente!");
@@ -559,7 +600,7 @@ $('#btnAutuar').on('click', function (e) {
     arraySinalizacao = [];
 
     $("input:checkbox[name=sinalizacao]:checked").each(function () {
-        console.log($(this).val());
+        //console.log($(this).val());
         arraySinalizacao.push($(this).val());
     });
 
@@ -568,8 +609,8 @@ $('#btnAutuar').on('click', function (e) {
     //Cria objeto autuacao com os dados dos formularios
     var autuacao = new objetoAutuacao(formResumo.atividade.value, formResumo.resumo.value, arrayPF, arrayPJ, arrayMunicipios, arrayAnexos, arraySinalizacao, formAutuacao.guidOrgao, $('#unidadeAutuadora').val());
 
-    console.log(autuacao);
-    console.log(JSON.stringify(autuacao));
+    //console.log(autuacao);
+    //console.log(JSON.stringify(autuacao));
 
     $.ajax({
         url: '/Autuacao/Autuar',
@@ -579,29 +620,16 @@ $('#btnAutuar').on('click', function (e) {
         contentType: "application/json; charset=utf-8"
         //contentType: "application/x-www-form-urlencoded"
     }).done(function (dados, textStatus, request) {
-
-        console.log(dados);
-
-        switch ($.trim(dados)) {
-            case '400':
-                toastr["warning"]("Não foi possível realizar esta operação.");
-                break;
-            case '404':
-                toastr["warning"]("Não foi possível realizar esta operação.");
-                break;
-            case '500':
-                toastr["error"]("Erro reportado pela API.");
-                break;
-            case '201': {
-                toastr["success"]("Processo autuado com sucesso!");
-                window.location.href = '/Autuacao';
-            }
-
-
+        
+        //console.log(dados);
+        ExibirMensagens();
+        if (dados.IsSuccessStatusCode) {
+            var delay = 3000;
+            setTimeout(function () { window.location.href = '/Home'; }, delay);
         }
 
     }).fail(function () {
-        toastr["warning"]("Não foi possível realizar esta operação!");
+        toastr["warning"]("Não foi possível autuar o processo!");
     });
 
     return false;
@@ -637,7 +665,7 @@ function previewFile(anexo) {
     }
 
     reader.onloadend = function () {
-        console.log(reader.result);
+        //console.log(reader.result);
     }
 }
 
@@ -671,12 +699,12 @@ function uploadFiles(event) {
             }
             else {
                 // Handle errors here
-                console.log('ERRORS: ' + data.error);
+                //console.log('ERRORS: ' + data.error);
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             // Handle errors here
-            console.log('ERRORS: ' + textStatus);
+            //console.log('ERRORS: ' + textStatus);
             // STOP LOADING SPINNER
         }
     });
@@ -745,6 +773,10 @@ $(document).ready(function () {
     $("#atividade").select2({ width: '100%' });
     $(".campo-uf").select2({ width: '100%' });
     $(".campo-municipio").select2({ width: '100%' });
+
+    //Formulario de pessoa juridica
+    $("#organizacaoPublica").select2({ width: '100%' });
+    $("#organizacaoPublica").select2({ width: '100%' });
 });
 
 

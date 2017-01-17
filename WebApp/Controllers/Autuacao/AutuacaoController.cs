@@ -24,7 +24,7 @@ namespace WebApp.Controllers
         public ActionResult Index()
         {
             FormAutuacaoModel formAutuacao = new FormAutuacaoModel();
-            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();            
+            AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
 
             formAutuacao.sinalizacoes = autuacao_ws.GetSinalizacoes(usuario.Patriarca.guid, usuario.Token);
             formAutuacao.atividades = autuacao_ws.GetAtividades(usuario.Token);
@@ -182,16 +182,53 @@ namespace WebApp.Controllers
             {
                 foreach (var anexo in autuacao.anexos)
                 {
-                    int i = 0;                    
+                    int i = 0;
                     autuacao.anexos[i].conteudo = ConvertAnexoBase64(anexo.conteudo);
                     i++;
                 }
             }
 
-            var resultado = autuacao_ws.PostAutuacao(autuacao, usuario.Token);
-            string[] codeStatus = resultado.Split(',');
+            if (autuacao.interessadosPessoaFisica != null && autuacao.interessadosPessoaFisica.Count > 0)
+            {
+                foreach (var pf in autuacao.interessadosPessoaFisica)
+                {
+                    pf.cpf = pf.cpf.Replace(".", "").Replace("-", "");
+                }
+            }
 
-            return Json(codeStatus[0].Split(':')[1], JsonRequestBehavior.AllowGet);
+            if (autuacao.interessadosPessoaJuridica != null && autuacao.interessadosPessoaJuridica.Count > 0)
+            {
+                foreach (var pj in autuacao.interessadosPessoaJuridica)
+                {
+                    pj.cnpj = pj.cnpj.Replace(".","").Replace("-","").Replace("/","");
+
+                    foreach (var contato in pj.contatos)
+                    {
+                        contato.telefone = contato.telefone.Replace("(", "").Replace("-", "").Replace(")", "");
+                    }   
+                }
+            }
+
+            if (autuacao.interessadosPessoaJuridica != null && autuacao.interessadosPessoaJuridica.Count > 0)
+            {
+                foreach (var pj in autuacao.interessadosPessoaJuridica)
+                {
+                    pj.cnpj = pj.cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
+                }
+            }
+
+            var resultado = autuacao_ws.PostAutuacao(autuacao, usuario.Token);
+
+            if (resultado.IsSuccessStatusCode)
+            {
+                AdicionarMensagem(TipoMensagem.Sucesso, "Autuação realizada com sucesso!");
+            }
+            else
+            {
+                AdicionarMensagem(TipoMensagem.Atencao, resultado.content);
+            }
+
+            return Json(resultado, JsonRequestBehavior.AllowGet);
 
         }
 

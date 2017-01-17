@@ -14,7 +14,7 @@ function ajaxCarregaProcessoDespachar(numeroProcesso) {
           $('#modalDespacho').modal('show');
       })
       .fail(function () {
-          toastr["warning"]("Não foi possível realizar está operação!")
+          toastr["warning"]("Não foi possível realizar esta operação!")
       });
 }
 
@@ -40,7 +40,7 @@ function ajaxCarregaUnidades(guidOrganizacao) {
           $("#unidadeDestino").html(optionhtml);
       })
       .fail(function () {
-          toastr["warning"]("Não foi possível realizar está operação!")
+          toastr["warning"]("Não foi possível realizar esta operação!")
       });
 }
 
@@ -56,7 +56,7 @@ $('body').on('click', '#btnDespacharProcesso', function () {
 
     var despacho = new objetoDespacho(form.idProcesso.value, form.textoDespacho.value, form.orgaoDestino.value, unidadeDestino.value, prepararAnexos(arrayAnexos));
 
-    console.log(despacho);
+    //console.log(despacho);
 
     $.ajax({
         url: '/Home/DespacharProcessoPost',
@@ -67,26 +67,15 @@ $('body').on('click', '#btnDespacharProcesso', function () {
         //contentType: "application/x-www-form-urlencoded"
     }).done(function (dados, textStatus, request) {
 
-        console.log(dados);
-
-        switch ($.trim(dados)) {
-            case '400':
-                toastr["warning"]("Não foi possível realizar esta operação.");
-                break;
-            case '404':
-                toastr["warning"]("Não foi possível realizar esta operação.");
-                break;
-            case '500':
-                toastr["error"]("Erro reportado pela API.");
-                break;
-            case '201': {
-                toastr["success"]("Processo despachado com sucesso!");
-                window.location.href = '/Home';
-            }
-        }
+        //console.log(dados);
+        ExibirMensagens();
+        if (dados.IsSuccessStatusCode) {
+            var delay = 3000;
+            setTimeout(function () { window.location.href = '/Home'; }, delay);
+        }        
 
     }).fail(function () {
-        toastr["warning"]("Não foi possível realizar esta operação!");        
+        toastr["warning"]("Não foi possível realizar o despacho do processo!");        
     });
 
     return false;
