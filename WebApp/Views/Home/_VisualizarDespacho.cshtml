@@ -1,0 +1,93 @@
+﻿@model WebApp.Models.Despacho.DespachoGetModel
+
+<h6>@DateTime.Now</h6>
+<div class="box box-primary">
+    <!-- /.box-header -->
+    <div class="box-header with-border">
+        <h3 class="box-title">Dados do Despacho</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body table-responsive no-padding">
+
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th class="col-md-3 text-right">
+                    Data do Despacho
+                </th>
+                <td>@Model.dataHoraDespacho.AsDateTime().ToString("dd/MM/yyyy HH:mm")</td>
+            </tr>
+            <tr>
+                <th class="col-md-3 text-right">
+                    Usuário Despachante
+                </th>
+                <td>@Model.nomeUsuarioDespachante</td>
+            </tr>
+            <tr>
+                <th class="col-md-3 text-right">
+                    Destino
+                </th>
+                <td>@Model.siglaOrganizacaoDestino - @Model.siglaUnidadeDestino</td>
+            </tr>
+            <tr>
+                <th class="col-md-3 text-right">
+                    Texto do Despacho
+                </th>
+                <td>@Html.Raw(Model.texto)</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+@if (Model.anexos != null && Model.anexos.Count > 0)
+{
+    <div class="box box-primary">
+        <!-- /.box-header -->
+        <div class="box-header with-border">
+            <h3 class="box-title">Anexos do Despacho</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <table id="anexos-despacho" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Arquivo</th>
+                        <th>Tipo Documental</th>
+                        <th>Descrição</th>
+                        <th class="col-md-2 text-center">Baixar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var anexo in Model.anexos)
+                {
+                        <tr>
+                            <td>@anexo.nome</td>
+                            <td>
+                                @if (anexo.tipoDocumental != null)
+                                {
+                                    @anexo.tipoDocumental.descricao
+                                }
+                            </td>
+                            <td>@anexo.descricao</td>
+                            <td class="text-center">
+                                <a href="@Url.Action("Download", "Home", new { id = anexo.id })" class="btn btn-warning btn-xs btn-download">
+                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

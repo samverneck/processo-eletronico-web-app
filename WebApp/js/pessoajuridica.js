@@ -5,7 +5,7 @@
 
 $('#organizacaoPublica').on('change', carregaDadosOrgaoExecutivoEstadual);
 
-function carregaDadosOrgaoExecutivoEstadual(event) {    
+function carregaDadosOrgaoExecutivoEstadual(event) {
     if ($('#organizacaoPublica')[0].value != '0') {
         var elemento = $('#organizacaoPublica')[0].value;
         limpaTabelasListasEmailContatoSite();
@@ -19,7 +19,7 @@ function ajaxCarregaDadosOrgaoExecutivoEstadual(elemento) {
     $.ajax('/Autuacao/OrganizacaoPorGuid?guidOrganizacao=' + elemento)
       .done(function (dados) {
           //console.log(dados);          
-          
+
           try {
               //Não envia contatos de organograma para processoeletronico
               interessadoPJProvisorio = new objetoInteressadoPJ(dados.razaoSocial, dados.cnpj, dados.sigla, '', '', null, dados.emails, dados.sites, dados.endereco.municipio.guid, dados.tipoOrganizacao.descricao);
@@ -46,7 +46,7 @@ function ajaxCarregaUnidadesOrganizacao(elemento) {
 
           //Preenche combo com novo itens
           $.each(dados, function (i) {
-              var optionhtml = '<option value="' + this.sigla + '">' + this.sigla +' - '+this.nome + '</option>';
+              var optionhtml = '<option value="' + this.sigla + '">' + this.sigla + ' - ' + this.nome + '</option>';
               $('#unidadeOrganizacaoPJ').append(optionhtml);
           });
       })
@@ -76,13 +76,13 @@ $('body').on('focus', '#contatoPJ', function () {
 
         switch (digitos) {
             case '10':
-                $(this).mask('(99)9999-9999');
+                $(this).mask('(99) 9999-9999');
                 break;
             case '11':
-                $(this).mask('(99)99999-9999');
+                $(this).mask('(99) 99999-9999');
                 break;
             case '14':
-                $(this).mask('(99)9999-9999/9999 ');
+                $(this).mask('(99) 9999-9999/9999 ');
         }
     }
     catch (error) {

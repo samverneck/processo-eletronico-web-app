@@ -475,11 +475,17 @@ function prepareUpload(event) {
     });
 }
 
+function testeAnexos() {
+    $.each($('#tabelaAnexos tbody tr'), function (i, linha) {
+        console.log(linha);
+    });
+}
+
 function carregaTabelaAnexos() {
     $('#tabelaAnexos tbody tr').remove();
 
     $.each(arrayAnexos, function (i, file) {
-        $('#tabelaAnexos tbody').append('<tr><td>' + file.nome + '</td><td><select id="sel-' + i + '" class="form-control selectTipoDocumental">' + tiposDocumentais + '</select></td><td>' + bytesToSize(file.tamanho) + '</td><td><textarea id="text-' + i + '" class="form-control descricaoTipoDocumental"></textarea></td><td class="text-center colunaExcluir"><button type="button" data-id="' + i + '" class="btn btn-xs btn-danger btn-excluir btn-excluir-arquivo"><i class="fa fa-remove"></i></button></td></tr>');
+        $('#tabelaAnexos tbody').append('<tr><td>' + file.nome + '</td><td><select id="sel-' + i + '" class="form-control selectTipoDocumental">' + tiposDocumentais + '</select></td><td>' + bytesToSize(file.tamanho) + '</td><td><textarea id="text-' + i + '" class="form-control descricaoTipoDocumental">' + file.descricao + '</textarea></td><td class="text-center colunaExcluir"><button type="button" data-id="' + i + '" class="btn btn-xs btn-danger btn-excluir btn-excluir-arquivo"><i class="fa fa-remove"></i></button></td></tr>');
     });
 }
 
@@ -562,6 +568,11 @@ $('body').on('click', '.btn-input-file', btnUpload);
 /*ENVIAR AUTUACAO*/
 $('#btnAutuar').on('click', function (e) {
 
+    //Atribui ao campo resumo o conteudo do ckeditor.
+    $('#resumo').val(CKEDITOR.instances.resumo.getData());
+
+    console.log($('#resumo').val());
+
     if (!validaForm('#formResumoSinalizacao')) {
         toastr["warning"]("Não foi possíve realizar a autuação! Verifique os campos obrigatórios e tente novamente!");
         return false;
@@ -583,7 +594,6 @@ $('#btnAutuar').on('click', function (e) {
         return false;
     }
 
-
     var formResumo = $('#formResumoSinalizacao')[0];
     var formResponsavel = $('#formAutuacaoResponsavel')[0];
     var formMunicipio = $('#formAutuacaoMunicipio')[0];
@@ -603,8 +613,6 @@ $('#btnAutuar').on('click', function (e) {
         //console.log($(this).val());
         arraySinalizacao.push($(this).val());
     });
-
-
 
     //Cria objeto autuacao com os dados dos formularios
     var autuacao = new objetoAutuacao(formResumo.atividade.value, formResumo.resumo.value, arrayPF, arrayPJ, arrayMunicipios, arrayAnexos, arraySinalizacao, formAutuacao.guidOrgao, $('#unidadeAutuadora').val());
@@ -651,64 +659,6 @@ function prepararAnexos(anexos) {
     return anexos;
 }
 
-/****************************************************************************************************************************************************************************/
-/*ENVIAR ARQUIVOS*/
-
-
-function previewFile(anexo) {
-    var file = anexo;
-    var reader = new FileReader();
-    var filestring;
-
-    if (file) {
-        reader.readAsBinaryString(file);
-    }
-
-    reader.onloadend = function () {
-        //console.log(reader.result);
-    }
-}
-
-//$('form').on('submit', uploadFiles);
-
-// Catch the form submit and upload the files
-function uploadFiles(event) {
-    event.stopPropagation(); // Stop stuff happening
-    event.preventDefault(); // Totally stop stuff happening
-
-    // START A LOADING SPINNER HERE
-
-    // Create a formdata object and add the files
-    var data = new FormData();
-    $.each(files, function (key, value) {
-        data.append(key, value);
-    });
-
-    $.ajax({
-        url: 'submit.php?files',
-        type: 'POST',
-        data: data,
-        cache: false,
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        traditional: true,
-        success: function (data, textStatus, jqXHR) {
-            if (typeof data.error === 'undefined') {
-                // Success so call function to process the form
-                submitForm(event, data);
-            }
-            else {
-                // Handle errors here
-                //console.log('ERRORS: ' + data.error);
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            // Handle errors here
-            //console.log('ERRORS: ' + textStatus);
-            // STOP LOADING SPINNER
-        }
-    });
-}
 
 /****************************************************************************************************************************************************************************/
 /*MODAL WAITING*/
@@ -776,9 +726,8 @@ $(document).ready(function () {
 
     //Formulario de pessoa juridica
     $("#organizacaoPublica").select2({ width: '100%' });
-    $("#organizacaoPublica").select2({ width: '100%' });
+    $("#unidadeOrganizacaoPJ").select2({ width: '100%' });
 });
-
 
 /****************************************************************************************************************************************************************************/
 /*VALIDAR FORMULARIO*/

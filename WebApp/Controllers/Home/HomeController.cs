@@ -47,9 +47,31 @@ namespace WebApp.Controllers
         public ActionResult VisualizarProcesso(string numeroProcesso)
         {
             HomeWorkService home_ws = new HomeWorkService();
-            var processo = home_ws.GetProcessoPorNumero(numeroProcesso, usuario.Token);
+            var retorno = home_ws.GetProcessoPorNumero(numeroProcesso, usuario.Token);
 
-            return PartialView("_VisualizarProcesso", processo);
+            if (!retorno.IsSuccessStatusCode)
+            {
+                AdicionarMensagem(TipoMensagem.Atencao, retorno.content);
+            }
+                        
+            var processo = JsonConvert.DeserializeObject<ProcessoEletronicoModel>(retorno.content);
+
+            return PartialView("_VisualizarProcesso", processo);            
+        }
+
+        public ActionResult VisualizarDespacho(int id)
+        {
+            HomeWorkService home_ws = new HomeWorkService();
+            var retorno = home_ws.GetDespachoPorId(id, usuario.Token);
+
+            if (!retorno.IsSuccessStatusCode)            
+            {
+                AdicionarMensagem(TipoMensagem.Atencao, retorno.content);
+            }
+
+            var despacho = JsonConvert.DeserializeObject<DespachoGetModel>(retorno.content);
+
+            return PartialView("_VisualizarDespacho", despacho);
         }
 
         [ResourceAuthorize("Autuar", "Processo")]
@@ -62,7 +84,9 @@ namespace WebApp.Controllers
             HomeWorkService home_ws = new HomeWorkService();
             AutuacaoWorkService autuacao_ws = new AutuacaoWorkService();
 
-            telaDespacho.processo = home_ws.GetProcessoPorNumero(numeroProcesso, usuario.Token);
+            var processo = home_ws.GetProcessoPorNumero(numeroProcesso, usuario.Token);
+
+            telaDespacho.processo = JsonConvert.DeserializeObject<ProcessoEletronicoModel>(processo.content);
             telaDespacho.tiposDocumentais = autuacao_ws.GetTipoDocumental(telaDespacho.processo.atividade.id, usuario.Token);
             telaDespacho.orgaosDestino = autuacao_ws.GetOrgaosPorPatriarca(usuario.Patriarca.guid, usuario.Token);
 
@@ -93,66 +117,13 @@ namespace WebApp.Controllers
             return Json(cbxUnidades, JsonRequestBehavior.AllowGet);
         }
 
-
-        //[HttpPost]        
-        //public ActionResult Despachar(FormCollection form, IEnumerable<HttpPostedFileBase> anexos)
-        //{
-        //    try
-        //    {
-        //        List<AnexoModel> conteudos = new List<AnexoModel>();
-
-        //        foreach (var anexo in anexos)
-        //        {
-        //            if (anexo != null)
-        //            {
-        //                AnexoModel conteudo = new AnexoModel();
-
-        //                byte[] byteArray = new byte[(int)anexo.ContentLength + 1];
-        //                Byte[] Content = new BinaryReader(anexo.InputStream).ReadBytes(anexo.ContentLength);
-
-        //                conteudo.nome = anexo.FileName;
-        //                //conteudo.descricao = anexo.FileName + anexo.FileName;
-        //                conteudo.id = 59;
-        //                conteudo.mimeType = anexo.ContentType;
-        //                conteudo.conteudo = Convert.ToBase64String(Content);
-
-        //                conteudos.Add(conteudo);
-        //            }
-        //        }
-
-
-        //        DespachoPostModel despacho = new DespachoPostModel();
-
-        //        despacho.idProcesso = Convert.ToInt32(form["processo.id"].ToString());
-        //        despacho.anexos = conteudos;
-        //        despacho.texto = form["textoDespacho"].ToString();
-        //        despacho.guidOrganizacaoDestino = form["orgaosDestino"].ToString();
-        //        despacho.guidUnidadeDestino = form["unidadeDestino"].ToString();
-
-
-        //        HomeWorkService home_ws = new HomeWorkService();
-
-        //        home_ws.PostDespacho(despacho, usuario.Token);
-
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-
         public ActionResult DespacharProcessoPost(DespachoPostModel despacho)
         {
             if (despacho.anexos != null)
             {
                 foreach (var anexo in despacho.anexos)
-                {
-                    int i = 0;
-                    despacho.anexos[i].conteudo = ConvertAnexoBase64(anexo.conteudo);
-                    i++;
+                {                    
+                    anexo.conteudo = ConvertAnexoBase64(anexo.conteudo);                 
                 }
             }
 

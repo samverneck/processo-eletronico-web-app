@@ -11,13 +11,13 @@ $('body').on('focus', '#contatoPF', function () {
     
         switch(digitos) {
             case '10':
-                $(this).mask('(99)9999-9999');
+                $(this).mask('(99) 9999-9999');
                 break;
             case '11':
-                $(this).mask('(99)99999-9999');
+                $(this).mask('(99) 99999-9999');
                 break;
             case '14':
-                $(this).mask('(99)9999-9999/9999 ');
+                $(this).mask('(99) 9999-9999/9999 ');
         }
     }
     catch (error) {

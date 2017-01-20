@@ -1,178 +1,321 @@
 ﻿@model WebApp.Models.ProcessoEletronico.ProcessoEletronicoModel
 
-<table class="table table-bordered table-condensed table-striped">
-    <tr>
-        <th class="col-md-3">Número</th>
-        <td>@Model.numero</td>
-    </tr>
-    @if (Model.atividade != null)
-    {
-        <tr>
-            <th>Classificação</th>
-            <td>@Model.atividade.codigo - @Model.atividade.descricao</td>
-        </tr>
-    }
-    <tr>
-        <th>Resumo</th>
-        <td>@Model.resumo</td>
-    </tr>
-    <tr>
-        <th>Autuação</th>
-        <td>@Model.dataAutuacao</td>
-    </tr>
-    <tr>
-        <th>Último Tramite</th>
-        <td>@Model.dataUltimoTramite</td>
-    </tr>
-    <tr>
-        <th>Nome do Autuador</th>
-        <td>@Model.nomeUsuarioAutuador</td>
-    </tr>
-    <tr>
-        <th>Órgão</th>
-        <td>@Model.nomeOrganizacaoAutuadora</td>
-    </tr>
-    <tr>
-        <th>Unidade</th>
-        <td>@Model.nomeUnidadeAutuadora</td>
-    </tr>
-    @if (Model.sinalizacoes != null && Model.sinalizacoes.Count > 0)
-    {
-        <tr>
-            <th>Sinalizações</th>
-            <td>
-                <ul>
-                    @foreach (var sn in Model.sinalizacoes)
-                    {
-                        <li>@sn.descricao;</li>
-                    }
-                </ul>
-            </td>
-        </tr>
-    }
-</table>
+<h6>@DateTime.Now</h6>
+<div class="box box-primary">
+    <!-- /.box-header -->
+    <div class="box-header with-border">
+        <h3 class="box-title">Dados do Processo</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body table-responsive no-padding">
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th class="col-md-3 text-right">Número</th>
+                <td>@Model.numero</td>
+            </tr>
+            @if (Model.atividade != null)
+            {
+                <tr>
+                    <th class="col-md-3 text-right">Classificação</th>
+                    <td>@Model.atividade.codigo - @Model.atividade.descricao</td>
+                </tr>
+            }
+            <tr>
+                <th class="col-md-3 text-right">Resumo</th>
+                <td>@Html.Raw(Model.resumo)</td>
+            </tr>
+            <tr>
+                <th class="col-md-3 text-right">Autuação</th>
+                <td>@Model.dataAutuacao</td>
+            </tr>
+            <tr>
+                <th class="col-md-3 text-right">Último Tramite</th>
+                <td>@Model.dataUltimoTramite</td>
+            </tr>
+            <tr>
+                <th class="col-md-3 text-right">Nome do Autuador</th>
+                <td>@Model.nomeUsuarioAutuador</td>
+            </tr>
+            <tr>
+                <th class="col-md-3 text-right">Órgão</th>
+                <td>@Model.nomeOrganizacaoAutuadora</td>
+            </tr>
+            <tr>
+                <th class="col-md-3 text-right">Unidade</th>
+                <td>@Model.nomeUnidadeAutuadora</td>
+            </tr>
+            @if (Model.sinalizacoes != null && Model.sinalizacoes.Count > 0)
+            {
+                <tr>
+                    <th class="col-md-3 text-right">Sinalizações</th>
+                    <td>
+                        <ul>
+                            @foreach (var sn in Model.sinalizacoes)
+                            {
+                                <li>@sn.descricao</li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
 
 @if (Model.municipiosProcesso != null && Model.municipiosProcesso.Count > 0)
 {
-    <h3>Abrangência</h3>
-    <table class="table table-bordered table-condensed table-striped">
-        <thead>
-            <tr>
-                <th>UF</th>
-                <th>Município</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var mc in Model.municipiosProcesso)
-            {
-                <tr>
-                    <td>@mc.uf</td>
-                    <td>@mc.nome</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="box box-primary collapsed-box">
+        <!-- /.box-header -->
+        <div class="box-header with-border">
+            <h3 class="box-title">Abrangência</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="col-md-2">UF</th>
+                        <th>Município</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var mc in Model.municipiosProcesso)
+                {
+                        <tr>
+                            <td>@mc.uf</td>
+                            <td>@mc.nome</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
 
-<h3>Interessados</h3>
-<table class="table table-bordered table-condensed table-striped">
-    <thead>
-        <tr>
-            <th>Nome/Razão Social</th>
-            <th>CPF/CNPJ</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.interessadosPessoaFisica != null && Model.interessadosPessoaFisica.Count > 0)
-            {
-                foreach (var pf in Model.interessadosPessoaFisica)
+
+<div class="box box-primary collapsed-box">
+    <!-- /.box-header -->
+    <div class="box-header with-border">
+        <h3 class="box-title">Interessados</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body table-responsive no-padding">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Nome/Razão Social</th>
+                    <th>Unidade</th>
+                    <th>CPF/CNPJ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.interessadosPessoaFisica != null && Model.interessadosPessoaFisica.Count > 0)
                 {
-                <tr>
-                    <td>@pf.nome</td>
-                    <td class="campoCpf">
-                        @{
-                            var CPFFormatado = String.Format(@"{0:000\.000\.000\-00}", pf.cpf);
-                        }
-                        @CPFFormatado
-                    </td>
-                </tr>
-                                }
-                            }
-        @if (Model.interessadosPessoaJuridica != null && Model.interessadosPessoaJuridica.Count > 0)
-
-        {
-            foreach (var pj in Model.interessadosPessoaJuridica)
-            {
-                <tr>
-                    <td>
-                    @if (pj.sigla != null)
+                    foreach (var pf in Model.interessadosPessoaFisica)
                     {
-                        @pj.sigla<text> - </text>
-                    } 
-                    @pj.razaoSocial</td>
-                    <td class="campoCnpj">
-                        @{
-                            var CNPJFormatado = String.Format(@"{0:00\.000\.000\/0000\-00}", pj.cnpj);
-                        }
-                        @CNPJFormatado
-                    </td>
+                        <tr>
+                            <td>@pf.nome</td>
+                            <td class="text-center">
+                                ---
+                            </td>
+                            <td class="campoCpf text-right">
+                                @Convert.ToUInt64(pf.cpf).ToString(@"000\.000\.000\-00")
+                            </td>
+                        </tr>
+                    }
+                }
+                @if (Model.interessadosPessoaJuridica != null && Model.interessadosPessoaJuridica.Count > 0)
 
-                </tr>
+                {
+                    foreach (var pj in Model.interessadosPessoaJuridica)
+                    {
+                        <tr>
+                            <td>
+                                @if (pj.sigla != null)
+                                {
+                                    @pj.sigla<text> - </text>
                                 }
+                                @pj.razaoSocial
+                            </td>
+
+                            @if (pj.siglaUnidade != null)
+                    {
+                                <td>
+                                    @pj.siglaUnidade
+                                </td>
                             }
-    </tbody>
-</table>
+                            else
+                            {
+                                <td class="text-center">
+                                    ---
+                                </td>
+                            }
+
+                            <td class="campoCnpj text-right">
+                                @Convert.ToUInt64(pj.cnpj).ToString(@"00\.000\.000\/0000\-00")
+                            </td>
+
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
 
 @if (Model.despachos != null && Model.despachos.Count > 0)
-{
-    <h3>Despachos</h3>
-    <table class="table table-bordered table-condensed table-striped">
-        <thead>
-            <tr>
-                <th>Destino</th>
-                <th>Texto do Despacho</th>
-                <th>Usuário</th>
-                <th>Data</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var des in Model.despachos)
             {
-                <tr>
-                    <td>@des.siglaOrganizacaoDestino - @des.siglaUnidadeDestino</td>
-                    <td>@des.texto</td>
-                    <td>@des.nomeUsuarioDespachante</td>
-                    <td>@des.dataHoraDespacho.AsDateTime().ToString("dd/MM/yyyy HH:mm")</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="box box-primary collapsed-box">
+        <!-- /.box-header -->
+        <div class="box-header with-border">
+            <h3 class="box-title">Despachos do Processo</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <table id="tabela-despachos" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-md-3">Destino</th>
+                        <th>Texto do Despacho</th>
+                        @*<th class="col-md-2">Usuário</th>*@
+                        <th class="col-md-1">Data</th>
+                        <th class="col-md-2">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var des in Model.despachos)
+                {
+                        <tr class="treegrid-@des.id">
+                            <td>
+                                @des.siglaOrganizacaoDestino - @des.siglaUnidadeDestino
+                            </td>
+                            <td>
+                                @if (des.texto.Length > 100 && !des.texto.Contains("<table"))
+                                {                                    
+                                    @Html.Raw(des.texto.Substring(0, 99))                                    
+
+                                }
+                                else
+                                {
+                                    @Html.Raw(des.texto)
+                                }                                
+                            </td>
+                            @*<td>@des.nomeUsuarioDespachante</td>*@
+                            <td>@des.dataHoraDespacho.AsDateTime().ToString("dd/MM/yyyy HH:mm")</td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a href="@Url.Action("VisualizarDespacho", "Home" , new { id=des.id })" class="btn btn-info btn-sm btn-visualizar-despacho" title="Visualizar despacho completo.">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        if (des.anexos != null)
+                        {
+                            <tr id="despacho-@des.id" class="treegrid-anexo-@des.id treegrid-parent-@des.id" aria-expanded="true">
+                                <td colspan="5">
+                                    <ul>
+                                        @foreach (var anexo in des.anexos)
+                                        {
+                                            <li>
+                                                <a class="btn-download" href="@Url.Action("Download", "Home" , new { id=anexo.id })">
+                                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                                    @anexo.nome 
+                                                </a>
+                                                @if (!string.IsNullOrEmpty(anexo.descricao))
+                                                {
+                                                    <text>-</text> @anexo.descricao
+                                                }
+                                            </li>
+                                        }
+                                    </ul>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
 
+
 @if (Model.anexos != null && Model.anexos.Count > 0)
-{
-    <h3>Anexos</h3>
-    <table class="table table-bordered table-condensed table-striped">
-        <thead>
-            <tr>
-                <th>Arquivo</th>
-                <th>Descrição</th>
-                <th class="col-md-2 text-center">Baixar</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var anexo in Model.anexos)
             {
-                <tr>
-                    <td>@anexo.nome</td>
-                    <td>@anexo.descricao</td>
-                    <td class="text-center">
-                        <a href="@Url.Action("Download", "Home", new { id = anexo.id })" class="btn btn-warning btn-xs btn-download">
-                            <i class="fa fa-download" aria-hidden="true"></i>
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+
+    <div class="box box-primary collapsed-box">
+        <!-- /.box-header -->
+        <div class="box-header with-border">
+            <h3 class="box-title">Todos os Anexos</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <table id="anexos-processos" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Arquivo</th>
+                        <th>Tipo Documental</th>
+                        <th>Descrição</th>                        
+                        <th class="col-md-2 text-center">Baixar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var anexo in Model.anexos)
+                    {
+                        <tr>
+                            <td>@anexo.nome</td>                            
+                            <td>@if (anexo.tipoDocumental!=null)
+                            {
+                                @anexo.tipoDocumental.descricao
+                            }</td>
+                            <td>@anexo.descricao</td>
+                            <td class="text-center">
+                                <a href="@Url.Action("Download", "Home" , new { id=anexo.id })" class="btn btn-warning btn-sm btn-download">
+                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
+
+
+<script type="text/javascript">
+    $('#tabela-despachos').treegrid({
+        expanderExpandedClass: 'fa fa-minus-square-o',
+        expanderCollapsedClass: 'fa fa-plus-square-o',
+        initialState: 'collapsed'
+    });
+</script>
+

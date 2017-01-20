@@ -47,16 +47,20 @@ function ajaxCarregaUnidades(guidOrganizacao) {
 //Despachar Processo
 $('body').on('click', '#btnDespacharProcesso', function () {
 
+    var form = $('#formDespacho')[0];
+    form.textoDespacho.value = CKEDITOR.instances.textoDespacho.getData();
+
     if (!validaForm('#formDespacho')) {
         toastr["warning"]("Não foi possíve realizar a autuação! Verifique os campos obrigatórios e tente novamente!");
         return false;
-    }
+    }    
 
-    var form = $('#formDespacho')[0];
+    var despacho = new objetoDespacho(form.idProcesso.value, form.textoDespacho.value, form.orgaoDestino.value, unidadeDestino.value, prepararAnexos(arrayAnexos));    
 
-    var despacho = new objetoDespacho(form.idProcesso.value, form.textoDespacho.value, form.orgaoDestino.value, unidadeDestino.value, prepararAnexos(arrayAnexos));
+    //Para incluir vários anexos, cada um com até 1Mb;
+    /*$.each(temp1.anexos, function (i, item) { console.log(JSON.stringify(item)); });*/
 
-    //console.log(despacho);
+    console.log(despacho);
 
     $.ajax({
         url: '/Home/DespacharProcessoPost',
@@ -67,7 +71,7 @@ $('body').on('click', '#btnDespacharProcesso', function () {
         //contentType: "application/x-www-form-urlencoded"
     }).done(function (dados, textStatus, request) {
 
-        //console.log(dados);
+        console.log(dados);
         ExibirMensagens();
         if (dados.IsSuccessStatusCode) {
             var delay = 3000;

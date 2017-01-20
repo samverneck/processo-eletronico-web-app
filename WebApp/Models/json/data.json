@@ -1,0 +1,84 @@
+{
+   "id":8,
+   "resumo":"FOLHA DE PAGAMENTO 2017",
+   "guidOrganizacaoAutuadora":"3ca6ea0e-ca14-46fa-a911-22e616303722",
+   "nomeOrganizacaoAutuadora":"Instituto de Tecnologia da Informação e Comunicação do Estado do Espírito Santo",
+   "siglaOrganizacaoAutuadora":"PRODEST",
+   "guidUnidadeAutuadora":"ed9d37cc-d58a-4594-91ec-56bc66bcaa9a",
+   "nomeUnidadeAutuadora":"Gerência Finanças e Orçamentos",
+   "siglaUnidadeAutuadora":"GEFOR",
+   "idUsuarioAutuador":"75828960768",
+   "nomeUsuarioAutuador":"Fabio Lopes Permuy",
+   "dataAutuacao":"13/01/2017 17:13:25",
+   "dataUltimoTramite":"18/01/2017 16:00:31",
+   "numero":"7-87.2017.1.1.0001",
+   "idOrganizacaoProcesso":1,
+   "anexos":[
+      {
+         "id":4,
+         "nome":"REL_CONT_RH_PES0505P_01_201701_31_2_2_28203_52042.PDF",
+         "mimeType":"application/pdf"
+      }
+   ],
+   "despachos":[
+      {
+         "id":5,
+         "texto":" CI GEREH  004/2017                                                                    16 de janeiro de 2017\n\nÀ \nGEFOR\n\nInformamos o fechamento da folha de pagamento do mês de janeiro com data de crédito para 31/01/2017.\n\nEm atendimento ao procedimento da SEGER, os relatórios para contabilização da folha estão disponibilizados para acesso da GEFOR em meio eletrônico, na pasta compartilhada GEREH/GEFOR:\n S:\\DIRAF\\GEREH\\SGREH\\SIARHES_FOLHA_PG\\FECHAMENTO DA FOLHA DE PAGAMENTO\\RELATORIO DE POS CONSOLIDACAO\\2017\\JANEIRO. \n\nEncaminhamos em anexo o contracheque do empregado Luis Carlos Garcia.\n\nCaso seja necessária a emissão de algum outro relatório estamos à disposição para disponibilizar na referida pasta.\n\nResumo de folha por categoria – Relatório PES0503R\nCategoria\tQuantidade\nComissionado\t10\nEstagiário\t22\nAnalistas\t        156\nTécnicos\t        49\nAssistentes\t28\nTotal Geral\t265\n\n\n\nMarisa de Souza Oliveira Carneiro\nGerente de Recursos Humanos\n\t\n",
+         "guidOrganizacaoDestino":"3ca6ea0e-ca14-46fa-a911-22e616303722",
+         "nomeOrganizacaoDestino":"Instituto de Tecnologia da Informação e Comunicação do Estado do Espírito Santo",
+         "siglaOrganizacaoDestino":"PRODEST",
+         "nomeUnidadeDestino":"Gerência Finanças e Orçamentos",
+         "siglaUnidadeDestino":"GEFOR",
+         "idUsuarioDespachante":"00766806146",
+         "nomeUsuarioDespachante":"Raquel Triani Santos de Carvalho",
+         "dataHoraDespacho":"18/01/2017 16:00:31",
+         "anexos":[
+            {
+               "id":4,
+               "nome":"REL_CONT_RH_PES0505P_01_201701_31_2_2_28203_52042.PDF",
+               "mimeType":"application/pdf"
+            }
+         ]
+      }
+   ],
+   "interessadosPessoaJuridica":[
+      {
+         "id":6,
+         "razaoSocial":"Instituto de Tecnologia da Informação e Comunicação do Estado do Espírito Santo",
+         "cnpj":"28162790000120",
+         "sigla":"PRODEST",
+         "nomeUnidade":"GEFOR - Gerência Finanças e Orçamentos",
+         "siglaUnidade":"GEFOR",
+         "guidMunicipio":"48b44737-361f-45d8-bb5b-3d1e186e766f",
+         "nomeMunicipio":"Vitória",
+         "ufMunicipio":"ES"
+      }
+   ],
+   "municipiosProcesso":[
+      {
+         "uf":"ES",
+         "nome":"Vitória",
+         "guidMunicipio":"48b44737-361f-45d8-bb5b-3d1e186e766f"
+      }
+   ],
+   "sinalizacoes":[
+
+   ],
+   "atividade":{
+      "id":1,
+      "codigo":"1",
+      "descricao":"Atividade Geral",
+      "funcao":{
+         "id":1,
+         "codigo":"1",
+         "descricao":"Função Geral",
+         "planoClassificacao":{
+            "id":1,
+            "codigo":"1",
+            "descricao":"Plano de Classificação de Documentos da Administração Pública do Estado do ES",
+            "areaFim":false,
+            "observacao":"Área Meio"
+         }
+      }
+   }
+}

@@ -170,6 +170,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\AcessoCidadao\" />
     <Folder Include="Models\Arquivamento\" />
+    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -220,12 +221,16 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="_app_offline.htm" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="css\AdminLTE.css" />
     <Content Include="css\AdminLTE.min.css" />
+    <Content Include="css\print.css" />
+    <Content Include="img\Brasao_Governo_horizontal_Black_left_small.png" />
+    <Content Include="img\manutencao.png" />
     <Content Include="Scripts\select2\css\select2-bootstrap.css" />
     <Content Include="css\skins\skin-black-light.css" />
     <Content Include="css\skins\skin-black-light.min.css" />
@@ -367,6 +372,7 @@
     <Content Include="Scripts\select2\js\select2.min.js" />
     <Content Include="Scripts\input-mask\phone-codes\phone-be.json" />
     <Content Include="Scripts\input-mask\phone-codes\phone-codes.json" />
+    <Content Include="Models\json\data.json" />
     <None Include="Properties\PublishProfiles\DESENVOLVIMENTO.pubxml" />
     <None Include="Properties\PublishProfiles\HOMOLOGACAO.pubxml" />
     <None Include="Properties\PublishProfiles\PRODUCAO.pubxml" />
@@ -1168,6 +1174,12 @@
     <Content Include="Scripts\timepicker\bootstrap-timepicker.js" />
     <Content Include="Scripts\timepicker\bootstrap-timepicker.min.css" />
     <Content Include="Scripts\timepicker\bootstrap-timepicker.min.js" />
+    <Content Include="Scripts\treegrid\css\jquery.treegrid.css" />
+    <Content Include="Scripts\treegrid\js\jquery.cookie.js" />
+    <Content Include="Scripts\treegrid\js\jquery.treegrid.bootstrap2.js" />
+    <Content Include="Scripts\treegrid\js\jquery.treegrid.bootstrap3.js" />
+    <Content Include="Scripts\treegrid\js\jquery.treegrid.js" />
+    <Content Include="Scripts\treegrid\js\jquery.treegrid.min.js" />
     <Content Include="Scripts\validate\additional-methods.js" />
     <Content Include="Scripts\validate\additional-methods.min.js" />
     <Content Include="Scripts\validate\jquery.validate.js" />
@@ -1326,6 +1338,9 @@
     <Content Include="Views\Autuacao\Index.cshtml" />
     <Content Include="Views\Externo\Index.cshtml" />
     <Content Include="Views\Shared\MensagensAjax.cshtml" />
+    <Content Include="Views\Home\_VisualizarDespacho.cshtml" />
+    <Content Include="Views\Shared\OffLine.cshtml" />
+    <Content Include="Views\Shared\_LayoutPageOffline.cshtml" />
     <None Include="Web.Desenvolvimento.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

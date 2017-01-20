@@ -12,7 +12,6 @@ namespace WebApp.Controllers
 {
     public class WorkServiceBase
     {
-
         public static RetornoAjaxModel Get(string url, string token, int i = 0)
         {
             using (MiniProfiler.Current.Step($"url{i}: {url}"))

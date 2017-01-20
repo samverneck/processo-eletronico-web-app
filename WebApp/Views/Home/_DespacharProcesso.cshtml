@@ -1,7 +1,7 @@
 ﻿@model WebApp.Models.Despacho.DespachoTela
 
 @*@using (Html.BeginForm("Despachar", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{*@
+    {*@
 <form id="formDespacho">
     <div class="box-body">
         <h3>Dados do Processo</h3>
@@ -20,7 +20,7 @@
             }
             <tr>
                 <th>Resumo</th>
-                <td>@Model.processo.resumo</td>
+                <td>@Html.Raw(Model.processo.resumo)</td>
             </tr>
         </table>
         <hr />
@@ -30,14 +30,14 @@
         </div>
         <div class="form-group">
             <label>Órgão Destino <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Órgão Destino" data-content="O campo Órgão Destino é obrigatório e indica o órgão para o qual o processo será encaminhado após confirmação do despacho."><i class="fa fa-question" aria-hidden="true"></i></a></label>
-            @{                 
-                foreach(var orgao in Model.orgaosDestino)
+            @{
+                foreach (var orgao in Model.orgaosDestino)
                 {
                     orgao.nomeFantasia = orgao.sigla + " - " + orgao.nomeFantasia;
                 }
             }
             @Html.DropDownListFor(m => m.orgaosDestino,
-        new SelectList(Model.orgaosDestino,"guid", "nomeFantasia"),
+        new SelectList(Model.orgaosDestino, "guid", "nomeFantasia"),
         "Selecione um Órgão",
         new { @class = "form-control", @onchange = "javascript:carregaUnidades(this.value);", @id = "orgaoDestino", @required = "required", @title = "Informe a Órgão de Destino." })
         </div>
@@ -48,8 +48,8 @@
 
         <hr />
 
-        <div class="form-group">            
-            <label>Anexos <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Anexos" data-content="Em Anexos podem ser incluidos documentos que irão compor o processo. Ao clicar no botão Adicionar o sistema permitirá selecionar multiplos arquivos para serem anexados."><i class="fa fa-question" aria-hidden="true"></i></a></label>
+        <div class="form-group">
+            <label>Anexos <a class="btn btn-warning btn-xs" data-toggle="popover" data-trigger="hover" title="Anexos" data-content="Em Anexos podem ser incluidos documentos que irão compor o processo. Ao clicar no botão Adicionar o sistema permitirá selecionar multiplos arquivos para serem anexados. O nome do arquivo deve conter até 200 caracteres e tamanho até 5Mb."><i class="fa fa-question" aria-hidden="true"></i></a></label>
             <div class="form-group input-file-group">
                 <input type="file" class="form-control input-file" id="anexos" style="display:none" name="anexos" multiple />
                 <button type="button" class="btn btn-info btn-input-file"><i class="fa fa-link" aria-hidden="true"></i> Adicionar</button>
@@ -72,12 +72,21 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
 </form>
 @*}*@
 
 <script>
     validaElemento('#formDespacho');
-    carregaTipoDocumentalDespacho(@Html.Raw(Json.Encode(Model.tiposDocumentais)))    
+    carregaTipoDocumentalDespacho(@Html.Raw(Json.Encode(Model.tiposDocumentais)))
+
+    //Formulario de Despacho
+    $("#orgaoDestino").select2({ width: '100%' });
+    $("#unidadeDestino").select2({ width: '100%' });
+
+    //CKEditor para o textarea de texto do despacho
+    CKEDITOR.replace('textoDespacho');    
+    $('#textoDespacho').attr('required', 'required')
+    
 </script>

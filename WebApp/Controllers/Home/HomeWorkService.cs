@@ -30,21 +30,17 @@ namespace WebApp.Controllers.Home
             }
         }
 
-        public ProcessoEletronicoModel GetProcessoPorNumero(string numeroProcesso, string token)
+        public RetornoAjaxModel GetProcessoPorNumero(string numeroProcesso, string token)
         {
-            ProcessoEletronicoModel processos = new ProcessoEletronicoModel();
+            var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "processos/numero/" + numeroProcesso;
+            var retorno = Get(url, token);
+            return retorno;
+        }
 
-            try
-            {
-                var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "processos/numero/" + numeroProcesso;
-                processos = download_serialized_json_data<ProcessoEletronicoModel>(url, token);
-                return processos;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return processos;
-            }
+        public RetornoAjaxModel GetDespachoPorId(int id, string token)
+        {
+            var url = ConfigurationManager.AppSettings["ProcessoEletronicoAPIBase"] + "despachos/" + id;
+            return Get(url, token);
         }
 
         public AnexoModel GetAnexo(int idAnexo, string token)

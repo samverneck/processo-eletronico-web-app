@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="~/css/skins/_all-skins.css">
     <link rel="stylesheet" href="~/css/wizardForm.css">
 
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
     <style>
         .error {
@@ -27,7 +27,7 @@
         }
     </style>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">    
+<body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
         <!-- Main Header -->
         <header class="main-header">
@@ -61,7 +61,7 @@
                     <span class="logotipo-mini"><img src="~/img/Brasao.png" class="img-responsive" /></span>
                     <span class="logotipo-lg"><img src="~/img/Brasao_Governo_horizontal_white_left_small.png" class="img-responsive" /></span>
                 </a>
-                <!-- search form (Optional) -->                
+                <!-- search form (Optional) -->
                 <form id="formConsultaProcesso" class="sidebar-form">
                     <div class="input-group">
                         <input type="text" required name="numeroProcesso" id="numeroProcesso" class="form-control" placeholder="Processo...">
@@ -77,7 +77,7 @@
                 <ul class="sidebar-menu">
                     <li class="header">MENU PRINCIPAL</li>
                     <li class="active"><a href="@Url.Action("Index", "Home")"><i class="fa fa-tachometer"></i> <span>Meu Painel</span></a></li>
-                    <li><a href="@Url.Action("Index", "Autuacao")"><i class="fa fa-file-text-o"></i> <span>Autuar Processo</span></a></li>                   
+                    <li><a href="@Url.Action("Index", "Autuacao")"><i class="fa fa-file-text-o"></i> <span>Autuar Processo</span></a></li>
                 </ul>
                 <!-- /.sidebar-menu -->
             </section>
@@ -95,7 +95,8 @@
 
             </div>
             <!-- Default to the left -->
-            <strong>Copyright &copy; 2016 <a href="#">Prodest</a></strong>
+            Copyright © 2016-2017 <strong>Prodest</strong>.
+
         </footer>
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
@@ -124,22 +125,39 @@
         <div class="control-sidebar-bg"></div>
     </div>
     <!-- ./wrapper -->
-
     <!--Modal Visualizacao Processo-->
     <div class="modal fade" id="modalProcesso" tabindex="-1" role="dialog" aria-labelledby="modalProcessoLabel">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+            <div class="modal-content exibe" id="content-1">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
-                    <h4 class="modal-title" id="modalProcessoLabel">Visualização do Processo</h4>
+                    <h4 class="modal-title" id="modalProcessoLabel">Processo</h4>
                 </div>
                 <div class="modal-body">
                     <div id="visualizarProcesso">
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" id="btn-imprimir-processo" class="btn btn-info"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Fechar</button>
+                </div>
+            </div>
+            <div class="modal-content esconde" id="content-2">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="modalProcessoLabel">Despacho</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="visualizarDespacho">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn-voltar-despacho" class="btn btn-primary"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Voltar</button>
+                    <button type="button" id="btn-imprimir-despacho" class="btn btn-info"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Fechar</button>
                 </div>
             </div>
@@ -184,7 +202,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Modal Waiting -->
     <div class="modal fade" id="modalWaiting" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -196,7 +214,7 @@
                 </div>
             </div>
         </div>
-    </div>            
+    </div>
 
     <!-- REQUIRED JS SCRIPTS -->
     <!-- jQuery 2.2.3 -->
@@ -210,10 +228,10 @@
     <!--Toastr-->
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <!--Select2-->
-    <link href="~/Scripts/select2/css/select2.css" rel="stylesheet" />    
+    <link href="~/Scripts/select2/css/select2.css" rel="stylesheet" />
     <link href="~/Scripts/select2/css/select2-bootstrap.css" rel="stylesheet" />
-    <script src="~/Scripts/select2/js/select2.min.js"></script>   
-    
+    <script src="~/Scripts/select2/js/select2.min.js"></script>
+
     <!-- AdminLTE App -->
     <script src="~/js/app.min.js"></script>
     <script src="~/js/models.js"></script>

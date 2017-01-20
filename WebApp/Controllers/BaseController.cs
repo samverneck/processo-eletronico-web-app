@@ -15,7 +15,6 @@ namespace WebApp.Controllers
         public UsuarioLogado usuario = new UsuarioLogado();
         public BaseController()
         {            
-                                       
         }
 
         [AllowAnonymous]
